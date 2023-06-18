@@ -13,11 +13,11 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name="users")
 public class User {
-    public static final String SEQ_NAME = "user_seq";
+    private static final String SEQ_NAME = "user_seq";
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = SEQ_NAME)
-    @SequenceGenerator(name = SEQ_NAME, sequenceName = SEQ_NAME)
-    public long id;
+    @SequenceGenerator(name = SEQ_NAME, sequenceName = SEQ_NAME, allocationSize = 1)
+    private long id;
     private String name;
     private String password;
     private String email;
@@ -27,4 +27,5 @@ public class User {
     private Role role;
     @OneToOne(cascade = CascadeType.REMOVE)
     private Bucket bucket;
+
 }

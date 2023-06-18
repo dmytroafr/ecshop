@@ -1,2 +1,5 @@
-package com.echem.ecshop.domain;public enum Role {
+package com.echem.ecshop.domain;
+
+public enum Role {
+    CLIENT, ADMIN, MANAGER
 }
