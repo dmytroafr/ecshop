@@ -1,3 +1,57 @@
+--User--
+drop sequence if exists user_seq;
+create sequence user_seq start with 1 increment by 1;
+
+drop table if exists users cascade;
+create table users (
+    archive boolean not null,
+    bucket_id bigint unique,
+    id bigint not null,
+    email varchar(255),
+    name varchar(255),
+    password varchar(255),
+    phone varchar(255),
+    role varchar(255) check (role in ('CLIENT','ADMIN','MANAGER')),
+    primary key (id));
+
+--Bucket
+drop sequence if exists bucket_seq;
+create sequence bucket_seq start with 1 increment by 1;
+
+drop table if exists buckets cascade;
+create table buckets (id bigint not null, user_id bigint unique, primary key (id));
+
+--Order
+drop sequence if exists order_seq;
+create sequence order_seq start with 1 increment by 1;
+
+drop table if exists orders cascade;
+create table orders (sum numeric(38,2), created timestamp(6), id bigint not null, updated timestamp(6), user_id bigint, address varchar(255), status varchar(255) check (status in ('NEW','APPROVED','CANCELLED','PAID','CLOSED')), primary key (id));
+
+--Product
+drop sequence if exists product_seq;
+create sequence product_seq start with 1 increment by 1;
+
+drop table if exists products cascade;
+create table products (price numeric(38,2), id bigint not null, tittle varchar(255), primary key (id));
+
+--Category
+drop sequence if exists category_seq;
+create sequence category_seq start with 1 increment by 1;
+
+drop table if exists categories cascade;
+create table categories (id bigint not null, tittle varchar(255), primary key (id));
+
+--Order Details
+drop sequence if exists order_details_seq;
+create sequence order_details_seq start with 1 increment by 1;
+
+drop table if exists order_details cascade;
+create table order_details (amount numeric(38,2), price numeric(38,2), id bigint not null, order_id bigint, product_id bigint, primary key (id));
+
+
+
+
 alter table if exists buckets drop constraint if exists FKnl0ltaj67xhydcrfbq8401nvj;
 alter table if exists buckets_products drop constraint if exists FKl4aj2nxk7wbu3s95bc0wq1elx;
 alter table if exists buckets_products drop constraint if exists FKc49ah45o66gy2f2f4c3os3149;
@@ -9,45 +63,12 @@ alter table if exists orders_details drop constraint if exists FK5o977kj2vptwo70
 alter table if exists products_categories drop constraint if exists FKqt6m2o5dly3luqcm00f5t4h2p;
 alter table if exists products_categories drop constraint if exists FKtj1vdea8qwerbjqie4xldl1el;
 alter table if exists users drop constraint if exists FK8l2qc4c6gihjdyoch727guci;
-drop table if exists buckets cascade;
 drop table if exists buckets_products cascade;
-drop table if exists categories cascade;
-drop table if exists order_details cascade;
-drop table if exists orders cascade;
 drop table if exists orders_details cascade;
-drop table if exists products cascade;
 drop table if exists products_categories cascade;
-drop table if exists users cascade;
-drop sequence if exists bucket_seq;
-drop sequence if exists category_seq;
-drop sequence if exists order_seq;
-drop sequence if exists order_details_seq;
-drop sequence if exists product_seq;
-drop sequence if exists user_seq;
-create sequence bucket_seq start with 1 increment by 1;
-create sequence category_seq start with 1 increment by 1;
-create sequence order_seq start with 1 increment by 1;
-create sequence order_details_seq start with 1 increment by 1;
-create sequence product_seq start with 1 increment by 1;
-create sequence user_seq start with 1 increment by 1;
-create table buckets (id bigint not null, user_id bigint unique, primary key (id));
 create table buckets_products (bucket_id bigint not null, products_id bigint not null);
-create table categories (id bigint not null, tittle varchar(255), primary key (id));
-create table order_details (amount numeric(38,2), price numeric(38,2), id bigint not null, order_id bigint, product_id bigint, primary key (id));
-create table orders (sum numeric(38,2), created timestamp(6), id bigint not null, updated timestamp(6), user_id bigint, address varchar(255), status varchar(255) check (status in ('NEW','APPROVED','CANCELLED','PAID','CLOSED')), primary key (id));
 create table orders_details (details_id bigint not null unique, order_id bigint not null);
-create table products (price numeric(38,2), id bigint not null, tittle varchar(255), primary key (id));
 create table products_categories (category_id bigint not null, product_id bigint not null);
-create table users (
-    archive boolean not null,
-    bucket_id bigint unique,
-    id bigint not null,
-    email varchar(255),
-    name varchar(255),
-    password varchar(255),
-    phone varchar(255),
-    role varchar(255) check (role in ('CLIENT','ADMIN','MANAGER')),
-    primary key (id));
 alter table if exists buckets add constraint FKnl0ltaj67xhydcrfbq8401nvj foreign key (user_id) references users;
 alter table if exists buckets_products add constraint FKl4aj2nxk7wbu3s95bc0wq1elx foreign key (products_id) references products;
 alter table if exists buckets_products add constraint FKc49ah45o66gy2f2f4c3os3149 foreign key (bucket_id) references buckets;
