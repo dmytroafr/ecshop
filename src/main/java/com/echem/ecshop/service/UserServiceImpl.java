@@ -29,7 +29,7 @@ public class UserServiceImpl implements UserService{
 	@Override
 	public boolean save(UserDTO userDTO) {
 		if (!Objects.equals(userDTO.getPassword(), userDTO.getMatchingPassword())) {
-			throw new RuntimeException("Paswords not equal");
+			throw new RuntimeException("Passwords not equal");
 		}
 		User user = User.builder()
 				.name(userDTO.getUsername())
@@ -57,4 +57,5 @@ public class UserServiceImpl implements UserService{
 		);
 
 	}
+
 }

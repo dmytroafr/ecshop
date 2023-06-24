@@ -24,6 +24,7 @@ public class Bucket {
     @OneToOne
     @JoinColumn(name = "user_id")
     private User user;
+
     @ManyToMany
     @JoinTable(name = "buckets_products",
             joinColumns = @JoinColumn(name = "bucket_id"),
