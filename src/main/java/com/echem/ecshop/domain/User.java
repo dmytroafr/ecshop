@@ -27,5 +27,4 @@ public class User {
     private Role role;
     @OneToOne(cascade = CascadeType.REMOVE)
     private Bucket bucket;
-
 }

@@ -1,12 +1,19 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:sec="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Demo E-CHEM-SHOP</title>
 </head>
 <body>
-
- <p><a th:href="@{/users/new}">User</a>in</p>
- <a th:href="@{/login}">Login</a>
+<table>
+    <tr>
+        <th> <a th:href ="@{/users/new}">User</a> </th>
+        <th> клітинка 2 </th>
+    </tr>
+    <tr>
+        <td> <a th:href =@{/login}">Login</a> </td>
+        <td> клітинка 4 </td>
+    </tr>
+</table>
 </body>
 </html>

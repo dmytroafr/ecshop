@@ -1,51 +1,42 @@
 package com.echem.ecshop.config;
-
+import com.echem.ecshop.domain.Role;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
-
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @Configuration
-@EnableWebSecurity
+@EnableWebSecurity()
 public class WebSecurityConfig {
 
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
-                .authorizeHttpRequests((requests) -> requests
-                        .requestMatchers("/", "/home").permitAll()
-                        .anyRequest().authenticated()
+    protected SecurityFilterChain securityFilterChain (HttpSecurity http) throws Exception {
+            http
+                .authorizeHttpRequests((requests) -> {
+                            requests
+                                    .requestMatchers("/", "/users/new").hasAuthority(Role.ADMIN.name())
+                                    .anyRequest().permitAll();
+                        }
                 )
                 .formLogin((form) -> form
                         .loginPage("/login")
                         .permitAll()
+                        .loginProcessingUrl("/auth")
+                        .permitAll()
                 )
-                .logout((logout) -> logout.permitAll());
-
-        return http.build();
-    }
-
-    @Bean
-    public UserDetailsService userDetailsService() {
-        UserDetails user =
-                User.withDefaultPasswordEncoder()
-                        .username("user")
-                        .password("password")
-                        .roles("USER")
-                        .build();
-
-        return new InMemoryUserDetailsManager(user);
-    }
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
+                .logout((logout) -> logout.logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+                        .logoutSuccessUrl("/").deleteCookies("JSESSIONID")
+                        .invalidateHttpSession(true)
+                )
+                .csrf((csrf) -> csrf.disable());
+            return http.build();
     }
 }

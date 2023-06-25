@@ -1,11 +1,9 @@
 package com.echem.ecshop.domain;
-
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import java.util.List;
 
 @Data
@@ -30,7 +28,4 @@ public class Bucket {
             joinColumns = @JoinColumn(name = "bucket_id"),
             inverseJoinColumns = @JoinColumn(name = "products_id "))
     private List<Product> products;
-
-
-
 }
