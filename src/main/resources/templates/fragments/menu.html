@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<table id="nav-menu" width="100%">
+    <tr>
+        <td align="center">
+            <table>
+                <tr>
+                    <td>Навігація по розділам :</td>
+                    <td><a th:href="@{/}">На головну</a></td>
+                    <td><a th:href="@{/products}">Всі товари</a></td>
+                    <td><a th:href="@{/users}">Користувачі</a></td>
+                </tr>
+            </table>
+
+        </td>
+        <td align="right">
+            <div sec:authorize="isAuthenticated()">
+                <div>
+                    Привіт, <span sec:authentication="principal.username">Bill</span>
+                </div>
+                <div>
+                    <a th:href="@{/logout}">Вихід</a>
+                </div>
+            </div>
+            <div sec:authorize="!isAuthenticated()">
+                <div>
+                    Привіт, незнайомець, будь ласка <a th:href="@{/login}">зареєструйся</a>
+                </div>
+
+            </div>
+        </td>
+    </tr>
+
+</table>
+</body>
+</html>

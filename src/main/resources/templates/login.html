@@ -5,8 +5,10 @@
   <title>Login Page</title>
 </head>
 <body>
+<div th:insert="~{fragments/menu :: #nav-menu}"></div>
+<p th:if="${loginError}" class="error">Не вірне ім'я користувача або пароль</p>
 <form th:action="@{/auth}" method="post">
-  <table border="1">
+  <table>
     <tr>
       <td>Name</td>
       <td><input type="text" name="username"></td>

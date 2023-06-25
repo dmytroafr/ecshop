@@ -22,13 +22,15 @@ public class WebSecurityConfig {
             http
                 .authorizeHttpRequests((requests) -> {
                             requests
-                                    .requestMatchers("/", "/users/new").hasAuthority(Role.ADMIN.name())
+                                    .requestMatchers("/users").hasAnyAuthority(Role.ADMIN.name(), Role.MANAGER.name())
+                                    .requestMatchers("/users/new").hasAuthority(Role.ADMIN.name())
                                     .anyRequest().permitAll();
                         }
                 )
                 .formLogin((form) -> form
                         .loginPage("/login")
                         .permitAll()
+                        .failureUrl("/login-error")
                         .loginProcessingUrl("/auth")
                         .permitAll()
                 )
