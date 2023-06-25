@@ -1,19 +1,53 @@
-<!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>Demo E-CHEM-SHOP</title>
-</head>
-<body>
-<table>
-    <tr>
-        <th> <a th:href ="@{/users/new}">User</a> </th>
-        <th> клітинка 2 </th>
-    </tr>
-    <tr>
-        <td> <a th:href =@{/login}">Login</a> </td>
-        <td> клітинка 4 </td>
-    </tr>
-</table>
-</body>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+    <head>
+        <!DOCTYPE html>
+        <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:sec="http://www.w3.org/1999/xhtml">
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Екохім</title>
+    </head>
+    
+    <body class="body">
+     <!--Main-->
+        <div class = main>   
+            <div class = maincontent>
+                
+                <div>
+                    <h1>Слава Україні!</h1>
+                    <img src="photo/Flag.png" alt="">
+                </div>
+                <div>Любіть Україну у сні й наяву, вишневу свою Україну, красу її вічно живу і нову і мову її солов'їну.
+                    <p> В. Сосюра</p>                
+                </div>
+
+            </div>
+        
+            <!--Sidebar-->
+            <aside class="sidebar">
+                <div> 
+                    <ul>
+                        <li> Товари </li>
+                        <li> Про нас </li>
+                        <li> Відгуки </li>
+                        <li> Інструкції </li>
+                        <li><a th:href="@{/login}"> Вхід в особистий кабінет </a></li>
+                        <li><a th:href ="@{/users/new}"> Реєстрація </a></li>
+                    </ul>
+                </div>
+                <div>
+                    <p>ТОВ "Екохім Розвиток"</p>
+                    <p>+380 (95) 791-34-29</p>
+                    <p>Продажі</p>
+                    <p>+380 (44) 334-59-40</p>
+                    <p>Офіс</p>
+                    <p>Дмитро</p>
+                    <p>02092, вул. Алматинська, 8, оф 103, Київ, Україна</p>
+                    <p>office@e-chem.com.ua</p>
+                    <p>+380 (95) 791 34 29</p>
+                    <p>+380 (95) 791 34 29</p>
+                </div>
+            </aside>
+        </div>
+    </body>
 </html>

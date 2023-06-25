@@ -9,6 +9,7 @@ alter table if exists orders_details drop constraint if exists FK5o977kj2vptwo70
 alter table if exists products_categories drop constraint if exists FKqt6m2o5dly3luqcm00f5t4h2p;
 alter table if exists products_categories drop constraint if exists FKtj1vdea8qwerbjqie4xldl1el;
 alter table if exists users drop constraint if exists FK8l2qc4c6gihjdyoch727guci;
+
 drop table if exists buckets cascade;
 drop table if exists buckets_products cascade;
 drop table if exists categories cascade;
@@ -24,7 +25,6 @@ drop sequence if exists order_details_seq;
 drop sequence if exists order_seq;
 drop sequence if exists product_seq;
 drop sequence if exists user_seq;
-
 
 create table buckets (id bigint not null, user_id bigint unique, primary key (id));
 create table buckets_products (bucket_id bigint not null, products_id bigint not null);
