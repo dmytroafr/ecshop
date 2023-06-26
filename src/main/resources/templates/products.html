@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="UTF-8">
+  <title>Наші продукти</title>
+</head>
+<body>
+<div th:insert="~{fragments/menu :: #nav-menu}"></div>
+<table border="1" align="center">
+  <tr>
+    <td>Назва товару</td>
+    <td>Ціна за одиницю</td>
+  </tr>
+  <tr th:each="product : ${products}">
+    <td th:text="${product.tittle}">Cheese</td>
+    <td th:text="${product.price}">12.0</td>
+  </tr>
+</table>
+
+</body>
+</html>

@@ -14,7 +14,7 @@
                     <td>Навігація по розділам :</td>
                     <td><a th:href="@{/}">На головну</a></td>
                     <td><a th:href="@{/products}">Всі товари</a></td>
-                    <td><a th:href="@{/users}">Користувачі</a></td>
+                    <td sec:authorize="hasAnyAuthority('ADMIN', 'MANAGER')"><a th:href="@{/users}">Користувачі</a></td>
                 </tr>
             </table>
 
@@ -22,7 +22,8 @@
         <td align="right">
             <div sec:authorize="isAuthenticated()">
                 <div>
-                    Привіт, <span sec:authentication="principal.username">Bill</span>
+                    Привіт, <a th:href="@{/users/profile}"><span sec:authentication="principal.username">Bill</span></a>
+
                 </div>
                 <div>
                     <a th:href="@{/logout}">Вихід</a>

@@ -3,6 +3,7 @@ import com.echem.ecshop.dao.UserRepository;
 import com.echem.ecshop.domain.Role;
 import com.echem.ecshop.domain.User;
 import com.echem.ecshop.dto.UserDTO;
+import jakarta.transaction.Transactional;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -64,5 +65,32 @@ public class UserServiceImpl implements UserService{
 				.email(user.getEmail())
 				.phone(user.getPhone())
 				.build();
+	}
+
+	@Override
+	public User findByName(String name) {
+		return userRepository.findFirstByName(name);
+	}
+
+	@Override
+	@Transactional
+	public void updateProfile(UserDTO dto) {
+		User savedUser = userRepository.findFirstByName(dto.getUsername());
+		if (savedUser == null) {
+			throw new RuntimeException("Користувач не знайдениз за іменем "+dto.getUsername());
+		}
+		boolean isChanged = false;
+		if (dto.getPassword() != null && !dto.getPassword().isEmpty()){
+			savedUser.setPassword(passwordEncoder.encode(dto.getPassword()));
+			isChanged = true;
+		}
+		if (!Objects.equals(dto.getEmail(),savedUser.getEmail())){
+			savedUser.setEmail(dto.getEmail());
+			isChanged = true;
+		}
+		if (isChanged){
+			userRepository.save(savedUser);
+
+		}
 	}
 }
