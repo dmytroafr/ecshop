@@ -22,6 +22,8 @@
             <!--Sidebar-->
             <aside class="sidebar">
                 <div th:insert="~{fragments/menu :: #nav-menu}"></div>
+                <h2>Всього кліків -> <b th:text="${amountClicks}">10</b></h2>
+                <h2>Your UUID -> <b th:text="${uuid}">10</b></h2>
                 <div>
                     <p>ТОВ "Екохім Розвиток"</p>
                     <p>+380 (95) 791-34-29</p>

@@ -15,6 +15,7 @@
                     <td><a th:href="@{/}">На головну</a></td>
                     <td><a th:href="@{/products}">Всі товари</a></td>
                     <td sec:authorize="hasAnyAuthority('ADMIN', 'MANAGER')"><a th:href="@{/users}">Користувачі</a></td>
+                    <td sec:authorize="isAuthenticated()"><a th:href="@{/bucket}">Корзина</a></td>
                 </tr>
             </table>
 

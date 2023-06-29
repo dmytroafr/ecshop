@@ -25,6 +25,6 @@ public class User {
     private boolean archive;
     @Enumerated(EnumType.STRING)
     private Role role;
-    @OneToOne(cascade = CascadeType.REMOVE)
+    @OneToOne(mappedBy = "user", cascade = CascadeType.REMOVE)
     private Bucket bucket;
 }

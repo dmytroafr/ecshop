@@ -20,7 +20,7 @@ public class Product {
     @SequenceGenerator(name = SEQ_NAME, sequenceName = SEQ_NAME, allocationSize = 1)
     private long id;
 
-    private String tittle;
+    private String title;
     private BigDecimal price;
 
     @ManyToMany(cascade = CascadeType.ALL)

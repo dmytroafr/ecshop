@@ -10,10 +10,12 @@
   <tr>
     <td>Назва товару</td>
     <td>Ціна за одиницю</td>
+    <td></td>
   </tr>
   <tr th:each="product : ${products}">
-    <td th:text="${product.tittle}">Cheese</td>
+    <td th:text="${product.title}">Cheese</td>
     <td th:text="${product.price}">12.0</td>
+    <td><a th:href="@{/products/{id}/bucket(id=${product.id})}">Додати до корзини</a></td>
   </tr>
 </table>
 

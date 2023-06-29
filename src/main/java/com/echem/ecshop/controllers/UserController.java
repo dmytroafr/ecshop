@@ -3,11 +3,11 @@ import com.echem.ecshop.domain.User;
 import com.echem.ecshop.dto.UserDTO;
 import com.echem.ecshop.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PostAuthorize;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.Objects;
@@ -30,6 +30,7 @@ public class UserController {
 		 model.addAttribute ("user", new UserDTO());
 		 return "user";
 	}
+	@PreAuthorize("hasAuthority('ADMIN')")
 	@PostMapping("/new")
 	public String saveUser(UserDTO dto, Model model){
 		if (userService.save(dto)){
@@ -38,6 +39,14 @@ public class UserController {
 			model.addAttribute("user", dto);
 			return "user";
 		}
+	}
+	@PostAuthorize("isAuthenticated() and #username == authentication.principal.username")
+	@GetMapping("/{name}/roles")
+	@ResponseBody
+	public String getRoles(@PathVariable("name") String username){
+		System.out.println("Called method getRoles");
+		User byName = userService.findByName(username);
+		return byName.getRole().name();
 	}
 
 	@GetMapping("/profile")
