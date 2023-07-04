@@ -17,6 +17,11 @@ public class BucketDetailDTO {
     private BigDecimal price;
     private BigDecimal amount;
     private Double sum;
+    private String productDescription;
+    private String photoUrl;
+    private String producer;
+    private String countryProducer;
+
 
     public BucketDetailDTO(Product product) {
         this.title = product.getTitle();
@@ -24,6 +29,11 @@ public class BucketDetailDTO {
         this.price = product.getPrice();
         this.amount = new BigDecimal(1.0);
         this.sum = Double.valueOf(product.getPrice().toString());
+        this.productDescription = product.getProductDescription();
+        this.photoUrl = product.getPhotoUrl();
+        this.producer = product.getProducer();
+        this.countryProducer = product.getCountryProducer();
+
     }
 
 

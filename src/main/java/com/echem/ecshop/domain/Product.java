@@ -18,10 +18,15 @@ public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = SEQ_NAME)
     @SequenceGenerator(name = SEQ_NAME, sequenceName = SEQ_NAME, allocationSize = 1)
-    private long id;
+    private long id;  // ID - не сіквенс
 
-    private String title;
-    private BigDecimal price;
+    private String title; // Назва
+    private BigDecimal price; //ціна
+    private String productDescription;
+    private String photoUrl;
+    private String producer;
+    private String countryProducer;
+
 
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "products_categories",
