@@ -2,6 +2,8 @@ package com.echem.ecshop.controllers;
 import com.echem.ecshop.domain.User;
 import com.echem.ecshop.dto.UserDTO;
 import com.echem.ecshop.service.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -16,6 +18,7 @@ import java.util.Objects;
 @RequestMapping("/users")
 public class UserController {
 	private final UserService userService;
+	private final Logger logger = LoggerFactory.getLogger(UserController.class);
 	@Autowired
 	public UserController(UserService userService) {
 		this.userService = userService;
@@ -27,6 +30,7 @@ public class UserController {
 	}
 	@GetMapping("/new")
 	public String newUser(Model model){
+		logger.info("Отримали запит на /new і перевели на user.html");
 		 model.addAttribute ("user", new UserDTO());
 		 return "user";
 	}
@@ -51,6 +55,7 @@ public class UserController {
 
 	@GetMapping("/profile")
 	public String profileUser(Model model, Principal principal){
+
 		if (principal==null) {
 			throw new RuntimeException("Але ж Ви не авторизовані");
 		}

@@ -8,6 +8,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+
 @Configuration
 @EnableWebSecurity()
 public class WebSecurityConfig {
@@ -23,9 +25,9 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests((requests) -> {
                             requests
                                     .requestMatchers("/users").hasAnyAuthority(Role.ADMIN.name(), Role.MANAGER.name())
-  //                                  .requestMatchers("/users/new").hasAuthority(Role.ADMIN.name())
+                                    .requestMatchers("/users/new").hasAuthority(Role.ADMIN.name())
                                     .anyRequest().permitAll();
-                        }
+                            }
                 )
                 .formLogin((form) -> form
                         .loginPage("/login")
