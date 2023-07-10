@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.web.bind.annotation.SessionAttributes;
+
 import java.util.List;
 
 @Data
@@ -27,5 +29,6 @@ public class Bucket {
     @JoinTable(name = "buckets_products",
             joinColumns = @JoinColumn(name = "bucket_id"),
             inverseJoinColumns = @JoinColumn(name = "products_id "))
+
     private List<Product> products;
 }

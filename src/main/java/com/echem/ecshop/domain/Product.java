@@ -15,13 +15,14 @@ import lombok.NoArgsConstructor;
 @Table(name="products")
 public class Product {
     private static final String SEQ_NAME = "product_seq";
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = SEQ_NAME)
     @SequenceGenerator(name = SEQ_NAME, sequenceName = SEQ_NAME, allocationSize = 1)
-    private long id;  // ID - не сіквенс
+    private long id;
 
-    private String title; // Назва
-    private BigDecimal price; //ціна
+    private String title;
+    private BigDecimal price;
     private String productDescription;
     private String photoUrl;
     private String producer;
