@@ -1,25 +1,55 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.w3.org/1999/xhtml">
-<head>
-  <meta charset="UTF-8">
-  <title>Наші продукти</title>
-</head>
-<body>
-<div th:insert="~{fragments/menu :: #nav-menu}"></div>
-<table border="1" align="center">
-  <tr>
-    <td>Назва товару</td>
-    <td>Ціна за одиницю</td>
-    <td></td>
-  </tr>
-  <tr th:each="product : ${products}">
-    <td th:text="${product.title}">Cheese</td>
-    <td th:text="${product.price}">12.0</td>
-    <td><a th:href="@{/products/{id}/bucket(id=${product.id})}">Додати до корзини</a></td>
-  </tr>
-</table>
+<html
+  lang="uk"
+  xmlns:th="http://www.w3.org/1999/xhtml"
+  xmlns:sec="http://www.w3.org/1999/xhtml"
+>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Наші продукти</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM"
+      crossorigin="anonymous"
+    />
+  </head>
+  <body>
+    <div th:insert="~{fragments/menu :: #nav-menu}"></div>
+    <div class="container text-center">
+      <img th:src="@{/images/header.jpg}" />
+    </div>
 
-</body>
+    <div class="card" style="width: 18rem" th:each="product : ${products}">
+      <img src="..." class="card-img-top" alt="зачекай" />
+      <div class="card-body">
+        <h5 class="card-title"><p th:text="${product.title}"></p></h5>
+        <p class="card-text" th:text="${product.description}">
+          Бациллол можна буде тут замовити
+        </p>
+        <a
+          th:href="@{/products/{id}/bucket(id=${product.id})}"
+          class="btn btn-primary"
+          >Додати до корзини</a
+        >
+      </div>
+    </div>
+
+    <table border="1" align="center">
+      <tr>
+        <td>Назва товару</td>
+        <td>Ціна за одиницю</td>
+        <td></td>
+      </tr>
+      <tr th:each="product : ${products}">
+        <td th:text="${product.title}">Cheese</td>
+        <td th:text="${product.price}">12.0</td>
+        <td>
+          <a th:href="@{/products/{id}/bucket(id=${product.id})}"
+            >Додати до корзини</a
+          >
+        </td>
+      </tr>
+    </table>
+  </body>
 </html>

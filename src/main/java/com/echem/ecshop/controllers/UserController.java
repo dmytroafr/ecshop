@@ -34,7 +34,7 @@ public class UserController {
 		 model.addAttribute ("user", new UserDTO());
 		 return "user";
 	}
-	@PreAuthorize("hasAuthority('ADMIN')")
+
 	@PostMapping("/new")
 	public String saveUser(UserDTO dto, Model model){
 		if (userService.save(dto)){

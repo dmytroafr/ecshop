@@ -1,24 +1,39 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:sec="http://www.w3.org/1999/xhtml">
-<head>
-  <meta charset="UTF-8">
-  <title>Login Page</title>
-</head>
-<body>
-<div th:insert="~{fragments/menu :: #nav-menu}"></div>
-<p th:if="${loginError}" class="error">Не вірне ім'я користувача або пароль</p>
-<form th:action="@{/auth}" method="post">
-  <table>
-    <tr>
-      <td>Name</td>
-      <td><input type="text" name="username"></td>
-    </tr>
-    <tr>
-      <td>Password</td>
-      <td><input type="password" name="password"></td>
-    </tr>
-    </table>
-    <button type="submit">Log in</button>
-  </form>
-</body>
+<html
+  lang="uk"
+  xmlns:th="http://www.w3.org/1999/xhtml"
+  xmlns:sec="http://www.w3.org/1999/xhtml"
+>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Login Page</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM"
+      crossorigin="anonymous"
+    />
+  </head>
+  <body>
+    <div th:insert="~{fragments/menu :: #nav-menu}"></div>
+    <div class="container text-center">
+      <img th:src="@{/images/header.jpg}" />
+    </div>
+    <p th:if="${loginError}" class="error">
+      Не вірне ім'я користувача або пароль
+    </p>
+    <form th:action="@{/auth}" method="post">
+      <table>
+        <tr>
+          <td>Name</td>
+          <td><input type="text" name="username" /></td>
+        </tr>
+        <tr>
+          <td>Password</td>
+          <td><input type="password" name="password" /></td>
+        </tr>
+      </table>
+      <button type="submit">Log in</button>
+    </form>
+  </body>
 </html>

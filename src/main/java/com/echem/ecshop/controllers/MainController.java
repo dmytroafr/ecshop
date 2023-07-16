@@ -49,4 +49,8 @@ public class MainController {
 		model.addAttribute("login-error", true);
 		return "login";
 	}
+	@RequestMapping ("/conditions")
+	public String contditions(){
+		return "conditions";
+	}
 }
