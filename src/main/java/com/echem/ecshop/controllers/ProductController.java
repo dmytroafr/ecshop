@@ -26,7 +26,6 @@ public class ProductController {
     }
     @GetMapping
     public String list (Model model){
-        sessionObjectHolder.addClicks();
         List<ProductDTO> list = productService.getAll();
         model.addAttribute("products", list);
         return "products";

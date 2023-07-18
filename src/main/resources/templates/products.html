@@ -13,27 +13,10 @@
       integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM"
       crossorigin="anonymous"
     />
-    <link
-      rel="apple-touch-icon"
-      sizes="180x180"
-      href="/images/apple-touch-icon.png"
-    />
-    <link
-      rel="icon"
-      type="image/png"
-      sizes="32x32"
-      href="/images/favicon-32x32.png"
-    />
-    <link
-      rel="icon"
-      type="image/png"
-      sizes="16x16"
-      href="/images/favicon-16x16.png"
-    />
-    <link rel="manifest" href="/site.webmanifest" />
   </head>
   <body>
     <div th:insert="~{fragments/menu :: #nav-menu}"></div>
+
     <div class="container">
       <img th:src="@{/images/header.jpg}" />
       <div>
@@ -61,32 +44,26 @@
             <p>+380 (95) 791 34 29</p>
           </div>
           <div class="col-sm-9">
-            <div class="row">
-              <div class="row">
-                <div
-                  class="card col-8 col-sm-6"
-                  style="width: 18rem"
-                  th:each="product : ${products}"
+            <div
+              class="card"
+              style="width: 18rem"
+              th:each="product : ${products}"
+            >
+              <img src="..." class="card-img-top" alt="..." />
+              <div class="card-body">
+                <h5 class="card-title" th:text="${product.title}">
+                  Card title
+                </h5>
+                <p class="card-text" th:text="${product.price}">Some</p>
+                <p class="card-text" th:text="${product.productDescription}">
+                  Some
+                </p>
+
+                <a
+                  th:href="@{/products/{id}/bucket(id=${product.id})}"
+                  class="btn btn-primary"
+                  >Go somewhere</a
                 >
-                  <img src="..." class="card-img-top" alt="зачекай" />
-                  <div class="card-body">
-                    <h5 class="card-title">
-                      <p th:text="${product.title}"></p>
-                    </h5>
-                    <p th:text="${product.price}" class="card-text"></p>
-                    <p
-                      class="card-text"
-                      th:text="${product.productDescription}"
-                    >
-                      Бациллол можна буде тут замовити
-                    </p>
-                    <a
-                      th:href="@{/products/{id}/bucket(id=${product.id})}"
-                      class="btn btn-primary"
-                      >Додати до корзини</a
-                    >
-                  </div>
-                </div>
               </div>
             </div>
           </div>

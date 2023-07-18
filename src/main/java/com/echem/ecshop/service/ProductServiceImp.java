@@ -26,9 +26,7 @@ public class ProductServiceImp implements ProductService{
     }
 
     @Override
-    public List<ProductDTO> getAll() {
-        return mapper.formProductList(productRepository.findAll());
-    }
+    public List<ProductDTO> getAll() {return mapper.fromProductList(productRepository.findAll());}
 
     @Override
     public void addToUserBucket(Long productId, String username) {
