@@ -17,10 +17,12 @@ import java.util.List;
 public class Bucket {
 
     private static final String SEQ_NAME = "bucket_seq";
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = SEQ_NAME)
     @SequenceGenerator(name = SEQ_NAME, sequenceName = SEQ_NAME, allocationSize = 1)
     private long id;
+
     @OneToOne
     @JoinColumn(name = "user_id")
     private User user;
@@ -29,6 +31,5 @@ public class Bucket {
     @JoinTable(name = "buckets_products",
             joinColumns = @JoinColumn(name = "bucket_id"),
             inverseJoinColumns = @JoinColumn(name = "products_id "))
-
     private List<Product> products;
 }

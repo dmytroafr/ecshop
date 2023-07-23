@@ -33,6 +33,7 @@ public class ProductController {
     @GetMapping("/{id}/bucket")
     public String addBucket(@PathVariable Long id, Principal principal){
         sessionObjectHolder.addClicks();
+
         if (principal==null){
             return "redirect:/products";
         }

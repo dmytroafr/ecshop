@@ -23,10 +23,14 @@ public class Product {
 
     private String title;
     private BigDecimal price;
+    private BigDecimal optPrice;
     private String productDescription;
     private String photoUrl;
     private String producer;
     private String countryProducer;
+
+    @Enumerated(EnumType.STRING)
+    private OnStock onStock;
 
 
     @ManyToMany(cascade = CascadeType.ALL)

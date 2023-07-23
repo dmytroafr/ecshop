@@ -27,12 +27,17 @@ public class Order {
     @UpdateTimestamp
     private LocalDateTime updated;
 
+
+    private LocalDateTime closed;
+
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 
     private BigDecimal sum;
-    private String address;
+
+
+
 
     @OneToMany(cascade = CascadeType.ALL)
     private List<OrderDetails> details;
