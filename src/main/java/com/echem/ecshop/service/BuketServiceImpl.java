@@ -38,7 +38,7 @@ public class BuketServiceImpl implements BucketService{
         bucket.setProducts(productList);
         return bucketRepository.save(bucket);
     }
-    List<Product> getCollectRefProductsById(List<Long> productIds){
+    public List<Product> getCollectRefProductsById(List<Long> productIds){
         return productIds.stream()
                 .map(productRepository::getOne)
                 .collect(Collectors.toList());
@@ -59,7 +59,7 @@ public class BuketServiceImpl implements BucketService{
             return new BucketDTO();
         }
         BucketDTO bucketDTO = new BucketDTO();
-        Map<Long, BucketDetailDTO> mapByProductId = new HashMap<>();
+        Map <Long, BucketDetailDTO> mapByProductId = new HashMap<>();
         List<Product> products = user.getBucket().getProducts();
         for (Product product: products){
             BucketDetailDTO detail = mapByProductId.get(product.getId());

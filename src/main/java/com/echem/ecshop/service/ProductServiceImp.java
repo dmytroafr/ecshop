@@ -2,10 +2,12 @@ package com.echem.ecshop.service;
 
 import com.echem.ecshop.dao.ProductRepository;
 import com.echem.ecshop.domain.Bucket;
+import com.echem.ecshop.domain.Product;
 import com.echem.ecshop.domain.User;
 import com.echem.ecshop.dto.ProductDTO;
 import com.echem.ecshop.mapper.ProductMapper;
-import org.aspectj.weaver.IClassFileProvider;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
@@ -18,15 +20,27 @@ public class ProductServiceImp implements ProductService{
     private final ProductRepository productRepository;
     private final UserService userService;
     private final BucketService bucketService;
+    private static final Logger logger = LoggerFactory.getLogger(ProductServiceImp.class);
 
-    public ProductServiceImp(ProductRepository productRepository, UserService userService, BucketService bucketService) {
+    public ProductServiceImp (ProductRepository productRepository, UserService userService, BucketService bucketService) {
         this.productRepository = productRepository;
         this.userService = userService;
         this.bucketService = bucketService;
     }
 
     @Override
-    public List<ProductDTO> getAll() {return mapper.fromProductList(productRepository.findAll());}
+    public List<ProductDTO> getAll() {
+        List<Product> productList = productRepository.findAll();
+        logger.info("productList" + productList);
+        List<ProductDTO> productDTOList = mapper.fromProductList(productList);
+        logger.info("ProductDTO List: {}", productDTOList);
+        return productDTOList;
+    }
+
+
+
+
+
 
     @Override
     public void addToUserBucket(Long productId, String username) {

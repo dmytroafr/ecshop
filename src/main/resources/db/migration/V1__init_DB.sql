@@ -33,11 +33,11 @@ create table buckets (id bigint not null, user_id bigint unique, primary key (id
 create table buckets_products (bucket_id bigint not null, products_id bigint not null);
 create table categories (id bigint not null, title varchar(255), primary key (id));
 create table order_details (amount numeric(38,2), price numeric(38,2), id bigint not null, order_id bigint, product_id bigint, primary key (id));
-create table orders (sum numeric(38,2), created timestamp(6), id bigint not null, updated timestamp(6), user_id bigint, address varchar(255), status varchar(255) check (status in ('NEW','APPROVED','CANCELLED','PAID','CLOSED')), primary key (id));
+create table orders (sum numeric(38,2), closed timestamp(6), created timestamp(6), id bigint not null, updated timestamp(6), user_id bigint, status varchar(255) check (status in ('NEW','APPROVED','CANCELLED','PAID','CLOSED')), primary key (id));
 create table orders_details (details_id bigint not null unique, order_id bigint not null);
-create table products (price numeric(38,2), id bigint not null, country_producer varchar(255), photo_url varchar(255), producer varchar(255), product_description varchar(255), title varchar(255), primary key (id));
+create table products (opt_price numeric(38,2), price numeric(38,2), id bigint not null, country_producer varchar(255), on_stock varchar(255) check (on_stock in ('ON_STOCK','AVAILABLE','WAITING','ABSENT')), photo_url varchar(255), producer varchar(255), product_description varchar(255), title varchar(255), primary key (id));
 create table products_categories (category_id bigint not null, product_id bigint not null);
-create table users (archive boolean not null, id bigint not null, email varchar(255), name varchar(255), password varchar(255), phone varchar(255), role varchar(255) check (role in ('CLIENT','ADMIN','MANAGER')), primary key (id));
+create table users (archive boolean not null, id bigint not null, email varchar(255), extra_phone varchar(255), name varchar(255), password varchar(255), phone varchar(255), role varchar(255) check (role in ('CLIENT','ADMIN','MANAGER')), primary key (id));
 alter table if exists buckets add constraint FKnl0ltaj67xhydcrfbq8401nvj foreign key (user_id) references users;
 alter table if exists buckets_products add constraint FKl4aj2nxk7wbu3s95bc0wq1elx foreign key (products_id) references products;
 alter table if exists buckets_products add constraint FKc49ah45o66gy2f2f4c3os3149 foreign key (bucket_id) references buckets;
