@@ -36,5 +36,5 @@ out/
 ### VS Code ###
 .vscode/
 
-V2__add_admin.sql
+src/main/resources/db.migration/V2__add_admin.sql
 
