@@ -10,4 +10,4 @@ VALUES  (1,'AVAILABLE',205.0,1.0,'Skinman soft 1l','Germany','http','Vilan','For
         (9,'AVAILABLE',195.0,1.0,'Aniospray 1l','Germany','http','Vilan','For disinfection'),
         (10,'AVAILABLE',260.0,1.0,'Aniosgel 1l','Germany','http','Vilan','For disinfection');
 
-ALTER SEQUENCE product_seq RESTART WITH 6;
+ALTER SEQUENCE product_seq RESTART WITH 11;
