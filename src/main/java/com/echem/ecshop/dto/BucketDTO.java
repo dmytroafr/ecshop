@@ -22,6 +22,5 @@ public class BucketDTO {
                 .map(BucketDetailDTO::getSum)
                 .mapToDouble(Double::doubleValue)
                 .sum();
-
     }
 }

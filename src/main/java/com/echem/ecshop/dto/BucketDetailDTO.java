@@ -29,8 +29,6 @@ public class BucketDetailDTO {
     private OnStock onStock;
     @Singular
     private List<Category> categories;
-
-
     public BucketDetailDTO(Product product) {
         this.title = product.getTitle();
         this.productId = product.getId();
@@ -43,8 +41,5 @@ public class BucketDetailDTO {
         this.countryProducer = product.getCountryProducer();
         this.onStock = product.getOnStock();
         this.categories = product.getCategories();
-
     }
-
-
 }

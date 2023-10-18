@@ -20,7 +20,7 @@ public class ProductServiceImp implements ProductService{
     private final ProductRepository productRepository;
     private final UserService userService;
     private final BucketService bucketService;
-    private static final Logger logger = LoggerFactory.getLogger(ProductServiceImp.class);
+    static final Logger logger = LoggerFactory.getLogger(ProductServiceImp.class);
 
     public ProductServiceImp (ProductRepository productRepository, UserService userService, BucketService bucketService) {
         this.productRepository = productRepository;
