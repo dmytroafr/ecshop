@@ -18,7 +18,6 @@ import java.util.Objects;
 @RequestMapping("/users")
 public class UserController {
     private final UserService userService;
-    private final Logger logger = LogManager.getLogger(UserController.class);
     @Autowired
     public UserController(UserService userService) {
         this.userService = userService;
@@ -30,18 +29,13 @@ public class UserController {
     }
     @GetMapping("/new")
     public String newUser(Model model){
-        logger.info("Отримали запит на /new і перевели на user.html");
-
         model.addAttribute ("user", new UserDTO());
-
         return "user";
     }
 
     @PostMapping("/new")
     public String saveUser(UserDTO dto, Model model){
-
         if (userService.save(dto)){
-
             return "redirect:/users";
 
         } else {

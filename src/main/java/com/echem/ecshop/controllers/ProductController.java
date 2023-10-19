@@ -19,18 +19,12 @@ import java.util.List;
 public class ProductController {
     private final ProductService productService;
     private final SessionObjectHolder sessionObjectHolder;
-    private static final Logger logger = LogManager.getLogger(ProductController.class);
     public ProductController(ProductService productService, SessionObjectHolder sessionObjectHolder) {
         this.productService = productService;
         this.sessionObjectHolder = sessionObjectHolder;
     }
     @GetMapping
     public String list (Model model){
-        logger.trace("trace product controller");
-        logger.debug("trace product controller");
-        logger.info("trace product controller");
-        logger.warn("trace product controller");
-        logger.error("trace product controller");
         List<ProductDTO> list = productService.getAll();
         model.addAttribute("products", list);
         return "products";

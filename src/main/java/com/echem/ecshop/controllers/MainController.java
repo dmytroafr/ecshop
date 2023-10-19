@@ -5,8 +5,6 @@ import com.echem.ecshop.dto.ProductDTO;
 import com.echem.ecshop.service.CurrencyService;
 import com.echem.ecshop.service.ProductService;
 import jakarta.servlet.http.HttpSession;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,7 +20,6 @@ public class MainController {
     private final ProductService productService;
     private final CurrencyService currencyService;
 
-    private static final Logger logger = LogManager.getLogger(MainController.class);
     public MainController(ProductService productService,CurrencyService currencyService) {
         this.productService = productService;
         this.currencyService = currencyService;
@@ -30,9 +27,6 @@ public class MainController {
 
     @RequestMapping({"","/"})
     public String index (Model model, HttpSession httpSession){
-        logger.trace("тестуємо trace");
-        logger.debug("request to /");
-        logger.error("Алярм");
         String apiUrl = "https://v6.exchangerate-api.com/v6/3f905d8e5983cbdbe2a6bc4e/latest/USD";
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<String> response = restTemplate.getForEntity(apiUrl, String.class);
@@ -53,32 +47,26 @@ public class MainController {
 
     @RequestMapping ("/login")
     public String login(){
-        logger.debug("Зайшли на сторінку логін");
         return "login";
     }
 
     @RequestMapping("/login-error") //щоб користувач потрапив на 404-page
     public String loginError(Model model) {
-
         model.addAttribute("login-error", true);
         return "login";
     }
     @RequestMapping ("/conditions")
 
     public String contditions(){
-        logger.info("заходим сюди");
         return "conditions";
     }
 
     @RequestMapping("/about")
     public String about(){
-        logger.info("request to /about");
-        logger.debug("dddfs");
         return "about";};
 
     @RequestMapping("/contacts")
     public String contacts(){
-        logger.debug("request to /contacts");
 
         return "contacts";};
 }

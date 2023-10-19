@@ -7,8 +7,6 @@ import com.echem.ecshop.domain.Product;
 import com.echem.ecshop.domain.User;
 import com.echem.ecshop.dto.ProductDTO;
 import com.echem.ecshop.mapper.ProductMapper;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
@@ -21,7 +19,6 @@ public class ProductServiceImp implements ProductService{
     private final ProductRepository productRepository;
     private final UserService userService;
     private final BucketService bucketService;
-    static final Logger logger = LogManager.getLogger(ProductServiceImp.class);
 
     public ProductServiceImp (ProductRepository productRepository, UserService userService, BucketService bucketService) {
         this.productRepository = productRepository;
@@ -32,9 +29,7 @@ public class ProductServiceImp implements ProductService{
     @Override
     public List<ProductDTO> getAll() {
         List<Product> productList = productRepository.findAll();
-        logger.info("productList" + productList);
         List<ProductDTO> productDTOList = mapper.fromProductList(productList);
-        logger.info("ProductDTO List: {}", productDTOList);
         return productDTOList;
     }
 
