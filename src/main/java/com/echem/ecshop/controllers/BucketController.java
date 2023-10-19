@@ -12,7 +12,7 @@ import java.security.Principal;
 public class BucketController {
     private final BucketService bucketService;
     public BucketController(BucketService bucketService){
-    this.bucketService = bucketService;
+        this.bucketService = bucketService;
     }
     @GetMapping("/bucket")
     public String aboutBucket(Model model, Principal principal){

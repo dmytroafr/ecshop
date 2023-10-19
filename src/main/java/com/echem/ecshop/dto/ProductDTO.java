@@ -2,8 +2,11 @@ package com.echem.ecshop.dto;
 
 import com.echem.ecshop.domain.Category;
 import com.echem.ecshop.domain.OnStock;
-import jakarta.persistence.*;
-import lombok.*;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.Singular;
 
 import java.math.BigDecimal;
 import java.util.List;

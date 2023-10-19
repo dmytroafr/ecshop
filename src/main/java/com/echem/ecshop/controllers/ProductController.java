@@ -3,7 +3,8 @@ package com.echem.ecshop.controllers;
 import com.echem.ecshop.dto.ProductDTO;
 import com.echem.ecshop.service.ProductService;
 import com.echem.ecshop.service.SessionObjectHolder;
-import lombok.extern.slf4j.XSlf4j;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,19 +14,23 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import java.security.Principal;
 import java.util.List;
 
-
 @Controller
 @RequestMapping("/products")
 public class ProductController {
     private final ProductService productService;
     private final SessionObjectHolder sessionObjectHolder;
-
+    private static final Logger logger = LogManager.getLogger(ProductController.class);
     public ProductController(ProductService productService, SessionObjectHolder sessionObjectHolder) {
         this.productService = productService;
         this.sessionObjectHolder = sessionObjectHolder;
     }
     @GetMapping
     public String list (Model model){
+        logger.trace("trace product controller");
+        logger.debug("trace product controller");
+        logger.info("trace product controller");
+        logger.warn("trace product controller");
+        logger.error("trace product controller");
         List<ProductDTO> list = productService.getAll();
         model.addAttribute("products", list);
         return "products";

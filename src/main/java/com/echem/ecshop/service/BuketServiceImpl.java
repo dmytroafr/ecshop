@@ -7,14 +7,11 @@ import com.echem.ecshop.domain.Product;
 import com.echem.ecshop.domain.User;
 import com.echem.ecshop.dto.BucketDTO;
 import com.echem.ecshop.dto.BucketDetailDTO;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -40,7 +37,8 @@ public class BuketServiceImpl implements BucketService{
     }
     public List<Product> getCollectRefProductsById(List<Long> productIds){
         return productIds.stream()
-                .map(productRepository::getOne)
+                .map(productRepository::findById)
+                .map(Optional::get)
                 .collect(Collectors.toList());
     }
 
@@ -59,7 +57,7 @@ public class BuketServiceImpl implements BucketService{
             return new BucketDTO();
         }
         BucketDTO bucketDTO = new BucketDTO();
-        Map <Long, BucketDetailDTO> mapByProductId = new HashMap<>();
+        Map<Long, BucketDetailDTO> mapByProductId = new HashMap<>();
         List<Product> products = user.getBucket().getProducts();
         for (Product product: products){
             BucketDetailDTO detail = mapByProductId.get(product.getId());
