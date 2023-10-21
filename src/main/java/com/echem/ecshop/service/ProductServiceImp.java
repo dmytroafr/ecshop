@@ -29,8 +29,7 @@ public class ProductServiceImp implements ProductService{
     @Override
     public List<ProductDTO> getAll() {
         List<Product> productList = productRepository.findAll();
-        List<ProductDTO> productDTOList = mapper.fromProductList(productList);
-        return productDTOList;
+        return mapper.fromProductList(productList);
     }
 
 

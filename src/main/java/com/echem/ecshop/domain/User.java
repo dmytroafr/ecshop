@@ -24,12 +24,8 @@ public class User {
     private String phone;
     private String extra_phone;
     private boolean archive;
-
     @Enumerated(EnumType.STRING)
     private Role role;
-
     @OneToOne(mappedBy = "user", cascade = CascadeType.REMOVE)
     private Bucket bucket;
-
-
 }

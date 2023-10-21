@@ -27,6 +27,7 @@ public class UserServiceImpl implements UserService{
 	}
 	@Override
 	public boolean save(UserDTO userDTO) {
+
 		if (!Objects.equals(userDTO.getPassword(), userDTO.getMatchingPassword())) {
 			throw new RuntimeException("Passwords not equal");
 		}
@@ -41,6 +42,10 @@ public class UserServiceImpl implements UserService{
 	}
 	@Override
 	public void save(User user) {
+		if (user==null){
+			throw new RuntimeException("user is null");
+		}
+
 		userRepository.save(user);
 	}
 
@@ -48,7 +53,7 @@ public class UserServiceImpl implements UserService{
 	public List<UserDTO> getAll() {
 		return userRepository.findAll().stream()
 				.map(this::toDto)
-				.collect(Collectors.toList());
+				.toList();
 	}
 
 	@Override
@@ -58,12 +63,13 @@ public class UserServiceImpl implements UserService{
 			throw new UsernameNotFoundException("User not found with name" + username);
 		}
 		List<GrantedAuthority> roles = new ArrayList<>();
+
 		roles.add(new SimpleGrantedAuthority(user.getRole().name()));
+
 		return new org.springframework.security.core.userdetails.User(
 				user.getName(),
 				user.getPassword(),
-				roles
-		);
+				roles);
 	}
 	public UserDTO toDto (User user){
 		return UserDTO.builder()

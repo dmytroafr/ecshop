@@ -18,12 +18,10 @@ import java.util.List;
 public class Product {
 
     private static final String SEQ_NAME = "product_seq";
-
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = SEQ_NAME)
     @SequenceGenerator(name = SEQ_NAME, sequenceName = SEQ_NAME, allocationSize = 1)
     private Long id;
-
     private String title;
     private BigDecimal price;
     private BigDecimal optPrice;
@@ -31,11 +29,8 @@ public class Product {
     private String photoUrl;
     private String producer;
     private String countryProducer;
-
     @Enumerated(EnumType.STRING)
     private OnStock onStock;
-
-
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "products_categories",
             joinColumns = @JoinColumn(name = "product_id"),

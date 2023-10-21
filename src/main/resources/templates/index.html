@@ -1,8 +1,5 @@
 <!DOCTYPE html>
-<html
-  lang="uk"
-  xmlns:th="http://www.w3.org/1999/xhtml"
->
+<html lang="uk" xmlns:th="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -36,14 +33,10 @@
 
   <body>
     <div th:insert="~{fragments/menu :: #nav-menu}"></div>
+
     <div class="container">
       <img th:src="@{/images/header.jpg}" />
-      <div>
-        <div>
-
-          <div th:text="${currency}" ></div>
-
-
+      <div th:text="${currency}"></div>
       <div class="container text-center">
         <div class="row">
           <div class="col-sm-3">
@@ -60,9 +53,9 @@
           </div>
           <div class="col-sm-9">
             <div
-                    class="card"
-                    style="width: 18rem"
-                    th:each="product : ${products}"
+              class="card"
+              style="width: 18rem"
+              th:each="product:${products}"
             >
               <img src="..." class="card-img-top" alt="..." />
               <div class="card-body">
@@ -73,11 +66,10 @@
                 <p class="card-text" th:text="${product.productDescription}">
                   Some
                 </p>
-
                 <a
-                        th:href="@{/products/{id}/bucket(id=${product.id})}"
-                        class="btn btn-primary"
-                >Go somewhere</a
+                  th:href="@{/products/{id}/bucket(id=${product.id})}"
+                  class="btn btn-primary"
+                  >Go somewhere</a
                 >
               </div>
             </div>
