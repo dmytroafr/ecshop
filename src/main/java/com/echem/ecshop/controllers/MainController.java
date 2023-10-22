@@ -11,7 +11,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.List;
 import java.util.UUID;
 
 @Controller
@@ -27,6 +26,7 @@ public class MainController {
 
     @RequestMapping({"","/"})
     public String index (Model model, HttpSession httpSession){
+
         String apiUrl = "https://v6.exchangerate-api.com/v6/3f905d8e5983cbdbe2a6bc4e/latest/USD";
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<String> response = restTemplate.getForEntity(apiUrl, String.class);
@@ -35,13 +35,8 @@ public class MainController {
         if (httpSession.getAttribute("myID") == null){
             String uuid = UUID.randomUUID().toString();
             httpSession.setAttribute("myID", uuid);
-            System.out.println("Generated UUID ->"+uuid);
         }
-
-        List<ProductDTO> list = productService.getAll();
-        model.addAttribute("products", list);
         model.addAttribute("uuid", httpSession.getAttribute("myID"));
-
         return "index";
     }
 
@@ -50,23 +45,23 @@ public class MainController {
         return "login";
     }
 
-    @RequestMapping("/login-error") //щоб користувач потрапив на 404-page
+    @RequestMapping("/login-error")
     public String loginError(Model model) {
-        model.addAttribute("login-error", true);
-        return "login";
+        model.addAttribute("loginError", true);
+        return "error";
     }
     @RequestMapping ("/conditions")
-
-    public String contditions(){
+    public String conditions(){
         return "conditions";
     }
 
     @RequestMapping("/about")
     public String about(){
-        return "about";};
+        return "about";
+    }
 
     @RequestMapping("/contacts")
     public String contacts(){
-
-        return "contacts";};
+        return "contacts";
+    }
 }

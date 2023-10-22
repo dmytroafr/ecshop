@@ -21,19 +21,17 @@ public class WebSecurityConfig {
 
     @Bean
     protected SecurityFilterChain securityFilterChain (HttpSecurity http) throws Exception {
-        http
-                .authorizeHttpRequests((requests) -> {
-                            requests
-                                    .requestMatchers("/users").hasAnyAuthority(Role.ADMIN.name(), Role.MANAGER.name())
-                                    .anyRequest().permitAll();
-                        }
-                )
+        http.authorizeHttpRequests(
+                (requests) -> requests
+                        .requestMatchers("/users")
+                            .hasAnyAuthority(Role.ADMIN.name(), Role.MANAGER.name())
+                            .anyRequest()
+                            .permitAll())
                 .formLogin((form) -> form
                         .loginPage("/login")
                         .permitAll()
                         .failureUrl("/login-error")
                         .loginProcessingUrl("/auth")
-                        .permitAll()
                 )
                 .logout((logout) -> logout.logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
                         .logoutSuccessUrl("/").deleteCookies("JSESSIONID")

@@ -3,8 +3,6 @@ package com.echem.ecshop.controllers;
 import com.echem.ecshop.domain.User;
 import com.echem.ecshop.dto.UserDTO;
 import com.echem.ecshop.service.UserService;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.stereotype.Controller;
@@ -25,7 +23,7 @@ public class UserController {
     @GetMapping
     public String userList (Model model){
         model.addAttribute("users", userService.getAll());
-        return "userlist";
+        return "userList";
     }
     @GetMapping("/new")
     public String newUser(Model model){
@@ -68,16 +66,20 @@ public class UserController {
     }
     @PostMapping("/profile")
     public String updateProfileUser (UserDTO dto, Model model, Principal principal){
-        if (principal == null || Objects.equals(principal.getName(),dto.getUsername())){
+
+        if (principal == null || !Objects.equals(principal.getName(),dto.getUsername())){
             throw new RuntimeException("Але ж Ви не авторизовані");
         }
-        if (dto.getPassword() != null
-                && !dto.getPassword().isEmpty()
-                && !Objects.equals(dto.getPassword(),dto.getMatchingPassword())){
+        model.addAttribute("pasMatch",true);
+        model.addAttribute("haveChanged",false);
+
+        if (Objects.equals(dto.getPassword(),dto.getMatchingPassword())){
             model.addAttribute("user",dto);
+            model.addAttribute("haveChanged",true);
+            userService.updateProfile(dto);
             return "profile";
         }
-        userService.updateProfile(dto);
-        return "redirect:users/profile";
+        model.addAttribute("pasMatch",false);
+        return "profile";
     }
 }

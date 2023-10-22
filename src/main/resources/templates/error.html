@@ -1,65 +1,85 @@
 <!DOCTYPE html>
-<html
-  lang="uk"
-  xmlns:th="http://www.w3.org/1999/xhtml"
-  xmlns:sec="http://www.w3.org/1999/xhtml"
->
-  <head>
-    <meta charset="UTF-8" />
-    <title>Error page 500</title>
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-      integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM"
-      crossorigin="anonymous"
-    />
-    <link
-      rel="apple-touch-icon"
-      sizes="180x180"
-      href="/images/apple-touch-icon.png"
-    />
-    <link
-      rel="icon"
-      type="image/png"
-      sizes="32x32"
-      href="/images/favicon-32x32.png"
-    />
-    <link
-      rel="icon"
-      type="image/png"
-      sizes="16x16"
-      href="/images/favicon-16x16.png"
-    />
-    <link rel="manifest" href="/site.webmanifest" />
-  </head>
-  <body>
-    <div th:insert="~{fragments/menu :: #nav-menu}"></div>
-    <div class="container">
-      <img th:src="@{/images/header.jpg}" />
+<html lang="uk" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" type="text/css" th:href="@{/css/styles.css}" />
+  <title>Екохім</title>
+  <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM"
+          crossorigin="anonymous"
+  />
 
-      <div class="container text-center">
-        <div class="row">
-          <div class="col-sm-3">
-            <p>ТОВ "Екохім Розвиток"</p>
-            <p>+380 (95) 791-34-29</p>
-            <p>Продажі</p>
-            <p>+380 (44) 334-59-40</p>
-            <p>Офіс</p>
-            <p>Дмитро</p>
-            <p>02092, вул. Алматинська, 8, оф 103, Київ, Україна</p>
-            <p>office@e-chem.com.ua</p>
-            <p>+380 (95) 791 34 29</p>
-            <p>+380 (95) 791 34 29</p>
-          </div>
-          <div class="col-sm-9">
-            <div class="row">
-              <div class="container text-center">
-                <img th:src="@{/images/header.jpg}" />
-              </div>
+  <link rel="manifest" href="/site.webmanifest" />
+</head>
+
+<body>
+<div th:insert="~{fragments/menu :: #nav-menu}"></div>
+
+<div class="container text-center">
+  <img th:src="@{/images/header.jpg}" class="img-fluid" />
+</div>
+<div class="container">
+  <div th:text="${currency}" class="row"></div>
+  <div class="row">
+    <div class="col-sm-3">
+      <p>ТОВ "Екохім Розвиток"</p>
+      <p>+380 (95) 791-34-29</p>
+      <p>Продажі</p>
+      <p>+380 (44) 334-59-40</p>
+      <p>Офіс</p>
+      <p>Дмитро</p>
+      <p>02092, вул. Алматинська, 8, оф 103, Київ, Україна</p>
+      <p>office@e-chem.com.ua</p>
+      <p>+380 (95) 791 34 29</p>
+      <p>+380 (95) 791 34 29</p>
+    </div>
+    <div class="col-sm-9">
+      <div class="row">
+
+        <form th:action="@{/auth}" method="post">
+
+          <div class="row mb-3">
+            <label for="userName" class="col-sm-2 col-form-label"
+            >Ім'я</label
+            >
+            <div class="col-sm-3">
+              <input type="text" class="form-control" name="username" id="userName"/>
             </div>
           </div>
-        </div>
+
+          <div class="row mb-3">
+            <label for="inputPassword" class="col-sm-2 col-form-label"
+            >Password</label
+            >
+            <div class="col-sm-3">
+              <input
+                      type="password"
+                      class="form-control"
+                      id="inputPassword"
+                      name="password"
+              />
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-primary">Увійти</button>
+
+        </form>
+
+
       </div>
+      <p th:if="${loginError}" >
+        Не вірне ім'я користувача або пароль
+      </p>
     </div>
-  </body>
+  </div>
+</div>
+<script
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+        crossorigin="anonymous"
+></script>
+</body>
 </html>
