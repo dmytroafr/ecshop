@@ -4,32 +4,26 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 @Service
 public class CurrencyServiceImpl implements CurrencyService{
 
-	Map<String,Double> currencyMap = new HashMap<>();
 
 	public Map<String,Double> toMap (ResponseEntity<String> response){
-
-//		Stream.of(response).spliterator()
-
 		Pattern pattern = Pattern.compile("\"[A-Z]{3}\":[0-9]+.[0-9]+");
 		Matcher matcher = pattern.matcher(response.toString());
-		ArrayList<String> currencylist = new ArrayList<>();
+		ArrayList<String> currencyList = new ArrayList<>();
 
 		while (matcher.find()){
-			currencylist.add(matcher.group());
+			currencyList.add(matcher.group());
 		}
-		for (int i = 0; i < currencylist.size(); i++) {
-			this.currencyMap.put(currencylist.get(i).substring(1,4),Double.parseDouble(currencylist.get(i).substring(6)));
-		}
-		return this.currencyMap;
-	};
+		return currencyList.stream()
+				.collect(Collectors.toMap(s -> s.substring(1,4),s -> Double.parseDouble(s.substring(6))));
+	}
 
 
 	@Override

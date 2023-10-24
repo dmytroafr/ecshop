@@ -20,4 +20,4 @@ logging:
     file: "%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"
     console: "%d{HH:mm:ss.SSS} [%t] %clr(%-5level) %logger{36} - %msg%n"
   level:
-    root: INFO
+    root: WARN
