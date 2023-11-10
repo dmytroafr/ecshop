@@ -35,7 +35,6 @@ public class UserController {
     public String saveUser(UserDTO dto, Model model){
         if (userService.save(dto)){
             return "redirect:/users";
-
         } else {
             model.addAttribute("user", dto);
             return "user";

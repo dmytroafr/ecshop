@@ -30,7 +30,7 @@ public class MainController {
         String apiUrl = "https://v6.exchangerate-api.com/v6/3f905d8e5983cbdbe2a6bc4e/latest/USD";
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<String> response = restTemplate.getForEntity(apiUrl, String.class);
-        String rate = currencyService.getEUR(currencyService.toMap(response));
+        String rate = currencyService.getUAH(currencyService.toMap(response));
         model.addAttribute("currency", rate);
 
         if (httpSession.getAttribute("myID") == null){

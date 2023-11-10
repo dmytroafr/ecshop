@@ -3,8 +3,6 @@ package com.echem.ecshop.controllers;
 import com.echem.ecshop.dto.ProductDTO;
 import com.echem.ecshop.service.ProductService;
 import com.echem.ecshop.service.SessionObjectHolder;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,10 +29,8 @@ public class ProductController {
     }
     @GetMapping("/{id}/bucket")
     public String addBucket(@PathVariable Long id, Principal principal){
-        sessionObjectHolder.addClicks();
-
         if (principal==null){
-            return "redirect:/products";
+            return "redirect:/login";
         }
         productService.addToUserBucket(id, principal.getName());
         return "redirect:/products";

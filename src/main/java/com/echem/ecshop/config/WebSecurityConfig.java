@@ -8,11 +8,16 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.csrf.CsrfAuthenticationStrategy;
+import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
+import org.springframework.security.web.csrf.XorCsrfTokenRequestAttributeHandler;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 @EnableWebSecurity()
 public class WebSecurityConfig {
+
+
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -21,23 +26,29 @@ public class WebSecurityConfig {
 
     @Bean
     protected SecurityFilterChain securityFilterChain (HttpSecurity http) throws Exception {
-        http.authorizeHttpRequests(
+        return http.authorizeHttpRequests(
                 (requests) -> requests
                         .requestMatchers("/users")
-                            .hasAnyAuthority(Role.ADMIN.name(), Role.MANAGER.name())
-                            .anyRequest()
-                            .permitAll())
+                        .hasAnyAuthority(Role.ADMIN.name(), Role.MANAGER.name())
+                        .anyRequest()
+                        .permitAll())
+
                 .formLogin((form) -> form
                         .loginPage("/login")
                         .permitAll()
                         .failureUrl("/login-error")
                         .loginProcessingUrl("/auth")
                 )
+
                 .logout((logout) -> logout.logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
                         .logoutSuccessUrl("/").deleteCookies("JSESSIONID")
                         .invalidateHttpSession(true)
                 )
-                .csrf((csrf) -> csrf.disable());
-        return http.build();
+
+                .csrf((csrf) -> csrf
+                        .csrfTokenRequestHandler(new XorCsrfTokenRequestAttributeHandler())
+                        .csrfTokenRepository(new HttpSessionCsrfTokenRepository()))
+
+        .build();
     }
 }

@@ -35,11 +35,13 @@ public class ProductServiceImp implements ProductService{
 
     @Override
     public void addToUserBucket(Long productId, String username) {
+
         User user = userService.findByName(username);
         if (user == null){
             throw new  RuntimeException("Не знайден користувач з ім'ям "+username);
         }
         Bucket bucket = user.getBucket();
+
         if (bucket == null){
             Bucket newBucket = bucketService.createBucket(user, Collections.singletonList(productId));
             user.setBucket(newBucket);

@@ -68,7 +68,16 @@
                   <td th:text="${detail.amount}">2</td>
                   <td th:text="${detail.price}">11</td>
                   <td th:text="${detail.sum}">22</td>
-                  <td><a href="#">Видалити</a></td>
+                  <td>
+                    <form th:href="@{/bucket/{productId}(productId=${detail.productId})}" method="post">
+                      <input type="hidden" name="_method" value="DELETE">
+                      <button type="submit" onclick="return confirm('Ви впевнені?')">Видалити</button>
+                    </form>
+                    <a
+                            th:href="@{/bucket/{productId}(productId=${detail.productId})}"
+                            class="btn btn-primary"
+                    >Видалити</a>
+                  </td>
                 </tr>
               </table>
             </div>
