@@ -18,7 +18,7 @@
 <body class="bg-body-tertiary">
 <div th:insert="~{fragments/menu :: #nav-menu}"></div>
 
-<div class="container text-center">
+<div class="text-center">
   <img th:src="@{/images/header.jpg}" class="img-fluid" />
 </div>
 <nav class="navbar navbar-expand-lg bg-body-tertiary">
@@ -52,10 +52,9 @@
     </div>
   </div>
 </nav>
-<div class="container">
-  <div th:text="${currency}" class="row"></div>
-  <div class="row">
-    <div>
+
+<div class="container row" id = "firstBobble">
+    <div class="col-2">
       <p>ТОВ "Екохім Розвиток"</p>
       <p>+380 (95) 791-34-29</p>
       <p>Продажі</p>
@@ -67,7 +66,7 @@
       <p>+380 (95) 791 34 29</p>
       <p>+380 (95) 791 34 29</p>
     </div>
-    <div class="col-sm-9">
+  <div class="col-10 container-fluid">
       <div class="row">
         <div
                 class="card"
@@ -95,7 +94,6 @@
           </div>
         </div>
       </div>
-    </div>
   </div>
 </div>
 <script

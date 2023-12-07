@@ -5,14 +5,15 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.util.Map;
+
 @SpringBootApplication
 public class EcshopApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(EcshopApplication.class, args);
-//		ConfigurableApplicationContext context = SpringApplication.run(EcshopApplication.class, args);
-//		PasswordEncoder encoder = context.getBean(PasswordEncoder.class);
-//		System.out.println(encoder.encode("pass"));
-
+		System.out.println("Ready to explore");
+//		Map<String,String> env = System.getenv();
+//		env.forEach((s, s2) -> System.out.println("key: " + s + "| value: " + s2));
 	}
 
 

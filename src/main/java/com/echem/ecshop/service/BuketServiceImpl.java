@@ -25,7 +25,6 @@ public class BuketServiceImpl implements BucketService{
         this.productRepository = productRepository;
         this.userService = userService;
     }
-// Переписати ці два методи, не розумію навіщо другий метод, якщо ми додаємо завжди товар по одному
     @Override
     @Transactional
     public Bucket createBucket(User user, List<Long> productIds) {
@@ -53,44 +52,29 @@ public class BuketServiceImpl implements BucketService{
         bucketRepository.save(bucket);
     }
 
-//    public void deleteProducts (Bucket bucket, List<Long> productIds){
-//        List <Product> products = bucket.getProducts();
-//        List <Product> newProductList = products == null ? new ArrayList<>():new ArrayList<>(products);
-//        newProductList.addAll(getCollectRefProductsById(productIds));
-//        bucket.setProducts(newProductList);
-//        bucketRepository.save(bucket);
-//    }
-
 
     @Override
-    public BucketDTO deleteProductFromBucket(BucketDTO bucketDTO, Long productId) {
-
-        if (bucketDTO==null || bucketDTO.getBucketDetails()==null){
-            throw new IllegalArgumentException("Invalid input: bucketDTO or bucketDetails is null");
-        }
-
-        List<BucketDetailDTO> updateDetails = new ArrayList<>(bucketDTO.getBucketDetails());
-
-        updateDetails = updateDetails
-                .stream()
-                .filter(bucketDetailDTO -> !bucketDetailDTO.getProductId().equals(productId))
-                .collect(Collectors.toList());
-
-        if (!bucketRepository.existsById(bucketDTO.getId())){
-            throw new IllegalArgumentException("Bucket didn't find in repository");
-        }
-
-        Bucket bucket = bucketRepository.getReferenceById(bucketDTO.getId());
-        bucket.setProducts(
-                bucketDTO
-                        .getBucketDetails()
-                        .stream()
-                        .map(bucketDetailDTO -> productRepository.getReferenceById(bucketDTO.getId()))
-                        .toList());
-
-
-        return new BucketDTO(bucketDTO.getId(),updateDetails.size(),updateDetails.stream().mapToDouble(BucketDetailDTO::getSum).sum(),updateDetails);
-
+    public BucketDTO deleteProductFromBucket(Long productId, String username) {
+       User user = userService.findByName(username);
+       if (user==null){
+           throw new RuntimeException("In method deleteProductFromBucket we didn't find user - " + username);
+       }
+        Bucket bucket = user.getBucket();
+       if (bucket==null){
+           throw new RuntimeException("In method deleteProductFromBucket bucket is null");
+       } else {
+           List<Product> currentProducts = bucket.getProducts();
+           List<Product> newProductList = new ArrayList<>(currentProducts);
+           newProductList.remove(
+                   currentProducts
+                           .stream()
+                           .filter(product -> Objects.equals(product.getId(), productId))
+                           .findAny()
+                           .orElseThrow());
+           bucket.setProducts(newProductList);
+           bucketRepository.save(bucket);
+       }
+       return getBucketByUser(username);
     }
 
     @Override
@@ -102,6 +86,7 @@ public class BuketServiceImpl implements BucketService{
         BucketDTO bucketDTO = new BucketDTO();
         Map<Long, BucketDetailDTO> mapByProductId = new HashMap<>();
         List<Product> products = user.getBucket().getProducts();
+
         for (Product product: products){
             BucketDetailDTO detail = mapByProductId.get(product.getId());
             if (detail==null){
@@ -113,7 +98,6 @@ public class BuketServiceImpl implements BucketService{
         }
         bucketDTO.setBucketDetails(new ArrayList<>(mapByProductId.values()));
         bucketDTO.aggregate();
-
         return bucketDTO;
     }
 }
