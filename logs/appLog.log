@@ -1,41 +1,41 @@
-15:39:23.595 [restartedMain] INFO  com.echem.ecshop.EcshopApplication - Starting EcshopApplication using Java 17.0.7 with PID 97609 (/Users/dmitrijafrosin/IdeaProjects/ecshop/build/classes/java/main started by dmitrijafrosin in /Users/dmitrijafrosin/IdeaProjects/ecshop)
-15:39:23.614 [restartedMain] INFO  com.echem.ecshop.EcshopApplication - No active profile set, falling back to 1 default profile: "default"
-15:39:23.848 [restartedMain] INFO  o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
-15:39:23.848 [restartedMain] INFO  o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
-15:39:27.730 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
-15:39:27.913 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 159 ms. Found 3 JPA repository interfaces.
-15:39:29.857 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port(s): 8080 (http)
-15:39:29.884 [restartedMain] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
-15:39:29.886 [restartedMain] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.13]
-15:39:30.022 [restartedMain] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
-15:39:30.023 [restartedMain] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 6172 ms
-15:39:30.488 [restartedMain] INFO  o.f.c.i.license.VersionPrinter - Flyway Community Edition 9.16.3 by Redgate
-15:39:30.489 [restartedMain] INFO  o.f.c.i.license.VersionPrinter - See release notes here: https://rd.gt/416ObMi
-15:39:30.489 [restartedMain] INFO  o.f.c.i.license.VersionPrinter - 
-15:39:30.518 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
-15:39:31.451 [restartedMain] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@59144485
-15:39:31.455 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
-15:39:31.554 [restartedMain] INFO  o.f.c.i.d.base.BaseDatabaseType - Database: jdbc:postgresql://localhost:5432/newOne (PostgreSQL 15.3)
-15:39:31.956 [restartedMain] INFO  o.f.core.internal.command.DbValidate - Successfully validated 3 migrations (execution time 00:00.162s)
-15:39:32.029 [restartedMain] INFO  o.f.core.internal.command.DbMigrate - Current version of schema "public": 3
-15:39:32.030 [restartedMain] INFO  o.f.core.internal.command.DbMigrate - Schema "public" is up to date. No migration necessary.
-15:39:32.265 [restartedMain] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
-15:39:32.491 [restartedMain] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.2.9.Final
-15:39:32.499 [restartedMain] INFO  org.hibernate.cfg.Environment - HHH000406: Using bytecode reflection optimizer
-15:39:33.206 [restartedMain] INFO  o.h.b.i.BytecodeProviderInitiator - HHH000021: Bytecode provider name : bytebuddy
-15:39:33.881 [restartedMain] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
-15:39:35.613 [restartedMain] INFO  o.h.b.i.BytecodeProviderInitiator - HHH000021: Bytecode provider name : bytebuddy
-15:39:38.622 [restartedMain] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
-15:39:38.977 [restartedMain] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
-15:39:40.368 [restartedMain] WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
-15:39:40.743 [restartedMain] INFO  o.s.b.a.w.s.WelcomePageHandlerMapping - Adding welcome page template: index
-15:39:41.263 [restartedMain] INFO  o.s.s.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@e7217d4, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@493971c, org.springframework.security.web.context.SecurityContextHolderFilter@5ceace26, org.springframework.security.web.header.HeaderWriterFilter@64586910, org.springframework.security.web.csrf.CsrfFilter@ba9db2, org.springframework.security.web.authentication.logout.LogoutFilter@45517515, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@d3d1ea8, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@7d7fe82a, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@a98aeed, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@c5ea813, org.springframework.security.web.access.ExceptionTranslationFilter@5f3e6355, org.springframework.security.web.access.intercept.AuthorizationFilter@49338df1]
-15:39:42.050 [restartedMain] INFO  o.s.b.d.a.OptionalLiveReloadServer - LiveReload server is running on port 35729
-15:39:42.114 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port(s): 8080 (http) with context path ''
-15:39:42.136 [restartedMain] INFO  com.echem.ecshop.EcshopApplication - Started EcshopApplication in 19.995 seconds (process running for 21.538)
-15:40:26.745 [http-nio-8080-exec-1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
-15:40:26.746 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
-15:40:26.748 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 2 ms
-20:01:41.821 [SpringApplicationShutdownHook] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
-20:01:42.223 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
-20:01:42.361 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+00:17:10.246 [restartedMain] INFO  com.echem.ecshop.EcshopApplication - Starting EcshopApplication using Java 17.0.7 with PID 14289 (/Users/dmitrijafrosin/IdeaProjects/ecshop/build/classes/java/main started by dmitrijafrosin in /Users/dmitrijafrosin/IdeaProjects/ecshop)
+00:17:10.263 [restartedMain] INFO  com.echem.ecshop.EcshopApplication - No active profile set, falling back to 1 default profile: "default"
+00:17:10.438 [restartedMain] INFO  o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+00:17:10.439 [restartedMain] INFO  o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+00:17:12.397 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+00:17:12.566 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 143 ms. Found 3 JPA repository interfaces.
+00:17:14.263 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port(s): 8080 (http)
+00:17:14.305 [restartedMain] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+00:17:14.306 [restartedMain] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.13]
+00:17:14.454 [restartedMain] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+00:17:14.455 [restartedMain] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 4014 ms
+00:17:14.903 [restartedMain] INFO  o.f.c.i.license.VersionPrinter - Flyway Community Edition 9.16.3 by Redgate
+00:17:14.903 [restartedMain] INFO  o.f.c.i.license.VersionPrinter - See release notes here: https://rd.gt/416ObMi
+00:17:14.903 [restartedMain] INFO  o.f.c.i.license.VersionPrinter - 
+00:17:14.933 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+00:17:15.422 [restartedMain] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@3c466889
+00:17:15.425 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+00:17:15.455 [restartedMain] INFO  o.f.c.i.d.base.BaseDatabaseType - Database: jdbc:postgresql://localhost:5432/newOne (PostgreSQL 15.3)
+00:17:15.597 [restartedMain] INFO  o.f.core.internal.command.DbValidate - Successfully validated 3 migrations (execution time 00:00.102s)
+00:17:15.628 [restartedMain] INFO  o.f.core.internal.command.DbMigrate - Current version of schema "public": 3
+00:17:15.629 [restartedMain] INFO  o.f.core.internal.command.DbMigrate - Schema "public" is up to date. No migration necessary.
+00:17:15.921 [restartedMain] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+00:17:16.193 [restartedMain] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.2.9.Final
+00:17:16.199 [restartedMain] INFO  org.hibernate.cfg.Environment - HHH000406: Using bytecode reflection optimizer
+00:17:16.727 [restartedMain] INFO  o.h.b.i.BytecodeProviderInitiator - HHH000021: Bytecode provider name : bytebuddy
+00:17:17.146 [restartedMain] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+00:17:17.943 [restartedMain] INFO  o.h.b.i.BytecodeProviderInitiator - HHH000021: Bytecode provider name : bytebuddy
+00:17:19.769 [restartedMain] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+00:17:19.897 [restartedMain] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+00:17:20.971 [restartedMain] WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+00:17:21.317 [restartedMain] INFO  o.s.b.a.w.s.WelcomePageHandlerMapping - Adding welcome page template: index
+00:17:21.708 [restartedMain] INFO  o.s.s.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@3ed6c267, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@6b5f8c49, org.springframework.security.web.context.SecurityContextHolderFilter@5adb9fec, org.springframework.security.web.header.HeaderWriterFilter@5f3e6355, org.springframework.security.web.csrf.CsrfFilter@6a75dcd5, org.springframework.security.web.authentication.logout.LogoutFilter@7d9c2696, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@4e2353a7, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@5ceace26, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@1a89a954, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@e7217d4, org.springframework.security.web.access.ExceptionTranslationFilter@708314f3, org.springframework.security.web.access.intercept.AuthorizationFilter@14fe6310]
+00:17:22.195 [restartedMain] INFO  o.s.b.d.a.OptionalLiveReloadServer - LiveReload server is running on port 35729
+00:17:22.242 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port(s): 8080 (http) with context path ''
+00:17:22.263 [restartedMain] INFO  com.echem.ecshop.EcshopApplication - Started EcshopApplication in 13.333 seconds (process running for 14.777)
+00:17:27.515 [http-nio-8080-exec-1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+00:17:27.517 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+00:17:27.521 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 4 ms
+00:25:11.726 [SpringApplicationShutdownHook] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+00:25:11.736 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+00:25:11.741 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
