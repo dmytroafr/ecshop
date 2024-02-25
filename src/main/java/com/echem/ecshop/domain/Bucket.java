@@ -21,9 +21,16 @@ public class Bucket {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = SEQ_NAME)
     @SequenceGenerator(name = SEQ_NAME, sequenceName = SEQ_NAME, allocationSize = 1)
     private long id;
+
+
+
     @OneToOne
     @JoinColumn(name = "user_id")
     private User user;
+
+
+
+
     @ManyToMany
     @JoinTable(name = "buckets_products",
             joinColumns = @JoinColumn(name = "bucket_id"),
