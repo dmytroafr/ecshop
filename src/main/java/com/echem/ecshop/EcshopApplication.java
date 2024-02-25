@@ -14,6 +14,7 @@ public class EcshopApplication {
 		System.out.println("Ready to explore");
 //		Map<String,String> env = System.getenv();
 //		env.forEach((s, s2) -> System.out.println("key: " + s + "| value: " + s2));
+		System.out.println("HHHHHHHHHHH");
 	}
 
 
