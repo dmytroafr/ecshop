@@ -25,6 +25,4 @@ public class ProductDTO {
     public String onStock;
 
     public List<Category> categories = new ArrayList<>();
-
-
 }

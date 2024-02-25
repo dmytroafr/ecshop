@@ -29,10 +29,9 @@ public class RegistrationServiceImpl implements RegistrationService{
         this.emailSender = emailSender;
     }
 
+    @Transactional
     @Override
     public String register(RegistrationRequest request) {
-
-
         String token = userService.signUpUser(new User(
                 request.userName(),
                 request.password(),
@@ -41,18 +40,17 @@ public class RegistrationServiceImpl implements RegistrationService{
         ));
 
         String link = serverHost + "registration/confirm?token=" + token;
-
-        emailSender.send(request.email(),
-                String.format("hello, "+request.userName()+"!, click here: %s",link),
-                "Please confirm your email");
+        String message = String.format("Привіт, " + request.userName() +
+                ", перейдіть за наступним посиланням для підтвердження адреси вашої пошти:" +
+                "\n%s\n\nДякуємо,\nЗ повагою,\nКоманда Екохім", link);
+        emailSender.send(request.email(), message, "Підтвердження реєстрації>");
         return token;
     }
     @Transactional
     @Override
     public String confirmToken(String token) {
         ConfirmationToken confirmationToken = tokenService.getToken(token).orElseThrow(
-                ()->new IllegalStateException("token not found")
-        );
+                ()->new IllegalStateException("token not found"));
 
         if (confirmationToken.getConfirmedAt() != null){
             throw new IllegalStateException("email already confirmed");
