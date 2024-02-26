@@ -35,6 +35,10 @@ out/
 ### VS Code ###
 .vscode/
 
+<<<<<<< HEAD
+=======
+!**/src/main/resources
+>>>>>>> parent of 4e08e7a (commit just gitignor)
 
 
 /logs/
