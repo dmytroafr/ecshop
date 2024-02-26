@@ -36,9 +36,13 @@ out/
 .vscode/
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 !**/src/main/resources
 >>>>>>> parent of 4e08e7a (commit just gitignor)
 
+=======
+!**/src/main/resources/db.migration/V2__add_admin.sql
+>>>>>>> parent of 77113e8 (commit just gitignor)
 
 /logs/
