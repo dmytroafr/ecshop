@@ -12,7 +12,6 @@ public class EcshopApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(EcshopApplication.class, args);
 		System.out.println("Ready to explore");
-
 	}
 
 

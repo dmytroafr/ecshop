@@ -34,6 +34,6 @@ public class Product {
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "products_categories",
             joinColumns = @JoinColumn(name = "product_id"),
-            inverseJoinColumns = @JoinColumn(name = "category_id "))
+            inverseJoinColumns = @JoinColumn(name = "category_id"))
     private List<Category> categories;
 }
