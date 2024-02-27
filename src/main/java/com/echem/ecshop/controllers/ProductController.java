@@ -22,7 +22,7 @@ public class ProductController {
     @GetMapping
     public String list (Model model){
         List<ProductDTO> list = productService.getAll();
-        model.addAttribute("productsDto", list);
+        model.addAttribute("products", list);
         return "products";
     }
     @GetMapping("/{id}/bucket")
