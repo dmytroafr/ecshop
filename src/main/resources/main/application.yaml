@@ -9,7 +9,7 @@ spring:
 
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/s1
+    url: jdbc:postgresql://localhost:5432/echemdb
     username: postgres
     password: 5876
   flyway:
