@@ -2,9 +2,7 @@ package com.echem.ecshop.mapper;
 
 import com.echem.ecshop.domain.Product;
 import com.echem.ecshop.dto.ProductDTO;
-import org.mapstruct.InheritInverseConfiguration;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
 import java.util.List;

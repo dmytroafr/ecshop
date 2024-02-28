@@ -2,6 +2,7 @@ package com.echem.ecshop.service;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -24,8 +25,11 @@ public class CurrencyServiceImpl implements CurrencyService{
 		return currencyList.stream()
 				.collect(Collectors.toMap(s -> s.substring(1,4),s -> Double.parseDouble(s.substring(6))));
 	}
-
-
+	public ResponseEntity<String> getResponse(){
+		String apiUrl = "https://v6.exchangerate-api.com/v6/3f905d8e5983cbdbe2a6bc4e/latest/USD";
+		RestTemplate restTemplate = new RestTemplate();
+		return restTemplate.getForEntity(apiUrl, String.class);
+	}
 	@Override
 	public String getUAH(Map<String,Double> map) {
 		return "1 доллар США коштує " + map.get("UAH") + " грн";

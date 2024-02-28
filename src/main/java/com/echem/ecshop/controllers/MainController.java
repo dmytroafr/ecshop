@@ -17,20 +17,16 @@ import java.util.UUID;
 @Controller
 public class MainController {
 
-    private final ProductService productService;
     private final CurrencyService currencyService;
 
-    public MainController(ProductService productService,CurrencyService currencyService) {
-        this.productService = productService;
+    public MainController(CurrencyService currencyService) {
         this.currencyService = currencyService;
     }
 
     @RequestMapping({"","/"})
     public String index (Model model, HttpSession httpSession){
 
-        String apiUrl = "https://v6.exchangerate-api.com/v6/3f905d8e5983cbdbe2a6bc4e/latest/USD";
-        RestTemplate restTemplate = new RestTemplate();
-        ResponseEntity<String> response = restTemplate.getForEntity(apiUrl, String.class);
+        ResponseEntity<String> response = currencyService.getResponse();
         String rate = currencyService.getUAH(currencyService.toMap(response));
         model.addAttribute("currency", rate);
 
