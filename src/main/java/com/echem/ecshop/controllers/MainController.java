@@ -1,24 +1,19 @@
 package com.echem.ecshop.controllers;
 
 
-import com.echem.ecshop.dto.ProductDTO;
 import com.echem.ecshop.service.CurrencyService;
-import com.echem.ecshop.service.ProductService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.RestTemplate;
 
+import java.net.http.HttpResponse;
 import java.util.UUID;
 
 @Controller
 public class MainController {
-
     private final CurrencyService currencyService;
-
     public MainController(CurrencyService currencyService) {
         this.currencyService = currencyService;
     }
@@ -26,20 +21,17 @@ public class MainController {
     @RequestMapping({"","/"})
     public String index (Model model, HttpSession httpSession){
 
-        ResponseEntity<String> response = currencyService.getResponse();
-        String rate = currencyService.getUAH(currencyService.toMap(response));
+        ident(httpSession);
+        model.addAttribute("uuid", httpSession.getAttribute("myID"));
+
+        String rate = currencyService.getUAH();
         model.addAttribute("currency", rate);
 
-        if (httpSession.getAttribute("myID") == null){
-            String uuid = UUID.randomUUID().toString();
-            httpSession.setAttribute("myID", uuid);
-        }
-        model.addAttribute("uuid", httpSession.getAttribute("myID"));
         return "index";
     }
 
     @RequestMapping ("/login")
-    public String login(){
+    public String login(HttpSession httpSession, Model model){
         return "login";
     }
 
@@ -61,5 +53,12 @@ public class MainController {
     @RequestMapping("/contacts")
     public String contacts(){
         return "contacts";
+    }
+
+    private void ident (HttpSession session){
+        if (session.getAttribute("myID") == null){
+            String uuid = UUID.randomUUID().toString();
+            session.setAttribute("myID", uuid);
+        }
     }
 }

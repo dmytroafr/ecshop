@@ -13,8 +13,16 @@ import java.util.stream.Collectors;
 @Service
 public class CurrencyServiceImpl implements CurrencyService{
 
-
-	public Map<String,Double> toMap (ResponseEntity<String> response){
+	private ResponseEntity<String> getResponse(){
+		String apiUrl = "https://v6.exchangerate-api.com/v6/3f905d8e5983cbdbe2a6bc4e/latest/USD";
+		RestTemplate restTemplate = new RestTemplate();
+		return restTemplate.getForEntity(apiUrl, String.class);
+	}
+	private Map<String, Double> getMap() {
+		ResponseEntity<String> response = getResponse();
+        return toMap(response);
+	}
+	private Map<String,Double> toMap (ResponseEntity<String> response){
 		Pattern pattern = Pattern.compile("\"[A-Z]{3}\":[0-9]+.[0-9]+");
 		Matcher matcher = pattern.matcher(response.toString());
 		ArrayList<String> currencyList = new ArrayList<>();
@@ -25,23 +33,21 @@ public class CurrencyServiceImpl implements CurrencyService{
 		return currencyList.stream()
 				.collect(Collectors.toMap(s -> s.substring(1,4),s -> Double.parseDouble(s.substring(6))));
 	}
-	public ResponseEntity<String> getResponse(){
-		String apiUrl = "https://v6.exchangerate-api.com/v6/3f905d8e5983cbdbe2a6bc4e/latest/USD";
-		RestTemplate restTemplate = new RestTemplate();
-		return restTemplate.getForEntity(apiUrl, String.class);
-	}
+
+
+
 	@Override
-	public String getUAH(Map<String,Double> map) {
-		return "1 доллар США коштує " + map.get("UAH") + " грн";
+	public String getUAH(){
+		return "1 доллар США коштує " + getMap().get("UAH") + " грн";
 	}
 
 	@Override
-	public String getEUR(Map<String,Double> map) {
-		return "1 доллар США коштує " + map.get("EUR") + " євро";
+	public String getEUR() {
+		return "1 доллар США коштує " + getMap().get("EUR") + " євро";
 	}
 
 	@Override
-	public String getPLN(Map<String,Double> map) {
-		return "1 доллар США коштує " + map.get("PLN") + " злотих";
+	public String getPLN() {
+		return "1 доллар США коштує " + getMap().get("PLN") + " злотих";
 	}
 }
