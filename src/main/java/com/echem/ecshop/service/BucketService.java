@@ -12,5 +12,6 @@ public interface BucketService {
     void addProducts(Bucket bucket, List<Long> productIds);
     BucketDTO getBucketByUser(String name);
     BucketDTO deleteProductFromBucket(Long productId, String username);
+    void addToUserBucket(Long productId, String username);
 
 }

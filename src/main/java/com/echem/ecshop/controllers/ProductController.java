@@ -1,8 +1,8 @@
 package com.echem.ecshop.controllers;
 
 import com.echem.ecshop.dto.ProductDTO;
+import com.echem.ecshop.service.BucketService;
 import com.echem.ecshop.service.ProductService;
-import com.echem.ecshop.service.SessionObjectHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,8 +16,10 @@ import java.util.List;
 @RequestMapping("/products")
 public class ProductController {
     private final ProductService productService;
-    public ProductController(ProductService productService) {
+    private final BucketService bucketService;
+    public ProductController(ProductService productService,BucketService bucketService) {
         this.productService = productService;
+        this.bucketService = bucketService;
     }
     @GetMapping("")
     public String list (Model model){
@@ -30,7 +32,7 @@ public class ProductController {
         if (principal==null){
             return "redirect:/login";
         }
-        productService.addToUserBucket(id, principal.getName());
+        bucketService.addToUserBucket(id, principal.getName());
         return "redirect:/products";
     }
 }

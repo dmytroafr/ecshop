@@ -2,11 +2,10 @@ package com.echem.ecshop;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.cache.annotation.EnableCaching;
 
 import java.util.Map;
-
+@EnableCaching
 @SpringBootApplication
 public class EcshopApplication {
 	public static void main(String[] args) {

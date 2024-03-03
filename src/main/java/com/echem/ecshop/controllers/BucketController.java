@@ -1,6 +1,5 @@
 package com.echem.ecshop.controllers;
 
-import com.echem.ecshop.domain.Bucket;
 import com.echem.ecshop.dto.BucketDTO;
 import com.echem.ecshop.service.BucketService;
 import org.slf4j.Logger;

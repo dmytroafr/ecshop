@@ -12,7 +12,7 @@
           crossorigin="anonymous"
   />
 
-  <link rel="manifest" href="/site.webmanifest" />
+
 </head>
 
 <body>
@@ -21,24 +21,13 @@
 <div class="container text-center">
   <img th:src="@{/images/header.jpg}" class="img-fluid" />
 </div>
-<div th:insert="~{fragments/navigator :: #navigator}"></div>
+<div th:insert="~{fragments/menu :: #navigator}"></div>
 <div class="container">
   <div th:text="${currency}" class="row"></div>
   <div class="row">
-    <div class="col-sm-3">
-      <p>ТОВ "Екохім Розвиток"</p>
-      <p>+380 (95) 791-34-29</p>
-      <p>Продажі</p>
-      <p>+380 (44) 334-59-40</p>
-      <p>Офіс</p>
-      <p>Дмитро</p>
-      <p>02092, вул. Алматинська, 8, оф 103, Київ, Україна</p>
-      <p>office@e-chem.com.ua</p>
-      <p>+380 (95) 791 34 29</p>
-      <p>+380 (95) 791 34 29</p>
-    </div>
+    <div th:insert="~{fragments/menu :: #bar}"></div>
+
     <div class="col-sm-9">
-      ERRRRRRRRRRRROR
       <div th:text="${errorMessage}">text</div>
     </div>
   </div>

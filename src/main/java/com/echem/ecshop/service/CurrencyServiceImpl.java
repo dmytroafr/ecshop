@@ -1,5 +1,7 @@
 package com.echem.ecshop.service;
 
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -13,10 +15,12 @@ import java.util.stream.Collectors;
 @Service
 public class CurrencyServiceImpl implements CurrencyService{
 
-	private ResponseEntity<String> getResponse(){
-		String apiUrl = "https://v6.exchangerate-api.com/v6/3f905d8e5983cbdbe2a6bc4e/latest/USD";
+	@Value("${currency.url}")
+	private String currencyUrl;
+	@Cacheable("ccc")
+	public ResponseEntity<String> getResponse(){
 		RestTemplate restTemplate = new RestTemplate();
-		return restTemplate.getForEntity(apiUrl, String.class);
+		return restTemplate.getForEntity(currencyUrl, String.class);
 	}
 	private Map<String, Double> getMap() {
 		ResponseEntity<String> response = getResponse();
@@ -26,7 +30,6 @@ public class CurrencyServiceImpl implements CurrencyService{
 		Pattern pattern = Pattern.compile("\"[A-Z]{3}\":[0-9]+.[0-9]+");
 		Matcher matcher = pattern.matcher(response.toString());
 		ArrayList<String> currencyList = new ArrayList<>();
-
 		while (matcher.find()){
 			currencyList.add(matcher.group());
 		}

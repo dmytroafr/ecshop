@@ -3,12 +3,10 @@ package com.echem.ecshop.controllers;
 
 import com.echem.ecshop.service.CurrencyService;
 import jakarta.servlet.http.HttpSession;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.net.http.HttpResponse;
 import java.util.UUID;
 
 @Controller

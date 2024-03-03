@@ -19,3 +19,6 @@ logging:
     console: "%d{HH:mm:ss.SSS} [%t] %clr(%-5level) %logger{36} - %msg%n"
   level:
     root: INFO
+
+currency:
+  url: "https://v6.exchangerate-api.com/v6/3f905d8e5983cbdbe2a6bc4e/latest/USD"

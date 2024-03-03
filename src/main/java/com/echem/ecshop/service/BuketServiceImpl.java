@@ -92,12 +92,26 @@ public class BuketServiceImpl implements BucketService{
             if (detail==null){
                 mapByProductId.put(product.getId(),new BucketDetailDTO(product));
             } else {
-                detail.setAmount(detail.getAmount().add(new BigDecimal(1.0)));
-                detail.setSum(detail.getSum()+Double.valueOf(product.getPrice().toString()));
+                detail.setAmount(detail.getAmount().add(new BigDecimal("1.0")));
+                detail.setSum(detail.getSum()+Double.parseDouble(product.getPrice().toString()));
             }
         }
         bucketDTO.setBucketDetails(new ArrayList<>(mapByProductId.values()));
         bucketDTO.aggregate();
         return bucketDTO;
+    }
+    public void addToUserBucket(Long productId, String username) {
+//        User user = userService.findByName(username);
+//        if (user == null){
+//            throw new  RuntimeException("Не знайден користувач з ім'ям "+username);
+//        }
+//        Bucket bucket = user.getBucket();
+//        if (bucket == null){
+//            Bucket newBucket = createBucket(user, Collections.singletonList(productId));
+//            user.setBucket(newBucket);
+//            userService.save(user);
+//        } else {
+//            addProducts(bucket, Collections.singletonList(productId));
+//        }
     }
 }
