@@ -16,12 +16,18 @@ configurations {
 		extendsFrom annotationProcessor
 	}
 }
+ext {
+	set('springBootAdminVersion', "3.2.1")
+}
 
 repositories {
 	mavenCentral()
 }
 
 dependencies{
+
+//	implementation 'de.codecentric:spring-boot-admin-starter-client'
+//	implementation 'org.springframework.boot:spring-boot-starter-actuator'
 
 	implementation 'org.springframework.boot:spring-boot-starter-web'   //spring
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'   //spring
@@ -50,6 +56,12 @@ dependencies{
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'  //spring
 	testImplementation 'org.springframework.security:spring-security-test'  //spring
 }
+dependencyManagement {
+	imports {
+		mavenBom "de.codecentric:spring-boot-admin-dependencies:${springBootAdminVersion}"
+	}
+}
+
 
 tasks.named('test') {
 	useJUnitPlatform()

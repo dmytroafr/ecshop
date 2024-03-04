@@ -4,7 +4,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cache.annotation.EnableCaching;
 
-import java.util.Map;
+
 @EnableCaching
 @SpringBootApplication
 public class EcshopApplication {

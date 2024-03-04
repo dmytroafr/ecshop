@@ -7,11 +7,15 @@ spring:
       ddl-auto: validate
     show-sql: true
   datasource:
-    url: jdbc:postgresql://localhost:5432/echemdb
+    url: jdbc:postgresql://localhost:5432/based_data_base
     username: postgres
     password: 5876
   flyway:
     baseline-on-migrate: true
+#  boot:
+#    admin:
+#      client:
+#        url: 'http://localhost:8099'
 logging:
   file.name: logs/appLog.log
   pattern:
@@ -22,3 +26,9 @@ logging:
 
 currency:
   url: "https://v6.exchangerate-api.com/v6/3f905d8e5983cbdbe2a6bc4e/latest/USD"
+
+#management:
+#  endpoints:
+#    web:
+#      exposure:
+#        include: "*"
