@@ -21,9 +21,15 @@ public class ProductController {
         this.productService = productService;
         this.bucketService = bucketService;
     }
-    @GetMapping("")
+//    @GetMapping
+//    public String list (Model model){
+//        List<ProductDTO> list = productService.getAll();
+//        model.addAttribute("products", list);
+//        return "products";
+//    }
+    @GetMapping
     public String list (Model model){
-        List<ProductDTO> list = productService.getAll();
+        var list = productService.getAllRecordDto();
         model.addAttribute("products", list);
         return "products";
     }

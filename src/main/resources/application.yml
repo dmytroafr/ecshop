@@ -1,0 +1,48 @@
+server:
+  port: 8080
+  error:
+    include-message: always
+    include-binding-errors: always
+spring:
+  application:
+    name: internet-shop
+  output:
+    ansi:
+      enabled: ALWAYS
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+  datasource:
+    url: jdbc:postgresql://localhost:5432/database_e
+    username: postgres
+    password: 5876
+  flyway:
+    baseline-on-migrate: true
+  mail:
+    host: mail.adm.tools
+    port: 25
+    username: java@e-chem.com.ua
+    password: au755GK2Rh
+    properties:
+      mail:
+        smtp:
+          ssl:
+            trust: "*"
+          auth: true
+          starttls:
+            enable: true
+          connectiontimeout: 5000
+          timeout: 2000
+          writetimeout: 5000
+
+
+
+currency:
+  url: "https://v6.exchangerate-api.com/v6/3f905d8e5983cbdbe2a6bc4e/latest/USD"
+
+#management:
+#  endpoints:
+#    web:
+#      exposure:
+#        include: "*"

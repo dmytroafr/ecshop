@@ -1,107 +1,72 @@
 package com.echem.ecshop.service;
 
+import com.echem.ecshop.config.PasswordEncoder;
 import com.echem.ecshop.dao.UserRepository;
-import com.echem.ecshop.domain.Role;
 import com.echem.ecshop.domain.User;
-import com.echem.ecshop.dto.UserDTO;
-import jakarta.transaction.Transactional;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import com.echem.ecshop.registration.token.ConfirmationToken;
+import com.echem.ecshop.registration.token.ConfirmationTokenService;
+import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Objects;
+import java.util.Optional;
+import java.util.UUID;
 
 @Service
+@AllArgsConstructor
 public class UserServiceImpl implements UserService{
+	private static final String USER_NOT_FOUND_BSG = "user with email %s not found";
 	private final UserRepository userRepository;
 	private final PasswordEncoder passwordEncoder;
-	public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder) {
-		this.userRepository = userRepository;
-		this.passwordEncoder = passwordEncoder;
+	private final ConfirmationTokenService confirmationTokenService;
+	@Override
+	public List<User> getAllUsers() {
+		return userRepository.findAll();
 	}
 	@Override
-	public boolean save(UserDTO userDTO) {
+	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+		return findByEmail(email);
+	}
+	@Override
+	public User findByEmail(String email) {
+		return userRepository.findUserByEmail(email)
+				.orElseThrow(()->new IllegalStateException(
+						String.format(USER_NOT_FOUND_BSG,email)
+				));
+	}
+	@Override
+	public User findByName(String username) {
+		return userRepository.findByFirstName(username);
+	}
 
-		if (!Objects.equals(userDTO.getPassword(), userDTO.getMatchingPassword())) {
-			throw new RuntimeException("Passwords not equal");
+	@Override
+	public String signUpUser(User user) {
+		boolean present = userRepository.findUserByEmail(user.getEmail()).isPresent();
+		if (present){
+			throw new IllegalStateException("email already used");
 		}
-		User user = User.builder()
-				.name(userDTO.getUsername())
-				.password(passwordEncoder.encode(userDTO.getPassword()))
-				.email(userDTO.getEmail())
-				.role(Role.CLIENT)
-				.build();
+		String encode = passwordEncoder.bCryptPasswordEncoder().encode(user.getPassword());
+		user.setPassword(encode);
 		userRepository.save(user);
-		return true;
-	}
-	@Override
-	public void save(User user) {
-		if (user==null){
-			throw new RuntimeException("user is null");
-		}
 
-		userRepository.save(user);
-	}
+		String token = UUID.randomUUID().toString();
+		ConfirmationToken confirmationToken = new ConfirmationToken(
+				token,
+				LocalDateTime.now(),
+				LocalDateTime.now().plusMinutes(15L),
+				user
+		);
+		confirmationTokenService.saveConfirmationToken(confirmationToken);
 
-	@Override
-	public List<UserDTO> getAll() {
-		return userRepository.findAll().stream()
-				.map(this::toDto)
-				.toList();
+		return token;
 	}
 
 	@Override
-	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		User user = userRepository.findFirstByName(username);
-		if (user ==  null){
-			throw new UsernameNotFoundException("User not found with name" + username);
-		}
-		List<GrantedAuthority> roles = new ArrayList<>();
-
-		roles.add(new SimpleGrantedAuthority(user.getRole().name()));
-
-		return new org.springframework.security.core.userdetails.User(
-				user.getName(),
-				user.getPassword(),
-				roles);
-	}
-	public UserDTO toDto (User user){
-		return UserDTO.builder()
-				.username(user.getName())
-				.email(user.getEmail())
-				.phone(user.getPhone())
-				.build();
-	}
-
-	@Override
-	public User findByName(String name) {
-		return userRepository.findFirstByName(name);
-	}
-
-	@Override
-	@Transactional
-	public void updateProfile(UserDTO dto) {
-		User savedUser = userRepository.findFirstByName(dto.getUsername());
-		if (savedUser == null) {
-			throw new RuntimeException("Користувач не знайдениз за іменем "+dto.getUsername());
-		}
-		boolean isChanged = false;
-		if (dto.getPassword() != null && !dto.getPassword().isEmpty()){
-			savedUser.setPassword(passwordEncoder.encode(dto.getPassword()));
-			isChanged = true;
-		}
-		if (!Objects.equals(dto.getEmail(),savedUser.getEmail())){
-			savedUser.setEmail(dto.getEmail());
-			isChanged = true;
-		}
-		if (isChanged){
-			userRepository.save(savedUser);
-
-		}
+	public void enableUser(String email) {
+		User user = userRepository.findUserByEmail(email).orElseThrow();
+		user.setIsEnable(true);
 	}
 }

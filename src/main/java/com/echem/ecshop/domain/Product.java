@@ -29,9 +29,11 @@ public class Product {
     private String photoUrl;
     private String producer;
     private String countryProducer;
+
     @Enumerated(EnumType.STRING)
     private OnStock onStock;
-    @ManyToMany(cascade = CascadeType.ALL)
+
+    @ManyToMany(cascade = CascadeType.PERSIST)
     @JoinTable(name = "products_categories",
             joinColumns = @JoinColumn(name = "product_id"),
             inverseJoinColumns = @JoinColumn(name = "category_id"))

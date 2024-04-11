@@ -8,6 +8,7 @@ import com.echem.ecshop.domain.User;
 import com.echem.ecshop.dto.BucketDTO;
 import com.echem.ecshop.dto.BucketDetailDTO;
 import jakarta.transaction.Transactional;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -15,16 +16,12 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
+@AllArgsConstructor
 public class BuketServiceImpl implements BucketService{
     private final BucketRepository bucketRepository;
     private final ProductRepository productRepository;
     private final UserService userService;
 
-    public BuketServiceImpl(BucketRepository bucketRepository, ProductRepository productRepository, UserService userService) {
-        this.bucketRepository = bucketRepository;
-        this.productRepository = productRepository;
-        this.userService = userService;
-    }
     @Override
     @Transactional
     public Bucket createBucket(User user, List<Long> productIds) {

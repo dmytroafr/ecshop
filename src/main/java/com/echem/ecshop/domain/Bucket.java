@@ -23,13 +23,9 @@ public class Bucket {
     private long id;
 
 
-
     @OneToOne
     @JoinColumn(name = "user_id")
     private User user;
-
-
-
 
     @ManyToMany
     @JoinTable(name = "buckets_products",
