@@ -2,12 +2,14 @@ package com.echem.ecshop.service;
 
 
 import com.echem.ecshop.dto.ProductDTO;
-import com.echem.ecshop.dto.ProductRecordDTO;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
 public interface ProductService {
     List<ProductDTO> getAll();
-    List<ProductRecordDTO> getAllRecordDto();
+    List<ProductDTO> getAllRecordDto();
     ProductDTO getProductById(Long id);
+    Page<ProductDTO> findAllByPage (Pageable pageable);
 }

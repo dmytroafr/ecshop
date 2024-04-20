@@ -11,14 +11,14 @@ spring:
       enabled: ALWAYS
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: create-drop
     show-sql: true
   datasource:
-    url: jdbc:postgresql://localhost:5432/database_e
+    url: jdbc:postgresql://localhost:5432/database_ec
     username: postgres
     password: 5876
   flyway:
-    baseline-on-migrate: true
+    baseline-on-migrate: false
   mail:
     host: mail.adm.tools
     port: 25

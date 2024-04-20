@@ -31,8 +31,7 @@ public class RegistrationServiceImpl implements RegistrationService{
             throw new IllegalStateException("email format is not valid");
         }
         String token = userService.signUpUser(new User(
-                request.firstName(),
-                request.lastName(),
+                request.userName(),
                 request.password(),
                 request.email(),
                 Role.ADMIN

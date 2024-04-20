@@ -3,6 +3,7 @@ package com.echem.ecshop.service;
 import com.echem.ecshop.config.PasswordEncoder;
 import com.echem.ecshop.dao.UserRepository;
 import com.echem.ecshop.domain.User;
+import com.echem.ecshop.mapper.UserMapper;
 import com.echem.ecshop.registration.token.ConfirmationToken;
 import com.echem.ecshop.registration.token.ConfirmationTokenService;
 import lombok.AllArgsConstructor;
@@ -12,24 +13,27 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
 @AllArgsConstructor
 public class UserServiceImpl implements UserService{
+
 	private static final String USER_NOT_FOUND_BSG = "user with email %s not found";
 	private final UserRepository userRepository;
 	private final PasswordEncoder passwordEncoder;
 	private final ConfirmationTokenService confirmationTokenService;
+	private final UserMapper mapper = UserMapper.MAPPER;
+	@Override
+	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+		return findByEmail(email);
+	}
 	@Override
 	public List<User> getAllUsers() {
 		return userRepository.findAll();
 	}
 	@Override
-	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-		return findByEmail(email);
-	}
+	public void save(User user) { userRepository.save(user);}
 	@Override
 	public User findByEmail(String email) {
 		return userRepository.findUserByEmail(email)
@@ -39,7 +43,9 @@ public class UserServiceImpl implements UserService{
 	}
 	@Override
 	public User findByName(String username) {
-		return userRepository.findByFirstName(username);
+		return userRepository.findUserByEmail(username).orElseThrow(
+				()->new IllegalStateException("user "+username+" not found ")
+		);
 	}
 
 	@Override
@@ -60,7 +66,6 @@ public class UserServiceImpl implements UserService{
 				user
 		);
 		confirmationTokenService.saveConfirmationToken(confirmationToken);
-
 		return token;
 	}
 

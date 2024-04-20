@@ -13,18 +13,16 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 public class BucketDTO {
-
-    private long id;
-
+    private Long id;
     private int amountProducts;
     private Double sum;
     @Singular
-    private List<BucketDetailDTO> bucketDetails = new ArrayList<>();
+    private List<BucketDetailsDTO> bucketDetailsDTOS = new ArrayList<>();
 
     public void aggregate(){
-        this.amountProducts = bucketDetails.size();
-        this.sum = bucketDetails.stream()
-                .map(BucketDetailDTO::getSum)
+        this.amountProducts = bucketDetailsDTOS.size();
+        this.sum = bucketDetailsDTOS.stream()
+                .map(BucketDetailsDTO::sum)
                 .mapToDouble(Double::doubleValue)
                 .sum();
     }

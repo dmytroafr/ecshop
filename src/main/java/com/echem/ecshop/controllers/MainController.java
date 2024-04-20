@@ -5,7 +5,7 @@ import com.echem.ecshop.service.CurrencyService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.UUID;
 
@@ -16,7 +16,7 @@ public class MainController {
         this.currencyService = currencyService;
     }
 
-    @RequestMapping({"","/"})
+    @GetMapping({"","/"})
     public String index (Model model, HttpSession httpSession){
 
         ident(httpSession);
@@ -28,27 +28,27 @@ public class MainController {
         return "index";
     }
 
-    @RequestMapping ("/login")
+    @GetMapping ("/login")
     public String login(HttpSession httpSession, Model model){
         return "login";
     }
 
-    @RequestMapping("/login-error")
+    @GetMapping("/login-error")
     public String loginError(Model model) {
         model.addAttribute("loginError", true);
         return "error";
     }
-    @RequestMapping ("/conditions")
+    @GetMapping ("/conditions")
     public String conditions(){
         return "conditions";
     }
 
-    @RequestMapping("/about")
+    @GetMapping("/about")
     public String about(){
         return "about";
     }
 
-    @RequestMapping("/contacts")
+    @GetMapping("/contacts")
     public String contacts(){
         return "contacts";
     }

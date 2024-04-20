@@ -9,11 +9,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.Collections;
 
 @Controller
 @RequestMapping("/bucket")
 public class BucketController {
-    private static final Logger logger = LoggerFactory.getLogger(BucketController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(BucketController.class);
     private final BucketService bucketService;
     public BucketController(BucketService bucketService){
         this.bucketService = bucketService;
@@ -21,20 +22,22 @@ public class BucketController {
 
     @GetMapping
     public String aboutBucket(Model model, Principal principal){
+
         if (principal==null){
             model.addAttribute("bucket", new BucketDTO());
         } else {
-            BucketDTO bucketDTO = bucketService.getBucketByUser(principal.getName());
+            var bucketDTO = bucketService.getBucketByUser(principal.getName());
             model.addAttribute("bucket", bucketDTO);
         }
         return "bucket";
     }
-    @PostMapping ("/{productId}")
+    @DeleteMapping ("/{productId}")
     public String deleteProduct (@PathVariable Long productId, Model model, Principal principal){
         if (principal==null){
             return "redirect:/login";
         }
-        BucketDTO bucketDTO = bucketService.deleteProductFromBucket(productId,principal.getName());
+
+        var bucketDTO = bucketService.deleteProductFromBucket(productId,principal.getName());
         model.addAttribute("bucket",bucketDTO);
         return "redirect:/bucket";
     }

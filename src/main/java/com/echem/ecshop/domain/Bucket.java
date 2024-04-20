@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -20,16 +21,10 @@ public class Bucket {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = SEQ_NAME)
     @SequenceGenerator(name = SEQ_NAME, sequenceName = SEQ_NAME, allocationSize = 1)
-    private long id;
-
-
-    @OneToOne
+    private Long id;
+    @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
-
-    @ManyToMany
-    @JoinTable(name = "buckets_products",
-            joinColumns = @JoinColumn(name = "bucket_id"),
-            inverseJoinColumns = @JoinColumn(name = "products_id"))
-    private List<Product> products;
+    @OneToMany(mappedBy = "bucket")
+    private List<BucketDetails> bucketDetails = new ArrayList<>();
 }

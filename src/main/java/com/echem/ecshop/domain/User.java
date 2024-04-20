@@ -6,8 +6,11 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -19,10 +22,10 @@ public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = SEQ_NAME)
     @SequenceGenerator(name = SEQ_NAME, sequenceName = SEQ_NAME, allocationSize = 1)
-    private long id;
+    private Long id;
     @Column(nullable = false)
+    private String userName;
     private String firstName;
-    @Column(nullable = false)
     private String lastName;
     @Column(nullable = false)
     private String password;
@@ -33,8 +36,8 @@ public class User implements UserDetails {
     private Role role;
     private Boolean isEnable = false;
     private Boolean isLocked = false;
-    @OneToOne(mappedBy = "user", cascade = CascadeType.REMOVE)
-    private Bucket bucket;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+    private List<Bucket> bucket = new ArrayList<>();
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -71,9 +74,8 @@ public class User implements UserDetails {
         return isEnable;
     }
 
-    public User(String firstName, String lastName, String password, String email,Role role) {
-        this.firstName = firstName;
-        this.lastName = lastName;
+    public User(String userName, String password, String email,Role role) {
+        this.userName = userName;
         this.password = password;
         this.email = email;
         this.role = role;

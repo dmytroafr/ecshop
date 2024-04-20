@@ -3,6 +3,7 @@ package com.echem.ecshop.service;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -17,6 +18,7 @@ public class CurrencyServiceImpl implements CurrencyService{
 
 	@Value("${currency.url}")
 	private String currencyUrl;
+	@Async
 	@Cacheable("ccc")
 	public ResponseEntity<String> getResponse(){
 		RestTemplate restTemplate = new RestTemplate();
