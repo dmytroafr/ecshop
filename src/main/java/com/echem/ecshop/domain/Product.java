@@ -31,8 +31,7 @@ public class Product {
     private String producer;
     private String countryProducer;
 
-    @Enumerated(EnumType.STRING)
-    private OnStock onStock;
+    private String onStock;
 
     @ManyToMany(cascade = CascadeType.PERSIST)
     @JoinTable(name = "products_categories",

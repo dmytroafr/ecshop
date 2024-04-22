@@ -24,7 +24,7 @@
 
 
 
-<div class="container" id = "firstBobble">
+<div class="container-fluid" id = "firstBobble">
       <div class="row">
         <div class="card" th:each="product:${products}" style="width: 18rem">
             <img th:src="${product.photoUrl}" class="card-img-top img" alt="..."/>
@@ -33,7 +33,7 @@
               Card title
             </h5>
             <p class="card-text" th:text="${product.price}">Some</p>
-            <p class="card-text" th:text="${product.productDescription}">Some</p>
+            <p class="card-text" th:text="${product.onStock}">Some</p>
             <a th:href="@{/products/{id}/bucket(id=${product.id})}" class="btn btn-primary" style="alignment-baseline: bottom">Додати товар до корзини</a>
           </div>
         </div>

@@ -11,17 +11,17 @@ spring:
       enabled: ALWAYS
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: update
     show-sql: true
   datasource:
     url: jdbc:postgresql://localhost:5432/database_ec
     username: postgres
     password: 5876
   flyway:
-    baseline-on-migrate: false
+    baseline-on-migrate: true
   mail:
     host: mail.adm.tools
-    port: 25
+    port: 2525
     username: java@e-chem.com.ua
     password: au755GK2Rh
     properties:

@@ -17,19 +17,18 @@
 --     role        varchar(255) check (role in ('CLIENT', 'ADMIN', 'MANAGER')),
 --     primary key (id)
 -- );
--- create table products
--- (
---     opt_price           numeric(38, 2),
---     price               numeric(38, 2),
---     id                  bigint not null,
---     country_producer    varchar(255),
---     on_stock            varchar(255) check (on_stock in ('ON_STOCK', 'AVAILABLE', 'WAITING', 'ABSENT')),
---     photo_url           varchar(255),
---     producer            varchar(255),
---     product_description varchar(255),
---     title               varchar(255),
---     primary key (id)
--- );
+
+create table products (
+    opt_price numeric(38,2),
+    price numeric(38,2),
+    id bigint not null,
+    country_producer varchar(255),
+    on_stock varchar(255),
+    photo_url varchar(255),
+    producer varchar(255),
+    product_description text,
+    title varchar(255),
+    primary key (id));
 -- create table categories
 -- (
 --     id    bigint not null,

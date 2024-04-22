@@ -1,7 +1,6 @@
 package com.echem.ecshop.dto;
 
 import com.echem.ecshop.domain.Category;
-import com.echem.ecshop.domain.OnStock;
 import lombok.Builder;
 
 import java.math.BigDecimal;
@@ -16,7 +15,7 @@ public record ProductDTO(Long id,
                          String photoUrl,
                          String producer,
                          String countryProducer,
-                         OnStock onStock,
+                         String onStock,
                          List<Category> categories
 ){
 }
