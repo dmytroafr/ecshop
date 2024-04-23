@@ -39,7 +39,7 @@ spring:
 
 
 currency:
-  url: "https://v6.exchangerate-api.com/v6/3f905d8e5983cbdbe2a6bc4e/latest/USD"
+  url: "https://v6.exchangerate-api.com/v6/3f905d8e5983cbdbe2a6bc4e/latest/"
 
 #management:
 #  endpoints:

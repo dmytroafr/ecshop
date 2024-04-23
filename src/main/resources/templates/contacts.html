@@ -18,9 +18,8 @@
 <body class="bg-body-tertiary">
 <div th:insert="~{fragments/menu :: #nav-menu}"></div>
 
-<div class="container text-center">
-    <img th:src="@{/images/header.jpg}" class="img-fluid" />
-</div>
+<img th:src="@{/images/header.jpg}" class="img-fluid mx-auto" alt="ecochem, екохім"/>
+
 <div th:insert="~{fragments/menu :: #navigator}"></div>
 <div class="container">
     <div th:text="${currency}" class="row"></div>

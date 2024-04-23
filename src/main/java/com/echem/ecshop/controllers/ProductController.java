@@ -5,9 +5,7 @@ import com.echem.ecshop.service.ProductService;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 
@@ -21,7 +19,7 @@ public class ProductController {
         this.bucketService = bucketService;
     }
     @GetMapping
-    public String findAllByPage(Model model, Pageable pageable){
+    public String findAllByPage(Model model,Pageable pageable){
         var page = productService.findAllByPage(pageable);
         model.addAttribute("products", page);
         return "products";

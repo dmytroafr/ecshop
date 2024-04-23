@@ -22,7 +22,7 @@ public class MainController {
         ident(httpSession);
         model.addAttribute("uuid", httpSession.getAttribute("myID"));
 
-        String rate = currencyService.getUAH();
+        String rate = currencyService.getPLN();
         model.addAttribute("currency", rate);
 
         return "index";

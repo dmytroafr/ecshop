@@ -33,8 +33,9 @@
   </head>
   <body>
     <div th:insert="~{fragments/menu :: #nav-menu}"></div>
+    <img th:src="@{/images/header.jpg}" class="img-fluid mx-auto" alt="ecochem, екохім"/>
+
     <div class="container">
-      <img th:src="@{/images/header.jpg}" />
       <div th:insert="~{fragments/menu :: #navigator}"></div>
 
       <div class="container text-center">
