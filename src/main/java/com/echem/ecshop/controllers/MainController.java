@@ -11,6 +11,7 @@ import java.util.UUID;
 
 @Controller
 public class MainController {
+
     private final CurrencyService currencyService;
     public MainController(CurrencyService currencyService) {
         this.currencyService = currencyService;
@@ -33,11 +34,11 @@ public class MainController {
         return "login";
     }
 
-    @GetMapping("/login-error")
-    public String loginError(Model model) {
-        model.addAttribute("loginError", true);
-        return "error";
-    }
+//    @GetMapping("/login-error")
+//    public String loginError(Model model) {
+//        model.addAttribute("loginError", true);
+//        return "error";
+//    }
     @GetMapping ("/conditions")
     public String conditions(){
         return "conditions";
