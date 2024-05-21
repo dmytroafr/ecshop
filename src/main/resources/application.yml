@@ -1,0 +1,55 @@
+server:
+  port: 8080
+  host: http://localhost:8080
+  error:
+    include-message: always
+    include-binding-errors: always
+
+spring:
+  application:
+    name: internet-shop
+  output:
+    ansi:
+      enabled: ALWAYS
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+#    properties:
+#      hibernate.hibernate.dialect: org.hibernate.dialect.PostgresDialect
+  datasource:
+    url: jdbc:postgresql://localhost:5432/database_ec
+    username: ${POSTGRES_USER}
+    password: ${POSTGRES_PASS}
+    driver-class-name: org.postgresql.Driver
+    
+
+    #    url: jdbc:postgresql://localhost:5432/container_test
+    #    username: ${POSTGRES_USER}
+    #    password: ${POSTGRES_PASS} 1234
+
+
+  #  datasource:
+#    url: jdbc:postgresql://echem.mysql.tools:5432/echem_test
+#    username: ${POSTGRES_USER}
+#    password: ${POSTGRES_PASS}
+  flyway:
+    baseline-on-migrate: true
+  mail:
+    host: mail.adm.tools
+    port: 2525
+    username: control@e-chem.com.ua
+    password: ${ SMTP_PASS }
+    properties:
+      mail:
+        smtp:
+          ssl:
+            trust: "*"
+          auth: true
+          starttls:
+            enable: true
+          connectiontimeout: 5000
+          timeout: 2000
+          writetimeout: 5000
+currency:
+  url: "https://v6.exchangerate-api.com/v6/${C_TOKEN}/latest/"

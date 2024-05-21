@@ -34,11 +34,6 @@ public class MainController {
         return "login";
     }
 
-//    @GetMapping("/login-error")
-//    public String loginError(Model model) {
-//        model.addAttribute("loginError", true);
-//        return "error";
-//    }
     @GetMapping ("/conditions")
     public String conditions(){
         return "conditions";

@@ -1,20 +1,18 @@
 version: '3.8'
 
 services:
-
   postgres:
-    image: postgres
+    image: postgres:latest
     environment:
       POSTGRES_DB: container_test
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: 1234
     ports:
-      - "5434:5432"  # Примітка: Використовуємо порт 5433 на хості для уникнення конфліктів
-
+      - "5434:5432"
+#    volumes:
+#      - echem_db:/var/lib/postgresql/data
+#
 #  app:
-#    build:
-#      context: .
-#      dockerfile: Dockerfile
 #    image: dmytroafro/current
 #    ports:
 #      - "8080:8080"
@@ -24,3 +22,7 @@ services:
 #      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/container_test
 #      SPRING_DATASOURCE_USERNAME: postgres
 #      SPRING_DATASOURCE_PASSWORD: 1234
+#
+#volumes:
+#  echem_db:
+#    driver: local

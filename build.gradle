@@ -26,6 +26,7 @@ dependencies{
 	implementation 'org.springframework.boot:spring-boot-starter-mail'
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'org.flywaydb:flyway-core'
 	implementation 'org.springframework.boot:spring-boot-starter-cache'
 	compileOnly 'org.projectlombok:lombok'
@@ -44,7 +45,7 @@ dependencies{
 
 	implementation 'org.mapstruct:mapstruct:1.5.5.Final'
 	annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.5.Final'
-	runtimeOnly 'org.springframework.boot:spring-boot-docker-compose'
+//	runtimeOnly 'org.springframework.boot:spring-boot-docker-compose'
 }
 
 

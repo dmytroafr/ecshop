@@ -2,44 +2,47 @@ package com.echem.ecshop.registration;
 
 import com.echem.ecshop.domain.Role;
 import com.echem.ecshop.domain.User;
+import com.echem.ecshop.dto.RegistrationRequest;
 import com.echem.ecshop.email.EmailSender;
-import com.echem.ecshop.email.EmailValidator;
 import com.echem.ecshop.registration.token.ConfirmationToken;
 import com.echem.ecshop.registration.token.ConfirmationTokenService;
 import com.echem.ecshop.service.UserService;
-import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 
 @Service
-@AllArgsConstructor
 public class RegistrationServiceImpl implements RegistrationService{
 
     private final UserService userService;
     private final ConfirmationTokenService tokenService;
-    private final EmailValidator emailValidator;
     private final EmailSender emailSender;
 
+    @Value("${server.host}")
+    private String serverHost;
+
+    public RegistrationServiceImpl(UserService userService, ConfirmationTokenService tokenService, EmailSender emailSender) {
+        this.userService = userService;
+        this.tokenService = tokenService;
+        this.emailSender = emailSender;
+    }
 
     @Override
     public String register(RegistrationRequest request) {
 
-        boolean isValidEmail = emailValidator.test(request.email());
-        if (!isValidEmail){
-            throw new IllegalStateException("email format is not valid");
-        }
+
         String token = userService.signUpUser(new User(
                 request.userName(),
                 request.password(),
                 request.email(),
-                Role.ADMIN
+                Role.CLIENT
         ));
 
-        String link = "http://localhost:8080/registration/confirm?token=" + token;
+        String link = serverHost + "/registration/confirm?token=" + token;
 
-        emailSender.send(request.email(),String.format("hello, Dimon!, click here: %s",link));
+        emailSender.send(request.email(),String.format("hello, "+request.userName()+"!, click here: %s",link));
         return token;
     }
     @Transactional

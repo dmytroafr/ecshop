@@ -8,7 +8,7 @@ import java.util.List;
 public interface UserService  extends UserDetailsService {
 
     List<User> getAllUsers();
-    User findByEmail(String email);
+    User findByUserName(String email);
     User findByName(String username);
     String signUpUser(User user);
     void enableUser (String email);

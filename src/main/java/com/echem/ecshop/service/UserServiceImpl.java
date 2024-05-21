@@ -25,8 +25,8 @@ public class UserServiceImpl implements UserService{
 	private final ConfirmationTokenService confirmationTokenService;
 	private final UserMapper mapper = UserMapper.MAPPER;
 	@Override
-	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-		return findByEmail(email);
+	public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
+		return findByUserName(userName);
 	}
 	@Override
 	public List<User> getAllUsers() {
@@ -35,10 +35,10 @@ public class UserServiceImpl implements UserService{
 	@Override
 	public void save(User user) { userRepository.save(user);}
 	@Override
-	public User findByEmail(String email) {
-		return userRepository.findUserByEmail(email)
+	public User findByUserName(String userName) {
+		return userRepository.findByUserName(userName)
 				.orElseThrow(()->new IllegalStateException(
-						String.format(USER_NOT_FOUND_BSG,email)
+						String.format(USER_NOT_FOUND_BSG,userName)
 				));
 	}
 	@Override
