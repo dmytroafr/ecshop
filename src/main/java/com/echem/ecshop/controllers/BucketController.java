@@ -35,6 +35,15 @@ public class BucketController {
         }
         return "bucket";
     }
+        @GetMapping("/bucket/{productId}")
+    public String addBucket(@PathVariable Long productId, Principal principal){
+        if (principal==null){
+            return "redirect:/login";
+        }
+        bucketService.addToUserBucket(productId, principal.getName());
+        return "redirect:/products";
+    }
+
     @DeleteMapping ("/{productId}")
     public String deleteProduct (@PathVariable Long productId, Model model, Principal principal){
         if (principal==null){

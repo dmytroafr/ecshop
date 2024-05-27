@@ -12,4 +12,8 @@ public interface ProductService {
     List<ProductDTO> getAllRecordDto();
     ProductDTO getProductById(Long id);
     Page<ProductDTO> findAllByPage (Pageable pageable);
+    void addNewProduct(ProductDTO productDTO);
+    Page<ProductDTO> findAllOnOnStock(Pageable pageable);
+
+    void setNewPrice(Long productId, double price);
 }

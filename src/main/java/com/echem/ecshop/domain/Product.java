@@ -2,7 +2,6 @@ package com.echem.ecshop.domain;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -13,7 +12,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+//@Builder
 @Entity
 @Table(name="products")
 public class Product {
@@ -30,8 +29,8 @@ public class Product {
     private String photoUrl;
     private String producer;
     private String countryProducer;
-
-    private String onStock;
+    @Enumerated(EnumType.STRING)
+    private OnStock onStock;
 
     @ManyToMany(cascade = CascadeType.PERSIST)
     @JoinTable(name = "products_categories",
