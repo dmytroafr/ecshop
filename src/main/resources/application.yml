@@ -1,10 +1,16 @@
 server:
   port: 8080
-#  host: http://185.69.153.13/
   host: http://localhost/
+#  port: 443
+#  host: https://185.69.153.13/
   error:
     include-message: always
     include-binding-errors: always
+#  ssl:
+#    key-store: file:/etc/letsencrypt/live/e-chem.com.ua/keystore.p12
+#    key-store-password: ${KEY_PASS}
+#    key-alias: tomcat
+#    key-store-type: PKCS12
 
 spring:
   application:
@@ -18,32 +24,18 @@ spring:
     show-sql: true
     properties:
       hibernate.hibernate.dialect: org.hibernate.dialect.PostgresDialect
-
-
   datasource:
-#    url: jdbc:postgresql://localhost:5432/database_ec
-#    username: ${POSTGRES_USER}
-#    password: ${POSTGRES_PASS}
-#    driver-class-name: org.postgresql.Driver
-#
-
-        url: jdbc:postgresql://localhost:5432/database_ec
-        username: ${POSTGRES_USER}
-        password: ${POSTGRES_PASS}
-
-
-  #  datasource:
-#    url: jdbc:postgresql://echem.mysql.tools:5432/echem_test
-#    username: ${POSTGRES_USER}
-#    password: ${POSTGRES_PASS}
-
+    url: jdbc:postgresql://localhost:5432/database_ec
+    username: ${POSTGRES_USER}
+    password: ${POSTGRES_PASS}
+    driver-class-name: org.postgresql.Driver
   flyway:
-    baseline-on-migrate: true
+    baseline-on-migrate: false
   mail:
     host: mail.adm.tools
     port: 2525
     username: control@e-chem.com.ua
-    password: sa3f28KEC3
+    password: ${SMTP_PASS}
     properties:
       mail:
         smtp:
@@ -55,5 +47,6 @@ spring:
           connectiontimeout: 5000
           timeout: 2000
           writetimeout: 5000
+
 currency:
-  url: "https://v6.exchangerate-api.com/v6/3f905d8e5983cbdbe2a6bc4e/latest/"
+  url: https://v6.exchangerate-api.com/v6/${C_TOKEN}/latest/
