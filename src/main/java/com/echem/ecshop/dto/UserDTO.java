@@ -1,15 +1,17 @@
 package com.echem.ecshop.dto;
 
-import com.echem.ecshop.domain.Bucket;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-import java.util.List;
 
 @Builder
-public record UserDTO (
-        String username,
-        String password,
-        String email,
-        String phone,
-        List<Bucket> bucket){
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class UserDTO {
+    public String username;
+    public String password;
+    String email;
 }

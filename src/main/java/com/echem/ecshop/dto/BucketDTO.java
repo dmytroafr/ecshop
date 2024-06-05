@@ -1,28 +1,28 @@
 package com.echem.ecshop.dto;
 
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.Singular;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Setter
-@Getter
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-//@Builder
 public class BucketDTO {
-    private Long id;
-    private int amountProducts;
-    private Double sum;
+    public Long id;
+    public int amountProducts;
+    public Double sum;
     @Singular
-    private List<BucketDetailsDTO> bucketDetailsDTOS = new ArrayList<>();
+    public List<BucketDetailDTO> productList = new ArrayList<>();
 
     public void aggregate(){
-        this.amountProducts = bucketDetailsDTOS.size();
-        this.sum = bucketDetailsDTOS.stream()
-                .map(BucketDetailsDTO::sum)
+        this.amountProducts = productList.size();
+        this.sum = productList.stream()
+                .map(BucketDetailDTO::getSum)
                 .mapToDouble(Double::doubleValue)
                 .sum();
     }

@@ -30,6 +30,7 @@ public class Order {
 
     @UpdateTimestamp
     private LocalDateTime updated;
+
     private LocalDateTime closed;
 
     @ManyToOne

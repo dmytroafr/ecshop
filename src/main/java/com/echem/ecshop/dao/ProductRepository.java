@@ -11,4 +11,5 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     @Query("select p from Product p left join fetch p.categories where p.onStock='ON_STOCK'")
     Page<Product> findAllByOnStock(Pageable pageable);
 
+
 }

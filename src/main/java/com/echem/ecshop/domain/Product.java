@@ -12,7 +12,6 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-//@Builder
 @Entity
 @Table(name="products")
 public class Product {

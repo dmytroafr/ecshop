@@ -25,7 +25,7 @@
               <a th:href="@{/users/profile}">
                 <span sec:authentication="principal.username">Bill</span></a
               >.
-              <a th:href="@{/bucket}"  sec:authorize="hasAnyAuthority('ADMIN', 'MANAGER','CLIENT')">Корзина</a>
+              <a th:href="@{/buckets}"  sec:authorize="hasAnyAuthority('ADMIN', 'MANAGER','CLIENT')">Корзина</a>
               <a th:href="@{/logout}">Вихід</a>
             </li>
           </div>

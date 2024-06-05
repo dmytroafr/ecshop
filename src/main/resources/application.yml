@@ -17,13 +17,15 @@ spring:
     name: internet-shop
   output:
     ansi:
-      enabled: ALWAYS
+      enabled: detect
   jpa:
     hibernate:
       ddl-auto: update
     show-sql: true
     properties:
       hibernate.hibernate.dialect: org.hibernate.dialect.PostgresDialect
+      hibernate:
+        format_sql: true
   datasource:
     url: jdbc:postgresql://localhost:5432/database_ec
     username: ${POSTGRES_USER}

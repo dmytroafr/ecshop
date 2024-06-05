@@ -2,19 +2,17 @@ package com.echem.ecshop.registration.token;
 
 import com.echem.ecshop.domain.User;
 import jakarta.persistence.*;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import java.time.LocalDateTime;
 
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @Entity
 public class ConfirmationToken {
 
-    private static final String TOKEN_SEQ = "token-seq";
+    private static final String TOKEN_SEQ = "token_seq";
 
     @SequenceGenerator(name = TOKEN_SEQ, sequenceName = TOKEN_SEQ, allocationSize = 1)
     @Id

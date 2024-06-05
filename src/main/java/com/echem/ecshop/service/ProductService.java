@@ -1,19 +1,18 @@
 package com.echem.ecshop.service;
 
 
+import com.echem.ecshop.domain.Product;
 import com.echem.ecshop.dto.ProductDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-import java.util.List;
-
 public interface ProductService {
-    List<ProductDTO> getAll();
-    List<ProductDTO> getAllRecordDto();
-    ProductDTO getProductById(Long id);
+    ProductDTO getProductDtoById(Long id);
+
+    Product getProductRef (Long id);
     Page<ProductDTO> findAllByPage (Pageable pageable);
-    void addNewProduct(ProductDTO productDTO);
     Page<ProductDTO> findAllOnOnStock(Pageable pageable);
 
+    void addNewProduct(ProductDTO productDTO);
     void setNewPrice(Long productId, double price);
 }

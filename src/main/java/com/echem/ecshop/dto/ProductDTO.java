@@ -7,20 +7,8 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-//public record ProductDTO(Long id,
-//                         String title,
-//                         BigDecimal price,
-//                         BigDecimal optPrice,
-//                         String productDescription,
-//                         String photoUrl,
-//                         String producer,
-//                         String countryProducer,
-//                         String onStock,
-//                         List<Category> categories
-//){
-//}
 @Builder
-@Getter @Setter
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class ProductDTO {

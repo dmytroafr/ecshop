@@ -1,80 +1,84 @@
 <!DOCTYPE html>
-<html
-  lang="uk"
-  xmlns:th="http://www.w3.org/1999/xhtml"
-  xmlns:sec="http://www.w3.org/1999/xhtml"
->
-  <head>
-    <meta charset="UTF-8" />
-    <title>Bucket page</title>
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-      integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM"
-      crossorigin="anonymous"
-    />
-    <link
-      rel="apple-touch-icon"
-      sizes="180x180"
-      href="/images/apple-touch-icon.png"
-    />
-    <link
-      rel="icon"
-      type="image/png"
-      sizes="32x32"
-      href="/images/favicon-32x32.png"
-    />
-    <link
-      rel="icon"
-      type="image/png"
-      sizes="16x16"
-      href="/images/favicon-16x16.png"
-    />
-  </head>
-  <body>
-    <div th:insert="~{fragments/menu :: #nav-menu}"></div>
-    <img th:src="@{/images/header.jpg}" class="img-fluid mx-auto" alt="ecochem, екохім"/>
+<html lang="uk" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-09Q73E6BWG"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
 
-    <div class="container">
-      <div th:insert="~{fragments/menu :: #navigator}"></div>
+    gtag('config', 'G-09Q73E6BWG');
+  </script>
 
-      <div class="container text-center">
-        <div class="row">
-          <div th:insert="~{fragments/menu :: #bar}"></div>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM"
+          crossorigin="anonymous"
+  />
+  <title>Екохім</title>
+  <link rel="stylesheet" type="text/css" th:href="@{/css/styles.css}" />
+</head>
 
-          <div class="col-sm-9">
-            <div class="row">
-              <h4>Ваша корзина</h4>
-              <h5>Загальна сума -> <b th:text="${bucket.sum}">1000</b></h5>
-              <table border="1" align="centre">
-                <tr>
-                  <td>Назва товару</td>
-                  <td>Кількість</td>
-                  <td>Ціна</td>
-                  <td>Сума</td>
-                  <td></td>
-                </tr>
-                <tr th:each="detail : ${bucket.bucketDetails}">
-                  <td th:text="${detail.title}">сир</td>
-                  <td th:text="${detail.amount}">2</td>
-                  <td th:text="${detail.price}">11</td>
-                  <td th:text="${detail.sum}">22</td>
-                  <td>
+<body class="bg-body-tertiary">
+<div th:insert="~{fragments/menu :: #nav-menu}"></div>
+<img th:src="@{/images/header.jpg}" class="img-fluid mx-auto" alt="ecochem, екохім"/>
+<div th:insert="~{fragments/menu :: #navigator}"></div>
 
-                    <form th:action="@{/bucket/{productId}(productId=${detail.productId})}" method="post">
-                      <input type="hidden" name="_method" value="DELETE">
-                      <button type="submit" onclick="return confirm('Ви впевнені?')">Видалити</button>
-                    </form>
+<div class="container">
+  <div class="row">
+    <div th:insert="~{fragments/menu :: #bar}" class="col-sm-2"></div>
+    <div class="col-sm-9">
+      <div class="row">
+        <h4>Ваша корзина</h4>
+        <h5>Загальна сума -> <b th:text="${bucket.sum}">1000</b></h5>
+        <table border="1" align="centre">
+          <tr>
+            <td>Назва товару</td>
+            <td>Кількість</td>
+            <td>Ціна</td>
+            <td>Сума</td>
+            <td></td>
+          </tr>
+          <tr th:each="product : ${bucket.productList}">
+            <td th:text="${product.title}">сир</td>
+            <td th:text="${product.amount}">2</td>
+            <td th:text="${product.price}">11</td>
+            <td th:text="${product.sum}">22</td>
+            <td>
 
+              <form th:action="@{/buckets/{productId}(productId=${product.productId})}" method="post">
+                <input type="hidden" name="_method" value="DELETE">
+                <button type="submit" onclick="return confirm('Ви впевнені?')">Видалити з корзини</button>
+              </form>
 
-
-                  </td>
-                </tr>
-              </table>
-            </div>
-          </div>
-        </div>
+            </td>
+          </tr>
+        </table>
       </div>
     </div>
-  </body>
+  </div>
+</div>
+
+
+
+
+<div class="container">
+  <br>
+  <br>
+  <br>
+  <br>
+
+</div>
+
+
+<script
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+        crossorigin="anonymous"
+></script>
+</body>
 </html>

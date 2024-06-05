@@ -21,12 +21,6 @@ public class UserController {
         this.userService = userService;
     }
 
-//    @GetMapping
-//    public String userList (Model model){
-//        model.addAttribute("users", userService.getAllUsers());
-//        return "userList";
-//    }
-
     @GetMapping("/profile")
     public String profileUser(Model model, Principal principal){
 

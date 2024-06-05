@@ -6,13 +6,10 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
 
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -36,8 +33,8 @@ public class User implements UserDetails {
     private Role role;
     private Boolean isEnable = false;
     private Boolean isLocked = false;
-    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
-    private List<Bucket> bucket = new ArrayList<>();
+    @OneToOne (mappedBy = "user",cascade = CascadeType.REMOVE)
+    private Bucket bucket;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

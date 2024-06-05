@@ -1,6 +1,16 @@
 <!DOCTYPE html>
 <html lang="uk" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-09Q73E6BWG"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-09Q73E6BWG');
+  </script>
+
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link
@@ -29,9 +39,9 @@
             <h6 class="card-title" th:text="${product.title}" >Card title</h6>
             <p class="card-text" th:text="${product.price}">Some</p>
             <p class="card-text" th:text="${product.onStock}">Some</p>
-            <p class="card-text" th:text="${product.categories[0].title}">Some</p>
-<!--            <a th:href="@{/products/{id}/bucket(id=${product.id})}" class="btn btn-primary" style="alignment-baseline: bottom">-->
-<!--              Додати товар до корзини</a>-->
+<!--            <p class="card-text" th:text="${product.categories[0].title}">Some</p>-->
+            <a th:href="@{/buckets/{id}(id=${product.id})}" class="btn btn-primary" style="alignment-baseline: bottom">
+              Додати товар до корзини</a>
           </div>
         </div>
       </div>

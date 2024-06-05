@@ -23,18 +23,17 @@ public class ProductServiceImp implements ProductService{
     public ProductServiceImp (ProductRepository productRepository) {
         this.productRepository = productRepository;
     }
-    @Override
 
     public List<ProductDTO> getAll() {
         var products = productRepository.findAll();
         return mapper.fromProductList(products);
     }
     @Override
-    public ProductDTO getProductById(Long id) {
-        Product referenceById = productRepository.getReferenceById(id);
-        return mapper.fromProduct(referenceById);
+    public ProductDTO getProductDtoById(Long id) {
+        Product product = productRepository.getReferenceById(id);
+        return mapper.fromProduct(product);
     }
-    @Override
+
     public List<ProductDTO> getAllRecordDto() {
         List<Product> products = productRepository.findAll();
         return products.stream().map(mapper::fromProduct)
@@ -63,5 +62,10 @@ public class ProductServiceImp implements ProductService{
         Product product = productRepository.getReferenceById(productId);
         product.setPrice(new BigDecimal(price));
         productRepository.save(product);
+    }
+
+    @Override
+    public Product getProductRef(Long productId) {
+        return productRepository.getReferenceById(productId);
     }
 }
