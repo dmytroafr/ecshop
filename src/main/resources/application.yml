@@ -1,6 +1,6 @@
 server:
   port: 8080
-  host: http://localhost/
+  host: http://localhost:8080/
 #  port: 443
 #  host: https://185.69.153.13/
   error:
@@ -20,19 +20,19 @@ spring:
       enabled: detect
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: validate
     show-sql: true
     properties:
       hibernate.hibernate.dialect: org.hibernate.dialect.PostgresDialect
       hibernate:
-        format_sql: true
+        format_sql: false
   datasource:
     url: jdbc:postgresql://localhost:5432/database_ec
     username: ${POSTGRES_USER}
     password: ${POSTGRES_PASS}
     driver-class-name: org.postgresql.Driver
   flyway:
-    baseline-on-migrate: false
+    baseline-on-migrate: true
   mail:
     host: mail.adm.tools
     port: 2525

@@ -1,36 +1,70 @@
 <!DOCTYPE html>
 <html lang="uk" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-09Q73E6BWG"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-09Q73E6BWG');
+  </script>
+
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="stylesheet" type="text/css" th:href="@{/css/styles.css}" />
-  <title>Екохім</title>
   <link
           href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
           rel="stylesheet"
           integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM"
           crossorigin="anonymous"
   />
-
-
+  <title>Екохім</title>
+  <link rel="stylesheet" type="text/css" th:href="@{/css/styles.css}" />
 </head>
 
-<body>
+<body class="bg-body-tertiary">
 <div th:insert="~{fragments/menu :: #nav-menu}"></div>
-
 <img th:src="@{/images/header.jpg}" class="img-fluid mx-auto" alt="ecochem, екохім"/>
-
 <div th:insert="~{fragments/menu :: #navigator}"></div>
+
 <div class="container">
-  <div th:text="${currency}" class="row"></div>
   <div class="row">
-    <div th:insert="~{fragments/menu :: #bar}"></div>
+    <div id="bar" class="col-sm-2">
+      <address>
+        ТОВ "Екохім Розвиток"<br><br>
+        Продажі:<br>
+        +380 (44) 334-59-40<br><br>
+        Офіс<br>
+        +380 (95) 791-34-29<br><br>
+        Київ, вул. Алматинська 8<br>
+        оф 103<br><br>
+        office@e-chem.com.ua<br>
+      </address>
+    </div>
 
     <div class="col-sm-9">
-      <div th:text="${errorMessage}">text</div>
+      <div class="row justify-content-center">
+        <div class="col-md-6">
+          <div th:text="${errorMessage}">text</div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
+
+
+
+
+<div class="container">
+  <br>
+  <br>
+  <br>
+  <br>
+
+</div>
+
+
 <script
         src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
@@ -38,3 +72,4 @@
 ></script>
 </body>
 </html>
+

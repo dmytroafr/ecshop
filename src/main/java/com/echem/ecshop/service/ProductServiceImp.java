@@ -68,4 +68,10 @@ public class ProductServiceImp implements ProductService{
     public Product getProductRef(Long productId) {
         return productRepository.getReferenceById(productId);
     }
+
+    @Override
+    public Page<ProductDTO> getProductsByGroup(Long groupNumber, Pageable pageable) {
+        Page<Product> allByGroup = productRepository.findAllByGroup(groupNumber, pageable);
+        return allByGroup.map(mapper::fromProduct);
+    }
 }

@@ -4,6 +4,7 @@ import com.echem.ecshop.domain.User;
 import com.echem.ecshop.dto.UserDTO;
 import com.echem.ecshop.dto.RegistrationRequest;
 import com.echem.ecshop.service.UserService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,6 +22,7 @@ public class UserController {
         this.userService = userService;
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/profile")
     public String profileUser(Model model, Principal principal){
 
@@ -35,7 +37,6 @@ public class UserController {
         model.addAttribute("user",dto);
         return "profile";
     }
-
     @GetMapping("/new")
     public String userRegistration (Model model){
         model.addAttribute("registrationRequest",

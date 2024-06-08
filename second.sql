@@ -357,7 +357,7 @@ COPY public.confirmation_token (id, confirmed_at, created_at, expires_at, token,
 COPY public.flyway_schema_history (installed_rank, version, description, type, script, checksum, installed_by, installed_on, execution_time, success) FROM stdin;
 1	1	<< Flyway Baseline >>	BASELINE	<< Flyway Baseline >>	\N	postgres	2024-04-22 12:27:19.599527	0	t
 2	2	add admin	SQL	V2__add_admin.sql	-1708511975	postgres	2024-04-22 12:27:19.775472	6	t
-3	3	add products	SQL	V3__add_products.sql	-1386883110	postgres	2024-04-22 12:27:19.849169	2	t
+3	3	add products	SQL	V2__add_products.sql	-1386883110	postgres	2024-04-22 12:27:19.849169	2	t
 \.
 
 

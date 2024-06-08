@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -15,6 +16,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @Configuration
 @EnableWebSecurity()
 @AllArgsConstructor
+@EnableMethodSecurity(securedEnabled = true, jsr250Enabled = true)
 public class WebSecurityConfig {
 
     private final PasswordEncoder passwordEncoder;
@@ -24,8 +26,6 @@ public class WebSecurityConfig {
 
         return http.authorizeHttpRequests(
                 requests -> requests
-//                        .requestMatchers("/users")
-//                        .hasAnyAuthority(Role.ADMIN.name(), Role.MANAGER.name())
                         .anyRequest()
                         .permitAll())
 

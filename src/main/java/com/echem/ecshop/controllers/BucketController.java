@@ -37,16 +37,16 @@ public class BucketController {
         return "bucket";
     }
 
-        @GetMapping("/{productId}")
+    @GetMapping("/{productId}")
     public String addToBucket(@PathVariable Long productId, Principal principal){
-            sessionObjectHolder.addClicks();
-
+        sessionObjectHolder.addClicks();
         if (principal==null){
             return "redirect:/login";
         }
         bucketService.addBucketDetails(productId, principal.getName());
         return "redirect:/products";
     }
+//      TODO  якесь єбобо
 
     @PostMapping ("/{productId}")
     public String deleteProduct (@PathVariable Long productId, Model model, Principal principal){

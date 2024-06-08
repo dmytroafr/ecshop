@@ -37,7 +37,7 @@ public class RegistrationServiceImpl implements RegistrationService{
                 request.userName(),
                 request.password(),
                 request.email(),
-                Role.ADMIN
+                Role.CLIENT
         ));
 
         String link = serverHost + "registration/confirm?token=" + token;

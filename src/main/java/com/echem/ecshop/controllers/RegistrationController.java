@@ -19,9 +19,6 @@ public class RegistrationController {
         model.addAttribute("registration", "waiting");
         return "index";
     }
-
-
-
     @GetMapping("/confirm")
     public String confirmToken (@RequestParam("token") String token){
         return registrationService.confirmToken(token);

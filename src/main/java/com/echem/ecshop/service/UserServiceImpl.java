@@ -3,7 +3,6 @@ package com.echem.ecshop.service;
 import com.echem.ecshop.config.PasswordEncoder;
 import com.echem.ecshop.dao.UserRepository;
 import com.echem.ecshop.domain.User;
-import com.echem.ecshop.mapper.UserMapper;
 import com.echem.ecshop.registration.token.ConfirmationToken;
 import com.echem.ecshop.registration.token.ConfirmationTokenService;
 import lombok.AllArgsConstructor;
@@ -23,7 +22,6 @@ public class UserServiceImpl implements UserService{
 	private final UserRepository userRepository;
 	private final PasswordEncoder passwordEncoder;
 	private final ConfirmationTokenService confirmationTokenService;
-	private final UserMapper mapper = UserMapper.MAPPER;
 	@Override
 	public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
 		return findByUserName(userName);

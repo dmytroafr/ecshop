@@ -15,4 +15,6 @@ public interface ProductService {
 
     void addNewProduct(ProductDTO productDTO);
     void setNewPrice(Long productId, double price);
+
+    Page<ProductDTO> getProductsByGroup(Long groupNumber, Pageable pageable);
 }

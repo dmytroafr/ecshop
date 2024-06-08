@@ -34,14 +34,14 @@
     <div class="col-sm-9">
       <div class="row">
         <h4>Ваша корзина</h4>
-        <h5>Загальна сума -> <b th:text="${bucket.sum}">1000</b></h5>
-        <table border="1" align="centre">
+        <h5>Загальна сума : <b th:text="${bucket.sum}">0</b></h5>
+        <table class="table table-bordered">
           <tr>
-            <td>Назва товару</td>
-            <td>Кількість</td>
-            <td>Ціна</td>
-            <td>Сума</td>
-            <td></td>
+            <th>Назва товару</th>
+            <th>Кількість</th>
+            <th>Ціна</th>
+            <th>Сума</th>
+            <th></th>
           </tr>
           <tr th:each="product : ${bucket.productList}">
             <td th:text="${product.title}">сир</td>
