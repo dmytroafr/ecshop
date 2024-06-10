@@ -1,4 +1,4 @@
-package com.echem.ecshop.service;
+package com.echem.ecshop.service.currency;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.Cacheable;
@@ -16,7 +16,6 @@ public class CurrencyServiceImpl implements CurrencyService{
 
 	@Value("${currency.url}")
 	private String currencyUrl;
-
 
 
 	@Async

@@ -1,4 +1,4 @@
-package com.echem.ecshop.registration.token;
+package com.echem.ecshop.service.registration.token;
 
 import com.echem.ecshop.dao.TokenRepository;
 import lombok.AllArgsConstructor;

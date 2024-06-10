@@ -47,4 +47,20 @@ public class Order {
 
     private String delivery;
     private String payment;
+
+
+    @Override
+    public String toString() {
+        return "Order{" +
+                "payment='" + payment + '\'' +
+                ", delivery='" + delivery + '\'' +
+                ", status=" + status +
+                ", details=" + details +
+                ", sum=" + sum +
+                ", closed=" + closed +
+                ", updated=" + updated +
+                ", created=" + created +
+                ", id=" + id +
+                '}';
+    }
 }

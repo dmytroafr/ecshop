@@ -1,6 +1,6 @@
 package com.echem.ecshop.config;
 
-import com.echem.ecshop.service.UserService;
+import com.echem.ecshop.service.user.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

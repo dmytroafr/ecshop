@@ -1,4 +1,4 @@
-package com.echem.ecshop.email;
+package com.echem.ecshop.service.email;
 
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
@@ -19,13 +19,13 @@ public class EmailService implements EmailSender{
 
     @Override
     @Async
-    public void send(String to, String email) {
+    public void send(String to, String email, String subject) {
         try {
             MimeMessage mimeMessage = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(mimeMessage);
             helper.setText(email);
             helper.setTo(to);
-            helper.setSubject("Please confirm your email");
+            helper.setSubject(subject);
             helper.setFrom("java@e-chem.com.ua");
             mailSender.send(mimeMessage);
 

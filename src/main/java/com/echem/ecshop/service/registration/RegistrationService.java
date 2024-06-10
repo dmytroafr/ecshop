@@ -1,4 +1,4 @@
-package com.echem.ecshop.registration;
+package com.echem.ecshop.service.registration;
 
 import com.echem.ecshop.dto.RegistrationRequest;
 

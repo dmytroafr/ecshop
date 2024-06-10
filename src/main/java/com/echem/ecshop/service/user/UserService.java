@@ -1,4 +1,4 @@
-package com.echem.ecshop.service;
+package com.echem.ecshop.service.user;
 
 import com.echem.ecshop.domain.User;
 import org.springframework.security.core.userdetails.UserDetailsService;

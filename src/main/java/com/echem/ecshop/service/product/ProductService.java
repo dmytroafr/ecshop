@@ -1,4 +1,4 @@
-package com.echem.ecshop.service;
+package com.echem.ecshop.service.product;
 
 
 import com.echem.ecshop.domain.Product;

@@ -1,7 +1,7 @@
 package com.echem.ecshop.controllers;
 
 import com.echem.ecshop.dto.RegistrationRequest;
-import com.echem.ecshop.registration.RegistrationService;
+import com.echem.ecshop.service.registration.RegistrationService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;

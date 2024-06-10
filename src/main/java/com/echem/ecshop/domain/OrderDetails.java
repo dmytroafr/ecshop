@@ -28,4 +28,13 @@ public class OrderDetails {
     private Product product;
     private BigDecimal amount;
     private BigDecimal price;
+
+    @Override
+    public String toString() {
+        return "OrderDetails{" +
+                "price=" + price +
+                ", amount=" + amount +
+                ", product=" + product.getTitle() +
+                '}';
+    }
 }

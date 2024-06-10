@@ -1,11 +1,10 @@
-package com.echem.ecshop.service;
+package com.echem.ecshop.service.user;
 
 import com.echem.ecshop.config.PasswordEncoder;
 import com.echem.ecshop.dao.UserRepository;
 import com.echem.ecshop.domain.User;
-import com.echem.ecshop.registration.token.ConfirmationToken;
-import com.echem.ecshop.registration.token.ConfirmationTokenService;
-import lombok.AllArgsConstructor;
+import com.echem.ecshop.service.registration.token.ConfirmationToken;
+import com.echem.ecshop.service.registration.token.ConfirmationTokenService;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -15,13 +14,19 @@ import java.util.List;
 import java.util.UUID;
 
 @Service
-@AllArgsConstructor
 public class UserServiceImpl implements UserService{
 
 	private static final String USER_NOT_FOUND_BSG = "user with email %s not found";
 	private final UserRepository userRepository;
 	private final PasswordEncoder passwordEncoder;
 	private final ConfirmationTokenService confirmationTokenService;
+
+	public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder, ConfirmationTokenService confirmationTokenService) {
+		this.userRepository = userRepository;
+		this.passwordEncoder = passwordEncoder;
+		this.confirmationTokenService = confirmationTokenService;
+	}
+
 	@Override
 	public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
 		return findByUserName(userName);
@@ -72,4 +77,5 @@ public class UserServiceImpl implements UserService{
 		User user = userRepository.findUserByEmail(email).orElseThrow();
 		user.setIsEnable(true);
 	}
+
 }

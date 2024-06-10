@@ -1,4 +1,4 @@
-package com.echem.ecshop.service;
+package com.echem.ecshop.service.currency;
 
 
 public interface CurrencyService {

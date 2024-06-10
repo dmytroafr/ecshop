@@ -77,4 +77,17 @@ public class User implements UserDetails {
         this.email = email;
         this.role = role;
     }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "role=" + role +
+                ", phone='" + phone + '\'' +
+                ", email='" + email + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", userName='" + userName + '\'' +
+                ", id=" + id +
+                '}';
+    }
 }

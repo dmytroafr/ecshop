@@ -1,4 +1,4 @@
-package com.echem.ecshop.service;
+package com.echem.ecshop.service.bucket;
 
 import com.echem.ecshop.dao.BucketRepository;
 import com.echem.ecshop.domain.Bucket;
@@ -6,18 +6,26 @@ import com.echem.ecshop.domain.Product;
 import com.echem.ecshop.domain.User;
 import com.echem.ecshop.dto.BucketDTO;
 import com.echem.ecshop.dto.BucketDetailDTO;
-import lombok.AllArgsConstructor;
+import com.echem.ecshop.service.product.ProductService;
+import com.echem.ecshop.service.user.UserService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.*;
 
 @Service
-@AllArgsConstructor
 public class BucketServiceImpl implements BucketService{
+
     private final BucketRepository bucketRepository;
     private final ProductService productService;
     private final UserService userService;
+
+    public BucketServiceImpl(BucketRepository bucketRepository, ProductService productService, UserService userService) {
+        this.bucketRepository = bucketRepository;
+        this.productService = productService;
+        this.userService = userService;
+    }
 
     @Override
     public void addBucketDetails(Long productId, String username) {
@@ -35,7 +43,7 @@ public class BucketServiceImpl implements BucketService{
     }
 
     @Override
-    public BucketDTO getBucketByUser (String name){
+    public BucketDTO getBucketDtoByUser (String name){
         User user =  userService.findByName(name);
 
         if (user == null || user.getBucket() == null){
@@ -64,13 +72,13 @@ public class BucketServiceImpl implements BucketService{
         return bucketDTO;
     }
 
+    @Override
     public Bucket createBucket(User user) {
         Bucket bucket = new Bucket();
         bucket.setUser(user);
         user.setBucket(bucket);
         return bucketRepository.save(bucket);
     }
-
 
     @Override
     public BucketDTO deleteProductFromBucket(Long productId, String userName) {
@@ -84,6 +92,14 @@ public class BucketServiceImpl implements BucketService{
         productList.removeIf(product -> Objects.equals(product.getId(), productId));
 
         userService.save(user);
-        return getBucketByUser(user.getUsername());
+        return this.getBucketDtoByUser(user.getUsername());
+    }
+
+    @Transactional
+    @Override
+    public void deleteBucketByUser(User user){
+
+        bucketRepository.deleteBucketByUser(user);
+
     }
 }

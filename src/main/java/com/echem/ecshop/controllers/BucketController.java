@@ -1,7 +1,7 @@
 package com.echem.ecshop.controllers;
 
 import com.echem.ecshop.dto.BucketDTO;
-import com.echem.ecshop.service.BucketService;
+import com.echem.ecshop.service.bucket.BucketService;
 import com.echem.ecshop.service.SessionObjectHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -31,7 +31,7 @@ public class BucketController {
         if (principal==null){
             model.addAttribute("bucket", new BucketDTO());
         } else {
-            BucketDTO bucketDTO = bucketService.getBucketByUser(principal.getName());
+            BucketDTO bucketDTO = bucketService.getBucketDtoByUser(principal.getName());
             model.addAttribute("bucket", bucketDTO);
         }
         return "bucket";

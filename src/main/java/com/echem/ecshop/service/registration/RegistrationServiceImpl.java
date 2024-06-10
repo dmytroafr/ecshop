@@ -1,12 +1,12 @@
-package com.echem.ecshop.registration;
+package com.echem.ecshop.service.registration;
 
 import com.echem.ecshop.domain.Role;
 import com.echem.ecshop.domain.User;
 import com.echem.ecshop.dto.RegistrationRequest;
-import com.echem.ecshop.email.EmailSender;
-import com.echem.ecshop.registration.token.ConfirmationToken;
-import com.echem.ecshop.registration.token.ConfirmationTokenService;
-import com.echem.ecshop.service.UserService;
+import com.echem.ecshop.service.email.EmailSender;
+import com.echem.ecshop.service.registration.token.ConfirmationToken;
+import com.echem.ecshop.service.registration.token.ConfirmationTokenService;
+import com.echem.ecshop.service.user.UserService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -42,7 +42,9 @@ public class RegistrationServiceImpl implements RegistrationService{
 
         String link = serverHost + "registration/confirm?token=" + token;
 
-        emailSender.send(request.email(),String.format("hello, "+request.userName()+"!, click here: %s",link));
+        emailSender.send(request.email(),
+                String.format("hello, "+request.userName()+"!, click here: %s",link),
+                "Please confirm your email");
         return token;
     }
     @Transactional

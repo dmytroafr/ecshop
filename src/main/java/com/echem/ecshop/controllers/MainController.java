@@ -1,7 +1,7 @@
 package com.echem.ecshop.controllers;
 
 
-import com.echem.ecshop.service.CurrencyService;
+import com.echem.ecshop.service.currency.CurrencyService;
 import com.echem.ecshop.service.SessionObjectHolder;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
