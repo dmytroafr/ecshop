@@ -37,6 +37,7 @@
         <h5>Загальна сума : <b th:text="${bucket.sum}">0</b></h5>
 
           <table class="table table-bordered">
+            <thead>
             <tr>
               <th>Назва товару</th>
               <th>Кількість</th>
@@ -44,20 +45,35 @@
               <th>Сума</th>
               <th></th>
             </tr>
-
+            </thead>
+            <tbody>
             <tr th:each="product : ${bucket.productList}">
               <td th:text="${product.title}">сир</td>
-              <td th:text="${product.amount}">2</td>
+              <td>
+                <div class="d-flex align-items-center">
+                  <form th:action="@{/buckets/decrease/{productId}(productId=${product.productId})}" method="post" style="display:inline-block; margin-right: 5px;">
+                    <input type="hidden" name="_method" value="POST">
+                    <button type="submit" class="btn btn-outline-secondary btn-sm">-</button>
+                  </form>
+                  <span th:text="${product.amount}">2</span>
+                  <form th:action="@{/buckets/increase/{productId}(productId=${product.productId})}" method="post" style="display:inline-block; margin-left: 5px;">
+                    <input type="hidden" name="_method" value="POST">
+                    <button type="submit" class="btn btn-outline-secondary btn-sm">+</button>
+                  </form>
+                </div>
+              </td>
               <td th:text="${product.price}">11</td>
               <td th:text="${product.sum}">22</td>
               <td>
-                <form th:action="@{/buckets/{productId}(productId=${product.productId})}" method="post">
+                <form th:action="@{/buckets/delete/{productId}(productId=${product.productId})}" method="post">
                   <input type="hidden" name="_method" value="DELETE">
                   <button type="submit" onclick="return confirm('Ви впевнені?')">Видалити з корзини</button>
                 </form>
               </td>
             </tr>
+            </tbody>
           </table>
+
         <form th:action="@{/order/create}" method="post">
           <div class="row">
             <table class="table table-bordered">

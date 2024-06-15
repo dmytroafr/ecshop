@@ -1,7 +1,10 @@
 package com.echem.ecshop.service.order;
 
 import com.echem.ecshop.dao.OrderRepository;
-import com.echem.ecshop.domain.*;
+import com.echem.ecshop.domain.Order;
+import com.echem.ecshop.domain.OrderDetails;
+import com.echem.ecshop.domain.OrderStatus;
+import com.echem.ecshop.domain.User;
 import com.echem.ecshop.dto.BucketDTO;
 import com.echem.ecshop.dto.OrderDTO;
 import com.echem.ecshop.service.bucket.BucketService;
@@ -70,6 +73,12 @@ public class OrderServiceImpl implements OrderService{
 
     @Override
     public Order getOrderById(Long orderId) {
+        Order orderById = orderRepository.getOrderById(orderId);
+
         return orderRepository.getOrderById(orderId);
     }
+
+
+
+
 }

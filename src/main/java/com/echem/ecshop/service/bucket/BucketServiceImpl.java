@@ -81,25 +81,39 @@ public class BucketServiceImpl implements BucketService{
     }
 
     @Override
-    public BucketDTO deleteProductFromBucket(Long productId, String userName) {
+    public void deleteProductFromBucket(Long productId, String userName) {
         User user = userService.findByName(userName);
 
-        if (user == null || user.getBucket()==null){
-            return new BucketDTO();
-        }
         List<Product> productList = user.getBucket().getProductList();
 
         productList.removeIf(product -> Objects.equals(product.getId(), productId));
-
         userService.save(user);
-        return this.getBucketDtoByUser(user.getUsername());
+    }
+
+    @Override
+    public void increaseProductAmount(Long productId, String name) {
+        addBucketDetails(productId,name);
+    }
+
+    @Override
+    public void decreaseProductAmount(Long productId, String name) {
+        User byUserName = userService.findByName(name);
+
+        List<Product> productList = byUserName.getBucket().getProductList();
+
+        Iterator<Product> iterator = productList.iterator();
+        while (iterator.hasNext()) {
+            if (iterator.next().getId().equals(productId)) {
+                iterator.remove();
+                break; // Видалити лише один екземпляр
+            }
+        }
+        userService.save(byUserName);
     }
 
     @Transactional
     @Override
     public void deleteBucketByUser(User user){
-
         bucketRepository.deleteBucketByUser(user);
-
     }
 }

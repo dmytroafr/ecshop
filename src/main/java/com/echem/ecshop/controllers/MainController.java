@@ -1,6 +1,5 @@
 package com.echem.ecshop.controllers;
 
-
 import com.echem.ecshop.service.currency.CurrencyService;
 import com.echem.ecshop.service.SessionObjectHolder;
 import jakarta.servlet.http.HttpSession;
@@ -23,10 +22,8 @@ public class MainController {
     @GetMapping({"","/"})
     public String index (Model model, HttpSession httpSession){
         sessionObjectHolder.addClicks();
-
         ident(httpSession);
         model.addAttribute("uuid", httpSession.getAttribute("myID"));
-
         String rate = currencyService.getUAH();
         model.addAttribute("currency", rate);
 
@@ -35,7 +32,6 @@ public class MainController {
 
     @GetMapping ("/login")
     public String login(HttpSession httpSession, Model model){
-
         sessionObjectHolder.addClicks();
         return "login";
     }
@@ -49,14 +45,12 @@ public class MainController {
 
     @GetMapping("/about")
     public String about(){
-
         sessionObjectHolder.addClicks();
         return "about";
     }
 
     @GetMapping("/contacts")
     public String contacts(){
-
         sessionObjectHolder.addClicks();
         return "contacts";
     }

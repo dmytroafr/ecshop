@@ -28,16 +28,15 @@ public class OrderController {
         return "redirect:/order/" + orderId;
     }
 
+
+    // TODO переробити на DTO
+
     @GetMapping("/{orderId}")
     public String successOrder (@PathVariable Long orderId, Model model, Principal principal){
         String massage = "Ваше замовлення було успішно оформлене, очікуйте на виконання. Дякуємо";
         model.addAttribute("massage",massage);
-
         Order orderById = orderService.getOrderById(orderId);
-
-
-        model.addAttribute("order", orderById.toString());
-
+        model.addAttribute("order", orderById);
         return "result";
     }
 

@@ -27,7 +27,6 @@ public class BucketController {
     @GetMapping
     public String aboutBucket(Model model, Principal principal){
         sessionObjectHolder.addClicks();
-
         if (principal==null){
             model.addAttribute("bucket", new BucketDTO());
         } else {
@@ -46,17 +45,31 @@ public class BucketController {
         bucketService.addBucketDetails(productId, principal.getName());
         return "redirect:/products";
     }
-//      TODO  якесь єбобо
 
-    @PostMapping ("/{productId}")
-    public String deleteProduct (@PathVariable Long productId, Model model, Principal principal){
+    @PostMapping ("/delete/{productId}")
+    public String deleteProduct (@PathVariable Long productId, Principal principal){
         if (principal==null){
             return "redirect:/login";
         }
-        BucketDTO bucketDTO = bucketService.deleteProductFromBucket(productId, principal.getName());
-        model.addAttribute("bucket", bucketDTO);
+        bucketService.deleteProductFromBucket(productId, principal.getName());
         return "redirect:/buckets";
     }
 
+    @PostMapping("/increase/{productId}")
+    public String increaseProductAmount(@PathVariable Long productId, Principal principal) {
+        if (principal==null){
+            return "redirect:/login";
+        }
+        bucketService.increaseProductAmount(productId, principal.getName());
+        return "redirect:/buckets";
+    }
 
+    @PostMapping("/decrease/{productId}")
+    public String decreaseProductAmount(@PathVariable Long productId, Principal principal) {
+        if (principal==null){
+            return "redirect:/login";
+        }
+        bucketService.decreaseProductAmount(productId, principal.getName());
+        return "redirect:/buckets";
+    }
 }

@@ -13,14 +13,25 @@ public class RegistrationController {
     private final RegistrationService registrationService;
     public RegistrationController(RegistrationService registrationService) {this.registrationService = registrationService;}
 
+    @GetMapping
+    public String registration(){
+        return "registration";
+    }
+
     @PostMapping()
     public String createUser(@ModelAttribute("registrationRequest") RegistrationRequest request, Model model) {
-        registrationService.register(request);
-        model.addAttribute("registration", "waiting");
+        String register = registrationService.register(request);
+        model.addAttribute("token", register);
+        String result = "Для закінчення реєстрації Вам відправлено листа на Ваш email," +
+                "будь ласка, підтвердіть свій email перейшовши за посиланням";
+        model.addAttribute("result", result);
         return "index";
     }
+
     @GetMapping("/confirm")
-    public String confirmToken (@RequestParam("token") String token){
-        return registrationService.confirmToken(token);
+    public String confirmToken (@RequestParam("token") String token, Model model){
+        String result = registrationService.confirmToken(token);
+        model.addAttribute("result", result);
+        return "index";
     }
 }

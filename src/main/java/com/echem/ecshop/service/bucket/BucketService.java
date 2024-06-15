@@ -7,11 +7,11 @@ import com.echem.ecshop.dto.BucketDTO;
 
 public interface BucketService {
 
-   //  метод для контролеру
-
     BucketDTO getBucketDtoByUser(String name);
     void addBucketDetails(Long productId, String username);
-    BucketDTO deleteProductFromBucket(Long productId, String userName);
+    void deleteProductFromBucket(Long productId, String userName);
     Bucket createBucket(User user);
     void deleteBucketByUser(User user);
+    void increaseProductAmount(Long productId, String name);
+    void decreaseProductAmount(Long productId, String name);
 }

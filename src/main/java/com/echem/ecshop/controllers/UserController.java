@@ -2,7 +2,6 @@ package com.echem.ecshop.controllers;
 
 import com.echem.ecshop.domain.User;
 import com.echem.ecshop.dto.UserDTO;
-import com.echem.ecshop.dto.RegistrationRequest;
 import com.echem.ecshop.service.user.UserService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -36,11 +35,5 @@ public class UserController {
                 .build();
         model.addAttribute("user",dto);
         return "profile";
-    }
-    @GetMapping("/new")
-    public String userRegistration (Model model){
-        model.addAttribute("registrationRequest",
-                new RegistrationRequest("","",""));
-        return "registration";
     }
 }

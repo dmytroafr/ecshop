@@ -26,23 +26,22 @@ public class WebSecurityConfig {
 
         return http.authorizeHttpRequests(
                 requests -> requests
-                        .anyRequest()
-                        .permitAll())
-
+                        .requestMatchers("/order/*").authenticated()
+                        .requestMatchers("/buckets/*").authenticated()
+                        .requestMatchers("/users/*").authenticated()
+                        .anyRequest().permitAll()
+                        )
                 .formLogin((form) -> form
                         .loginPage("/login")
                         .permitAll()
                         .failureUrl("/login-error")
                         .loginProcessingUrl("/auth")
                 )
-
                 .logout((logout) -> logout.logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
                         .logoutSuccessUrl("/").deleteCookies("JSESSIONID")
                         .invalidateHttpSession(true)
                 )
-
                 .csrf(AbstractHttpConfigurer::disable)
-
         .build();
     }
 
