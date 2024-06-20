@@ -6,6 +6,7 @@ import com.echem.ecshop.dto.ProductDTO;
 import com.echem.ecshop.service.product.ProductService;
 import com.echem.ecshop.service.SessionObjectHolder;
 import com.echem.ecshop.service.user.UserService;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
