@@ -1,6 +1,5 @@
 package com.echem.ecshop.service.email;
 
-import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -9,13 +8,22 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
+import org.springframework.beans.factory.annotation.Value;
+
 
 @Service
-@AllArgsConstructor
 public class EmailService implements EmailSender{
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EmailService.class);
     private final JavaMailSender mailSender;
+
+
+    public EmailService(JavaMailSender mailSender) {
+        this.mailSender = mailSender;
+    }
+
+    @Value("${spring.mail.username}")
+    private String mailFrom;
 
     @Override
     @Async
@@ -26,7 +34,7 @@ public class EmailService implements EmailSender{
             helper.setText(email);
             helper.setTo(to);
             helper.setSubject(subject);
-            helper.setFrom("java@e-chem.com.ua");
+            helper.setFrom(mailFrom);
             mailSender.send(mimeMessage);
 
         } catch (MessagingException e) {
