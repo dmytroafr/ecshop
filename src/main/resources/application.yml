@@ -36,7 +36,7 @@ spring:
   mail:
     host: mail.adm.tools
     port: 2525
-    username: control@e-chem.com.ua
+    username: confirmation-email@e-chem.com.ua
     password: ${SMTP_PASS}
     properties:
       mail:

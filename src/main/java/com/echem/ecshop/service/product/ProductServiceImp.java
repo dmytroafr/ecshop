@@ -5,6 +5,7 @@ import com.echem.ecshop.dao.ProductRepository;
 import com.echem.ecshop.domain.Product;
 import com.echem.ecshop.dto.ProductDTO;
 import com.echem.ecshop.mapper.ProductMapper;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -51,6 +52,7 @@ public class ProductServiceImp implements ProductService{
         productRepository.save(mapper.toProduct(productDTO));
     }
 
+    @Cacheable("products")
     @Override
     public Page<ProductDTO> findAllOnOnStock(Pageable pageable) {
         Page<Product> allByOnStock = productRepository.findAllByOnStock(PageRequest.of(pageable.getPageNumber(), pageable.getPageSize()));
