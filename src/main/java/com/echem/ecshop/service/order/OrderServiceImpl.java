@@ -7,6 +7,7 @@ import com.echem.ecshop.domain.OrderStatus;
 import com.echem.ecshop.domain.User;
 import com.echem.ecshop.dto.BucketDTO;
 import com.echem.ecshop.dto.OrderDTO;
+import com.echem.ecshop.dto.UserDTO;
 import com.echem.ecshop.service.bucket.BucketService;
 import com.echem.ecshop.service.email.EmailService;
 import com.echem.ecshop.service.product.ProductService;
@@ -35,18 +36,25 @@ public class OrderServiceImpl implements OrderService{
         this.productService = productService;
     }
 
+    private UserDTO getByUserName(String username) {
+        return userService.findByUserName(username);
+    }
+
     @Override
-    public Order createOrder(OrderDTO orderDto, String username) {
+    public Order createOrder(OrderDTO orderDto, Long userId) {
 
         Order order = new Order();
         order.setDelivery(orderDto.getDelivery());
         order.setPayment(orderDto.getPayment());
 
-        User user = userService.findByName(username);
+        User refById = userService.getRefById(userId);
 
-        BucketDTO bucketDtoByUser = bucketService.getBucketDtoByUser(username);
+        UserDTO userDTO = getByUserName(refById.getUsername());
+//        Long userId = userDTO.id();
 
-        List<OrderDetails> details = bucketDtoByUser.productList.stream()
+        BucketDTO bucketDto = bucketService.getBucketDtoByUser(userId);
+
+        List<OrderDetails> details = bucketDto.productList.stream()
                 .map(productDto -> {
                     OrderDetails detail = new OrderDetails();
                     detail.setProduct(productService.getProductRef(productDto.getProductId()));
@@ -56,29 +64,27 @@ public class OrderServiceImpl implements OrderService{
                     return detail;
                 }).collect(Collectors.toList());
 
-        order.setSum(new BigDecimal(bucketDtoByUser.sum));
-        order.setUser(user);
+        order.setSum(new BigDecimal(bucketDto.sum));
+
+        // TODO  щось тут не так
+        order.setUser(refById);
         order.setDetails(details);
         order.setStatus(OrderStatus.NEW);
 
-        bucketService.deleteBucketByUser(user);
-        userService.save(user);
+        Order savedOrder = orderRepository.save(order);
 
-        Order save = orderRepository.save(order);
-        String massage = "Ваше замовлення прийнято у роботу, Номер замовлення "+ save.getId();
-        emailService.send(user.getEmail(),massage, "Ваше замовлення");
+        bucketService.clearBucket(bucketDto.getId());
 
-        return save;
+        String massage = "Ваше замовлення прийнято у роботу, Номер замовлення "+ savedOrder.getId();
+
+
+        emailService.send(userDTO.email(),massage, "Ваше замовлення");
+
+        return savedOrder;
     }
 
     @Override
     public Order getOrderById(Long orderId) {
-        Order orderById = orderRepository.getOrderById(orderId);
-
         return orderRepository.getOrderById(orderId);
     }
-
-
-
-
 }

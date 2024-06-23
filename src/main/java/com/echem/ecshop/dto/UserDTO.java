@@ -1,16 +1,11 @@
 package com.echem.ecshop.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.echem.ecshop.domain.Role;
 
-@Builder
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
-public class UserDTO {
-    public String username;
-    public String password;
-    String email;
+public record UserDTO
+        (Long id,
+         String username,
+         String email,
+         Role role){
 }
+

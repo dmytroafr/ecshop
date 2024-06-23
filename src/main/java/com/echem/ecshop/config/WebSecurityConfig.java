@@ -36,6 +36,7 @@ public class WebSecurityConfig {
                         .permitAll()
                         .failureUrl("/login-error")
                         .loginProcessingUrl("/auth")
+                        .defaultSuccessUrl("/",true)
                 )
                 .logout((logout) -> logout.logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
                         .logoutSuccessUrl("/").deleteCookies("JSESSIONID")

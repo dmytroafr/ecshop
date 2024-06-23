@@ -1,10 +1,7 @@
 package com.echem.ecshop.dto;
 
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.Singular;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;

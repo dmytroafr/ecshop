@@ -9,15 +9,15 @@ import com.echem.ecshop.dto.BucketDetailDTO;
 import com.echem.ecshop.service.product.ProductService;
 import com.echem.ecshop.service.user.UserService;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.*;
 
 @Service
-public class BucketServiceImpl implements BucketService{
+public class BucketServiceImpl implements BucketService {
 
     private final BucketRepository bucketRepository;
+
     private final ProductService productService;
     private final UserService userService;
 
@@ -28,37 +28,37 @@ public class BucketServiceImpl implements BucketService{
     }
 
     @Override
-    public void addBucketDetails(Long productId, String username) {
-        User user = userService.findByName(username);
+    public void addBucketDetails(Long productId, Long userId) {
+
         Product productRef = productService.getProductRef(productId);
 
-        Bucket bucket = user.getBucket();
-        if (Objects.isNull(bucket)){
-            Bucket newBucket = createBucket(user);
+        Bucket bucket = bucketRepository.getBucketByUser_Id(userId);
+
+        if (Objects.isNull(bucket)) {
+            Bucket newBucket = createBucket(userId);
             newBucket.getProductList().add(productRef);
         } else {
             bucket.getProductList().add(productRef);
         }
-        userService.save(user);
+        bucketRepository.save(bucket);
     }
 
     @Override
-    public BucketDTO getBucketDtoByUser (String name){
-        User user =  userService.findByName(name);
+    public BucketDTO getBucketDtoByUser(Long userId) {
 
-        if (user == null || user.getBucket() == null){
-            return new BucketDTO();
+        Bucket bucket = bucketRepository.getBucketByUser_Id(userId);
+
+        if (Objects.isNull(bucket)) {
+            bucket = createBucket(userId);
         }
 
-        Bucket bucket = user.getBucket();
         List<Product> productList = bucket.getProductList();
         Map<Long, BucketDetailDTO> detailDTOMap = new HashMap<>();
 
-        for (Product product : productList){
+        for (Product product : productList) {
 
             BucketDetailDTO bucketDetailDTO = detailDTOMap.get(product.getId());
-
-            if (bucketDetailDTO == null){
+            if (bucketDetailDTO == null) {
                 detailDTOMap.put(product.getId(), new BucketDetailDTO(product));
             } else {
                 bucketDetailDTO.setAmount(bucketDetailDTO.getAmount().add(new BigDecimal(1)));
@@ -67,53 +67,55 @@ public class BucketServiceImpl implements BucketService{
         }
 
         BucketDTO bucketDTO = new BucketDTO();
+        bucketDTO.setId(bucket.getId());
         bucketDTO.setProductList(new ArrayList<>(detailDTOMap.values()));
         bucketDTO.aggregate();
         return bucketDTO;
     }
 
     @Override
-    public Bucket createBucket(User user) {
+    public Bucket createBucket(Long userId) {
+        User refById = userService.getRefById(userId);
         Bucket bucket = new Bucket();
-        bucket.setUser(user);
-        user.setBucket(bucket);
+        bucket.setUser(refById);
         return bucketRepository.save(bucket);
     }
 
     @Override
-    public void deleteProductFromBucket(Long productId, String userName) {
-        User user = userService.findByName(userName);
+    public void deleteProductFromBucket(Long productId, Long userId) {
 
-        List<Product> productList = user.getBucket().getProductList();
+        Bucket bucketByUserId = bucketRepository.getBucketByUser_Id(userId);
+        List<Product> productList = bucketByUserId.getProductList();
 
         productList.removeIf(product -> Objects.equals(product.getId(), productId));
-        userService.save(user);
+
     }
 
     @Override
-    public void increaseProductAmount(Long productId, String name) {
-        addBucketDetails(productId,name);
+    public void increaseProductAmount(Long productId, Long userId) {
+        addBucketDetails(productId, userId);
     }
 
     @Override
-    public void decreaseProductAmount(Long productId, String name) {
-        User byUserName = userService.findByName(name);
+    public void decreaseProductAmount(Long productId, Long userId) {
 
-        List<Product> productList = byUserName.getBucket().getProductList();
+        Bucket bucket = bucketRepository.getBucketByUser_Id(userId);
+        List<Product> productList = bucket.getProductList();
 
         Iterator<Product> iterator = productList.iterator();
         while (iterator.hasNext()) {
             if (iterator.next().getId().equals(productId)) {
                 iterator.remove();
-                break; // Видалити лише один екземпляр
+                break;
             }
         }
-        userService.save(byUserName);
+        bucketRepository.save(bucket);
     }
 
-    @Transactional
     @Override
-    public void deleteBucketByUser(User user){
-        bucketRepository.deleteBucketByUser(user);
+    public void clearBucket(Long bucketId) {
+        Bucket bucket = bucketRepository.getBucketById(bucketId);
+        bucket.getProductList().clear();
+        bucketRepository.save(bucket);
     }
 }

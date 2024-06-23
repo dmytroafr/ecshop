@@ -1,6 +1,5 @@
-package com.echem.ecshop.service.registration.token;
+package com.echem.ecshop.domain;
 
-import com.echem.ecshop.domain.User;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -31,8 +30,7 @@ public class ConfirmationToken {
     private LocalDateTime confirmedAt;
 
     @ManyToOne
-    @JoinColumn(name = "users_id",
-    nullable = false)
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     public ConfirmationToken(String token, LocalDateTime createdAt, LocalDateTime expiresAt, User user) {

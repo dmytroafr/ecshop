@@ -26,11 +26,13 @@ create sequence user_seq start with 1 increment by 1;
 create table buckets (
     id bigint not null,
     user_id bigint unique,
-    primary key (id));
+    primary key (id),
+    FOREIGN KEY (id) REFERENCES users(id));
 
 create table buckets_products (
     bucket_id bigint not null,
-    product_id bigint not null);
+    product_id bigint not null,
+    PRIMARY KEY (bucket_id, product_id));
 
 create table categories (
     id bigint not null,
@@ -42,7 +44,7 @@ create table confirmation_token (
     created_at timestamp(6) not null,
     expires_at timestamp(6) not null,
     id bigint not null,
-    users_id bigint not null,
+    user_id bigint not null,
     token varchar(255) not null,
     primary key (id));
 
@@ -87,22 +89,25 @@ create table products_categories (
     product_id bigint not null);
 
 create table users (
+    id bigint not null,
     is_enable boolean,
     is_locked boolean,
-    id bigint not null,
-    email varchar(255) not null,
+    email varchar(255) not null unique,
     first_name varchar(255),
     last_name varchar(255),
     password varchar(255) not null,
     phone varchar(255),
     role varchar(255) check (role in ('CLIENT','ADMIN','MANAGER')),
-    user_name varchar(255) not null,
+    username varchar(255) not null unique ,
+    created timestamp(6),
     primary key (id));
 
-alter table if exists buckets add constraint user_id_fk foreign key (user_id) references users;
-alter table if exists buckets_products add constraint product_id_fk foreign key (product_id) references products;
-alter table if exists buckets_products add constraint bucket_id_fk foreign key (bucket_id) references buckets;
-alter table if exists confirmation_token add constraint user_id_fk foreign key (users_id) references users;
+alter table if exists buckets add constraint user_id_fk foreign key (user_id) references users(id);
+alter table if exists buckets_products add constraint product_id_fk foreign key (product_id) references products(id);
+alter table if exists buckets_products add constraint bucket_id_fk foreign key (bucket_id) references buckets(id);
+
+
+alter table if exists confirmation_token add constraint user_id_fk foreign key (user_id) references users;
 alter table if exists order_details add constraint order_id_fk foreign key (order_id) references orders;
 alter table if exists order_details add constraint product_id_fk foreign key (product_id) references products;
 alter table if exists orders add constraint user_id_fk foreign key (user_id) references users;

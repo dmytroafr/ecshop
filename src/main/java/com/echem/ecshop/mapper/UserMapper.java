@@ -4,13 +4,11 @@ import com.echem.ecshop.domain.User;
 import com.echem.ecshop.dto.UserDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
-
-import java.util.List;
 @Mapper
 public interface UserMapper {
     UserMapper MAPPER = Mappers.getMapper(UserMapper.class);
-    User toUser(UserDTO userDto);
+//    User toUser(UserDTO userDto);
     UserDTO fromUser (User user);
-    List<User> toUserList (List<UserDTO> userDTOList);
-    List<UserDTO> fromUserList (List<User> users);
+//    List<User> toUserList (List<UserDTO> userDTOList);
+//    List<UserDTO> fromUserList (List<User> users);
 }

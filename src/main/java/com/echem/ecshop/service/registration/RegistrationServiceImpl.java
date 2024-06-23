@@ -1,11 +1,11 @@
 package com.echem.ecshop.service.registration;
 
+import com.echem.ecshop.domain.ConfirmationToken;
 import com.echem.ecshop.domain.Role;
 import com.echem.ecshop.domain.User;
 import com.echem.ecshop.dto.RegistrationRequest;
 import com.echem.ecshop.service.email.EmailSender;
-import com.echem.ecshop.service.registration.token.ConfirmationToken;
-import com.echem.ecshop.service.registration.token.ConfirmationTokenService;
+import com.echem.ecshop.service.token.ConfirmationTokenService;
 import com.echem.ecshop.service.user.UserService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -43,7 +43,7 @@ public class RegistrationServiceImpl implements RegistrationService{
         String message = String.format("Привіт, " + request.userName() +
                 ", перейдіть за наступним посиланням для підтвердження адреси вашої пошти:" +
                 "\n%s\n\nДякуємо,\nЗ повагою,\nКоманда Екохім", link);
-        emailSender.send(request.email(), message, "Підтвердження реєстрації>");
+        emailSender.send(request.email(), message, "Підтвердження реєстрації");
         return token;
     }
     @Transactional
@@ -60,7 +60,7 @@ public class RegistrationServiceImpl implements RegistrationService{
             throw new IllegalStateException("token expired");
         }
         tokenService.setConfirmed(token);
-        userService.enableUser(confirmationToken.getUser().getEmail());
+        userService.enableUser(confirmationToken.getUser().getUsername());
         return "confirmed";
     }
 }

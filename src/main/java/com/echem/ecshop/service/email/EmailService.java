@@ -14,7 +14,7 @@ import org.springframework.beans.factory.annotation.Value;
 @Service
 public class EmailService implements EmailSender{
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(EmailService.class);
+    private static final Logger logger = LoggerFactory.getLogger(EmailService.class);
     private final JavaMailSender mailSender;
 
 
@@ -38,7 +38,7 @@ public class EmailService implements EmailSender{
             mailSender.send(mimeMessage);
 
         } catch (MessagingException e) {
-            LOGGER.error("fail to send an email",e);
+            logger.error("fail to send an email",e);
             throw new IllegalStateException("fail to send an email");
         }
     }

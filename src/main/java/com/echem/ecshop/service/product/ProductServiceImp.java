@@ -52,7 +52,7 @@ public class ProductServiceImp implements ProductService{
         productRepository.save(mapper.toProduct(productDTO));
     }
 
-    @Cacheable("products")
+    @Cacheable(cacheNames = "products")
     @Override
     public Page<ProductDTO> findAllOnOnStock(Pageable pageable) {
         Page<Product> allByOnStock = productRepository.findAllByOnStock(PageRequest.of(pageable.getPageNumber(), pageable.getPageSize()));
@@ -70,7 +70,7 @@ public class ProductServiceImp implements ProductService{
     public Product getProductRef(Long productId) {
         return productRepository.getReferenceById(productId);
     }
-
+    @Cacheable("groups")
     @Override
     public Page<ProductDTO> getProductsByGroup(Long groupNumber, Pageable pageable) {
         Page<Product> allByGroup = productRepository.findAllByGroup(groupNumber, pageable);
