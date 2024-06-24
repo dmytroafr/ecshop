@@ -46,7 +46,7 @@ public class UserServiceImpl implements UserService{
 	}
 	@Override
 	public User findByName(String username) {
-		return userRepository.findUserByEmail(username).orElseThrow(
+		return userRepository.findByUserName(username).orElseThrow(
 				()->new IllegalStateException("user " + username + " not found.")
 		);
 	}
