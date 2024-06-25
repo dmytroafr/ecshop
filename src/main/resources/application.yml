@@ -5,19 +5,22 @@ server:
 #  host: https://185.69.153.13/
   error:
     include-message: always
-    include-binding-errors: always
+#    include-binding-errors: always
+
 #  ssl:
 #    key-store: file:/etc/letsencrypt/live/e-chem.com.ua/keystore.p12
 #    key-store-password: ${KEY_PASS}
 #    key-alias: tomcat
 #    key-store-type: PKCS12
-
+  tomcat:
+    accesslog:
+      enabled: true
+      directory: /Users/dmitrijafrosin/IdeaProjects/ecshop
 spring:
   application:
     name: internet-shop
-  output:
-    ansi:
-      enabled: detect
+    admin:
+      enabled: true
   jpa:
     hibernate:
       ddl-auto: validate
@@ -49,6 +52,5 @@ spring:
           connectiontimeout: 5000
           timeout: 2000
           writetimeout: 5000
-
 currency:
   url: https://v6.exchangerate-api.com/v6/${C_TOKEN}/latest/

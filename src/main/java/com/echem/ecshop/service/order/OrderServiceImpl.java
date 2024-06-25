@@ -66,6 +66,8 @@ public class OrderServiceImpl implements OrderService{
 
         Order save = orderRepository.save(order);
         String massage = "Ваше замовлення прийнято у роботу, Номер замовлення "+ save.getId();
+
+
         emailService.send(user.getEmail(),massage, "Ваше замовлення");
 
         return save;
