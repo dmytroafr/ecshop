@@ -1,5 +1,6 @@
 package com.echem.ecshop.service.currency;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.scheduling.annotation.Async;
@@ -14,37 +15,41 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 public class CurrencyServiceImpl implements CurrencyService{
 
 	@Value("${currency.url}")
 	private String currencyUrl;
 
-
-	public String getResponse(String currency){
+	private String getResponse(String currency){
 		RestTemplate restTemplate = new RestTemplate();
-        return restTemplate.getForEntity(currencyUrl+currency, String.class).toString();
+		String string = restTemplate.getForEntity(currencyUrl + currency, String.class).toString();
+		log.info("Received response");
+		return string;
 	}
 
-	public Map<String, Double> getMap(String currency){
+	private Map<String, Double> getMap(String currency){
 		String response = getResponse(currency);
 		Matcher matcher = Pattern.compile("\"[A-Z]{3}\":[0-9]+.[0-9]+")
 				.matcher(response);
 		List<String> currencyList = new ArrayList<>();
-
 		while (matcher.find()){
 			currencyList.add(matcher.group());
 		}
-
-        return currencyList.stream()
+		Map<String, Double> collect = currencyList.stream()
 				.collect(Collectors.toMap(s -> s.substring(1, 4), s -> Double.parseDouble(s.substring(6))));
+		log.info("Mapped Response string into Map");
+		return collect;
 	}
 
 	@Async
 	@Cacheable(cacheNames = "currency", key = "#currency")
 	@Override
 	public CompletableFuture<String> getRate(String currency){
-		return CompletableFuture.completedFuture("1 " + currency + " коштує " + getMap(currency).get("UAH") + " грн");
+		log.info("Try to get rate of {}", currency);
+		CompletableFuture<String> rate = CompletableFuture.completedFuture("1 " + currency + " коштує " + getMap(currency).get("UAH") + " грн");
+		log.info("Got rate of {}", currency);
+		return rate;
 	}
-
 }

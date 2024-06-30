@@ -6,18 +6,18 @@ server:
   error:
     include-message: always
     include-binding-errors: always
+  servlet:
+    session:
+      timeout: 24h
 #  ssl:
 #    key-store: file:/etc/letsencrypt/live/e-chem.com.ua/keystore.p12
 #    key-store-password: ${KEY_PASS}
 #    key-alias: tomcat
 #    key-store-type: PKCS12
-
 spring:
   application:
     name: internet-shop
-  output:
-    ansi:
-      enabled: detect
+
   jpa:
     hibernate:
       ddl-auto: validate
@@ -52,3 +52,6 @@ spring:
 
 currency:
   url: https://v6.exchangerate-api.com/v6/${C_TOKEN}/latest/
+#logging:
+#  level:
+#    org.springframework.security: DEBUG

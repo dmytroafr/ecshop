@@ -27,7 +27,14 @@
 <div class="container">
   <div class="row">
     <div th:insert="~{fragments/menu :: #bar}" class="col-sm-2"></div>
-    <div class="col-sm-10">Welcome to our online shop. The site is under construction, so please be patient.</div>
+      <div class="col-sm-10">
+        <div class="row">
+          Welcome to our online shop. The site is under construction, so please be patient.
+        </div>
+        <div class="row" th:if="${result}" th:text="${result}"></div>
+      </div>
+
+
   </div>
 </div>
 

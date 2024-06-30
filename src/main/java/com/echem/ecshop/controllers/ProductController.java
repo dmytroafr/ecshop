@@ -54,7 +54,7 @@ public class ProductController {
             return "redirect:/login";
         }
         UserDTO userDTO = (UserDTO) httpSession.getAttribute("user");
-        if (!userDTO.role().equals(Role.ADMIN)){
+        if (!userDTO.getRole().equals(Role.ADMIN)){
             return "redirect:/login";
         }
         return "addProducts";
@@ -73,7 +73,7 @@ public class ProductController {
             return "redirect:/login";
         }
         UserDTO userDTO = (UserDTO) httpSession.getAttribute("user");
-        if (!userDTO.role().equals(Role.ADMIN)){
+        if (!userDTO.getRole().equals(Role.ADMIN)){
             return "redirect:/login";
         }
         productService.setNewPrice(productId, price);

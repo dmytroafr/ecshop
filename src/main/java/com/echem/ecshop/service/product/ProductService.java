@@ -7,8 +7,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 public interface ProductService {
-    ProductDTO getProductDtoById(Long id);
-
     Product getProductRef (Long id);
     Page<ProductDTO> findAllByPage (Pageable pageable);
     Page<ProductDTO> findAllOnOnStock(Pageable pageable);

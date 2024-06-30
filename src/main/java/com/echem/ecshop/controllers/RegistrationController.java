@@ -20,18 +20,23 @@ public class RegistrationController {
 
     @PostMapping()
     public String createUser(@ModelAttribute("registrationRequest") RegistrationRequest request, Model model) {
-        String register = registrationService.register(request);
-        model.addAttribute("token", register);
+
+        registrationService.register(request);
         String result = "Для закінчення реєстрації Вам відправлено листа на Ваш email," +
                 "будь ласка, підтвердіть свій email перейшовши за посиланням";
         model.addAttribute("result", result);
         return "index";
     }
 
-    @GetMapping("/confirm")
-    public String confirmToken (@RequestParam("token") String token, Model model){
-        String result = registrationService.confirmToken(token);
+    //  Може тут треба пост??
+    @PostMapping("/confirm")
+    public String confirmToken (@RequestParam("token") String token, Model model) {
+
+        registrationService.confirmToken(token);
+
+        String result = "Ваша email адреса успішно підтверджена";
         model.addAttribute("result", result);
+
         return "index";
     }
 }

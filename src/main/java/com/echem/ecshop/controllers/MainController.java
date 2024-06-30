@@ -27,8 +27,8 @@ public class MainController {
     @GetMapping({"","/"})
     public String index (Model model, HttpSession httpSession, Principal principal) throws ExecutionException, InterruptedException {
 
-        if (principal != null && httpSession.getAttribute("userId") == null) {
-            UserDTO userDTO = userService.findByUserName(principal.getName());
+        if (principal != null && httpSession.getAttribute("user") == null) {
+            UserDTO userDTO = userService.getUserDTOByUserName(principal.getName());
             httpSession.setAttribute("user", userDTO);
         }
 

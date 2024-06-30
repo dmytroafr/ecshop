@@ -2,7 +2,6 @@ package com.echem.ecshop.controllers;
 
 import com.echem.ecshop.dto.BucketDTO;
 import com.echem.ecshop.dto.UserDTO;
-import com.echem.ecshop.service.SessionObjectHolder;
 import com.echem.ecshop.service.bucket.BucketService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
@@ -18,27 +17,23 @@ import java.security.Principal;
 @RequestMapping("/buckets")
 public class BucketController {
 
-    private final SessionObjectHolder sessionObjectHolder;
     private final BucketService bucketService;
 
-    public BucketController(BucketService bucketService, SessionObjectHolder sessionObjectHolder){
+    public BucketController(BucketService bucketService){
         this.bucketService = bucketService;
-        this.sessionObjectHolder = sessionObjectHolder;
     }
 
     @GetMapping
-    public String aboutBucket(Model model, Principal principal, HttpSession httpSession){
-        sessionObjectHolder.addClicks();
-        if (principal==null){
-            model.addAttribute("bucket", new BucketDTO());
-        } else {
-            UserDTO userDTO = (UserDTO) httpSession.getAttribute("user");
-            if (userDTO == null) {
-                return "redirect:/login";
-            }
-            BucketDTO bucketDTO = bucketService.getBucketDtoByUser(userDTO.id());
-            model.addAttribute("bucket", bucketDTO);
+    public String aboutBucket(Model model, HttpSession httpSession) {
+
+        UserDTO userDTO = (UserDTO) httpSession.getAttribute("user");
+        if (userDTO == null) {
+            return "redirect:/login";
         }
+        BucketDTO bucketDTO = bucketService.getBucketDtoByUser(userDTO.getId());
+//        Enumeration<String> attributeNames = httpSession.getAttributeNames();
+//        attributeNames.asIterator().forEachRemaining(System.out::println);
+        model.addAttribute("bucket", bucketDTO);
         return "bucket";
     }
 
@@ -51,7 +46,7 @@ public class BucketController {
         if (userDTO == null) {
             return "redirect:/login";
         }
-        bucketService.addBucketDetails(productId, userDTO.id());
+        bucketService.addBucketDetails(productId, userDTO.getId());
 
         return "redirect:/products";
     }
@@ -65,7 +60,7 @@ public class BucketController {
         if (userDTO == null) {
             return "redirect:/login";
         }
-        bucketService.deleteProductFromBucket(productId, userDTO.id());
+        bucketService.deleteProductFromBucket(productId, userDTO.getId());
         return "redirect:/buckets";
     }
 
@@ -78,7 +73,7 @@ public class BucketController {
         if (userDTO == null) {
             return "redirect:/login";
         }
-        bucketService.increaseProductAmount(productId, userDTO.id());
+        bucketService.increaseProductAmount(productId, userDTO.getId());
         return "redirect:/buckets";
     }
 
@@ -92,7 +87,7 @@ public class BucketController {
         if (userDTO == null) {
             return "redirect:/login";
         }
-        bucketService.decreaseProductAmount(productId, userDTO.id());
+        bucketService.decreaseProductAmount(productId, userDTO.getId());
         return "redirect:/buckets";
     }
 
