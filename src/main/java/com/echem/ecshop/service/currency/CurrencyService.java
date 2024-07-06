@@ -1,9 +1,8 @@
 package com.echem.ecshop.service.currency;
 
 
-public interface CurrencyService {
-	String getUAH();
-	String getEUR();
-	String getPLN();
+import java.util.concurrent.CompletableFuture;
 
+public interface CurrencyService {
+	CompletableFuture<String> getRate(String currencyCode);
 }

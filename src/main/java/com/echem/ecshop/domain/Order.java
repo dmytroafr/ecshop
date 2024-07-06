@@ -1,10 +1,7 @@
 package com.echem.ecshop.domain;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -18,6 +15,7 @@ import java.util.List;
 @Builder
 @Entity
 @Table(name="orders")
+@ToString(exclude = "user")
 public class Order {
     private static final String SEQ_NAME = "order_seq";
     @Id
@@ -47,20 +45,4 @@ public class Order {
 
     private String delivery;
     private String payment;
-
-
-    @Override
-    public String toString() {
-        return "Order{" +
-                "payment='" + payment + '\'' +
-                ", delivery='" + delivery + '\'' +
-                ", status=" + status +
-                ", details=" + details +
-                ", sum=" + sum +
-                ", closed=" + closed +
-                ", updated=" + updated +
-                ", created=" + created +
-                ", id=" + id +
-                '}';
-    }
 }

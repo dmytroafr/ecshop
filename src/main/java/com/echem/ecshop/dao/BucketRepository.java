@@ -1,10 +1,10 @@
 package com.echem.ecshop.dao;
 
 import com.echem.ecshop.domain.Bucket;
-import com.echem.ecshop.domain.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface BucketRepository extends JpaRepository<Bucket, Long> {
+import java.util.Optional;
 
-    void deleteBucketByUser(User user);
+public interface BucketRepository extends JpaRepository<Bucket, Long> {
+    Optional<Bucket> getBucketById(Long bucketId);
 }

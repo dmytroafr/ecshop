@@ -1,8 +1,10 @@
 package com.echem.ecshop.controllers;
 
 import com.echem.ecshop.dto.BucketDTO;
+import com.echem.ecshop.dto.UserDTO;
 import com.echem.ecshop.service.bucket.BucketService;
-import com.echem.ecshop.service.SessionObjectHolder;
+import jakarta.servlet.http.HttpSession;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,60 +18,79 @@ import java.security.Principal;
 @RequestMapping("/buckets")
 public class BucketController {
 
-    private final SessionObjectHolder sessionObjectHolder;
     private final BucketService bucketService;
 
-    public BucketController(BucketService bucketService, SessionObjectHolder sessionObjectHolder){
+    public BucketController(BucketService bucketService){
         this.bucketService = bucketService;
-        this.sessionObjectHolder = sessionObjectHolder;
     }
 
+    @PreAuthorize("isAuthenticated()")
     @GetMapping
-    public String aboutBucket(Model model, Principal principal){
-        sessionObjectHolder.addClicks();
-        if (principal==null){
-            model.addAttribute("bucket", new BucketDTO());
-        } else {
-            BucketDTO bucketDTO = bucketService.getBucketDtoByUser(principal.getName());
-            model.addAttribute("bucket", bucketDTO);
+    public String aboutBucket(Model model, HttpSession httpSession) {
+        UserDTO userDTO = (UserDTO) httpSession.getAttribute("user");
+        if (userDTO == null) {
+            return "redirect:/login";
         }
+        BucketDTO bucketDTO = bucketService.getBucketDtoByUserId(userDTO.id);
+        model.addAttribute("bucket", bucketDTO);
         return "bucket";
     }
 
-    @GetMapping("/{productId}")
-    public String addToBucket(@PathVariable Long productId, Principal principal){
-        sessionObjectHolder.addClicks();
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/{productId}/add")
+    public String addToBucket(@PathVariable Long productId, Principal principal, HttpSession httpSession){
         if (principal==null){
             return "redirect:/login";
         }
-        bucketService.addBucketDetails(productId, principal.getName());
+        UserDTO userDTO = (UserDTO) httpSession.getAttribute("user");
+        if (userDTO == null) {
+            return "redirect:/login";
+        }
+        bucketService.addBucketDetails(productId, userDTO.getId());
         return "redirect:/products";
     }
 
-    @PostMapping ("/delete/{productId}")
-    public String deleteProduct (@PathVariable Long productId, Principal principal){
+    @PreAuthorize("isAuthenticated()")
+    @PostMapping ("/{productId}/delete")
+    public String deleteProduct (@PathVariable Long productId, Principal principal, HttpSession httpSession){
         if (principal==null){
             return "redirect:/login";
         }
-        bucketService.deleteProductFromBucket(productId, principal.getName());
+        UserDTO userDTO = (UserDTO) httpSession.getAttribute("user");
+        if (userDTO == null) {
+            return "redirect:/login";
+        }
+        bucketService.deleteProductFromBucket(productId, userDTO.getId());
         return "redirect:/buckets";
     }
 
-    @PostMapping("/increase/{productId}")
-    public String increaseProductAmount(@PathVariable Long productId, Principal principal) {
+    @PreAuthorize("isAuthenticated()")
+    @PostMapping("/{productId}/increase")
+    public String increaseProductAmount(@PathVariable Long productId, Principal principal, HttpSession httpSession) {
         if (principal==null){
             return "redirect:/login";
         }
-        bucketService.increaseProductAmount(productId, principal.getName());
+        UserDTO userDTO = (UserDTO) httpSession.getAttribute("user");
+        if (userDTO == null) {
+            return "redirect:/login";
+        }
+        bucketService.increaseProductAmount(productId, userDTO.getId());
         return "redirect:/buckets";
     }
 
-    @PostMapping("/decrease/{productId}")
-    public String decreaseProductAmount(@PathVariable Long productId, Principal principal) {
+    @PreAuthorize("isAuthenticated()")
+    @PostMapping("/{productId}/decrease")
+    public String decreaseProductAmount(@PathVariable Long productId, HttpSession httpSession, Principal principal) {
         if (principal==null){
             return "redirect:/login";
         }
-        bucketService.decreaseProductAmount(productId, principal.getName());
+        UserDTO userDTO = (UserDTO) httpSession.getAttribute("user");
+
+        if (userDTO == null) {
+            return "redirect:/login";
+        }
+        bucketService.decreaseProductAmount(productId, userDTO.getId());
         return "redirect:/buckets";
     }
+
 }

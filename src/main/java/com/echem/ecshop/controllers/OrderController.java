@@ -2,15 +2,20 @@ package com.echem.ecshop.controllers;
 
 import com.echem.ecshop.domain.Order;
 import com.echem.ecshop.dto.OrderDTO;
+import com.echem.ecshop.dto.OrderRequest;
+import com.echem.ecshop.dto.UserDTO;
 import com.echem.ecshop.service.order.OrderService;
+import jakarta.servlet.http.HttpSession;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.List;
 
 @Controller
-@RequestMapping("/order")
+@RequestMapping("/orders")
 public class OrderController {
 
     private final OrderService orderService;
@@ -19,28 +24,36 @@ public class OrderController {
         this.orderService = orderService;
     }
 
-    @PostMapping("/create")
-    public String makeAnOrder (@ModelAttribute OrderDTO orderDto, Principal principal){
-
-        Order order = orderService.createOrder(orderDto, principal.getName());
-        Long orderId = order.getId();
-
-        return "redirect:/order/" + orderId;
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @GetMapping
+    public String findAllOrders (Model model){
+        List<OrderDTO> orders = orderService.findAll();
+        model.addAttribute("orders", orders);
+        return "orders";
     }
 
+    @PreAuthorize("isAuthenticated()")
+    @PostMapping
+    public String makeAnOrder (@ModelAttribute OrderRequest orderRequest, Principal principal, HttpSession httpSession) {
+        if (principal==null){
+            return "redirect:/login";
+        }
+        UserDTO userDTO = (UserDTO) httpSession.getAttribute("user");
+        Order order = orderService.makeOrder(orderRequest, userDTO);
+        Long orderId = order.getId();
 
-    // TODO переробити на DTO
+        return "redirect:/orders/" + orderId;
+    }
 
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/{orderId}")
-    public String successOrder (@PathVariable Long orderId, Model model, Principal principal){
+    public String successOrder (@PathVariable Long orderId, Model model){
         String massage = "Ваше замовлення було успішно оформлене, очікуйте на виконання. Дякуємо";
         model.addAttribute("massage",massage);
-        Order orderById = orderService.getOrderById(orderId);
+        OrderDTO orderById = orderService.getOrderById(orderId);
         model.addAttribute("order", orderById);
         return "result";
     }
-
-
 
 
 }

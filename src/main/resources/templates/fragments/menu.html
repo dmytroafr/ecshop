@@ -1,84 +1,74 @@
 <!DOCTYPE html>
-<html
-  lang="uk"
-  xmlns:th="http://www.w3.org/1999/xhtml"
-  xmlns:sec="http://www.w3.org/1999/xhtml"
->
-  <head>
-    <meta charset="UTF-8" />
-    <title>Title</title>
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-      integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM"
-      crossorigin="anonymous"
-    />
-  </head>
-  <body>
-    <nav id="nav-menu" class="navbar navbar-expand-lg bg-body-tertiary">
-      <div class="container-fluid">
-        <a class="navbar-brand" th:href="@{/}"><b>ЕКО</b>ХІМ</a>
-        <div class="navbar-text justify-content-end">
-          <div sec:authorize="isAuthenticated()">
-            <li>
-              Привіт,
-              <a th:href="@{/users/profile}">
-                <span sec:authentication="principal.username">Bill</span></a
-              >.
-              <a th:href="@{/buckets}"  sec:authorize="hasAnyAuthority('ADMIN', 'MANAGER','CLIENT')">Корзина</a>
-              <a th:href="@{/logout}">Вихід</a>
-            </li>
-          </div>
-          <div sec:authorize="!isAuthenticated()">
-            <li>
-              <a th:href="@{/login}">Увійти</a>
-              <a th:href="@{/registration}">Реєстрація</a>
-            </li>
-          </div>
-        </div>
+<html lang="uk" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+  <meta charset="UTF-8" />
+  <title>Title</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous" />
+</head>
+<body>
+<nav id="nav-menu" class="navbar navbar-expand-lg bg-body-tertiary">
+  <div class="container-fluid">
+    <a class="navbar-brand" th:href="@{/}"><b>ЕКО</b>ХІМ</a>
+    <div class="navbar-text justify-content-end">
+      <div sec:authorize="isAuthenticated()">
+        <li>
+          Привіт,
+          <a th:href="@{/users/{username}(username=${#authentication.principal.username})}">
+            <span sec:authentication="principal.username">Bill</span>
+          </a>.
+          <a th:href="@{/buckets}" sec:authorize="isAuthenticated()">Корзина</a>
+          <a th:href="@{/logout}">Вихід</a>
+        </li>
       </div>
-    </nav>
-    <nav id="navigator" class="navbar navbar-expand-lg bg-body-tertiary">
-      <div class="container-fluid">
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-          <ul class="navbar-nav">
-            <li class="nav-item">
-              <a class="nav-link active" aria-current="page" th:href="@{/about}"> Про нас </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link active" th:href="@{/products}"> Усі товари </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link active" th:href="@{/contacts}"> Контакти </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link active" th:href="@{/conditions}"> Оферта </a>
-            </li>
-          </ul>
-        </div>
+      <div sec:authorize="!isAuthenticated()">
+        <li>
+          <a th:href="@{/login}">Увійти</a>
+          <a th:href="@{/registration}">Реєстрація</a>
+        </li>
       </div>
-    </nav>
-
-    <div id="bar">
-      <address>
-        ТОВ "Екохім Розвиток"<br><br>
-        Продажі:<br>
-        +380 (44) 334-59-40<br><br>
-        Офіс<br>
-        +380 (95) 791-34-29<br><br>
-        Київ, вул. Алматинська 8<br>
-        оф 103<br><br>
-        office@e-chem.com.ua<br>
-      </address>
     </div>
+  </div>
+</nav>
+<nav id="navigator" class="navbar navbar-expand-lg bg-body-tertiary">
+  <div class="container-fluid">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" th:href="@{/about}">Про нас</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active" th:href="@{/products}">Усі товари</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active" th:href="@{/contacts}">Контакти</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active" th:href="@{/conditions}">Оферта</a>
+        </li>
+        <li class="nav-item" sec:authorize="hasRole('ROLE_ADMIN')">
+          <a class="nav-link active" th:href="@{/products/edit}">Редагування цін товарів</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
 
-    <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
-      integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
-      crossorigin="anonymous"
-    ></script>
-  </body>
+<div id="bar">
+  <address>
+    ТОВ "Екохім Розвиток"<br><br>
+    Продажі:<br>
+    +380 (44) 334-59-40<br><br>
+    Офіс<br>
+    +380 (95) 791-34-29<br><br>
+    Київ, вул. Алматинська 8<br>
+    оф 103<br><br>
+    office@e-chem.com.ua<br>
+  </address>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+</body>
 </html>

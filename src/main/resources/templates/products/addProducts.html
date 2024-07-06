@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="uk" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Додати продукт</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+          rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+          crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/styles.css}" />
+</head>
+
+<body class="bg-body-tertiary">
+<div th:insert="~{fragments/menu :: #nav-menu}"></div>
+<img th:src="@{/images/header.jpg}" class="img-fluid mx-auto" alt="ecochem, екохім"/>
+<div th:insert="~{fragments/menu :: #navigator}"></div>
+<div class="container">
+    <div class="row">
+        <div id="bar" class="col-sm-2">
+            <address>
+                ТОВ "Екохім Розвиток"<br><br>
+                Продажі:<br>
+                +380 (44) 334-59-40<br><br>
+                Офіс<br>
+                +380 (95) 791-34-29<br><br>
+                Київ, вул. Алматинська 8<br>
+                оф 103<br><br>
+                office@e-chem.com.ua<br>
+            </address>
+        </div>
+
+        <div class="col-sm-5">
+            <div class="row justify-content-center">
+                <h3>Додати новий товар</h3>
+                <form th:action="@{/products}" th:object="${productDTO}" method="post">
+                    <div class="mb-3">
+                        <label for="title" class="form-label">Назва товару:</label>
+                        <input type="text" id="title" th:field="*{title}" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="price" class="form-label">Ціна:</label>
+                        <input type="number" id="price" th:field="*{price}" class="form-control" step="0.01" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="optPrice" class="form-label">Оптова ціна:</label>
+                        <input type="number" id="optPrice" th:field="*{optPrice}" class="form-control" step="0.01">
+                    </div>
+                    <div class="mb-3">
+                        <label for="productDescription" class="form-label">Опис товару:</label>
+                        <textarea id="productDescription" th:field="*{productDescription}" class="form-control" required></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="photoUrl" class="form-label">URL фото:</label>
+                        <input type="url" id="photoUrl" th:field="*{photoUrl}" class="form-control">
+                    </div>
+                    <div class="mb-3">
+                        <label for="producer" class="form-label">Виробник:</label>
+                        <input type="text" id="producer" th:field="*{producer}" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="countryProducer" class="form-label">Країна виробник:</label>
+                        <input type="text" id="countryProducer" th:field="*{countryProducer}" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="onStock" class="form-label">В наявності:</label>
+                        <select id="onStock" th:field="*{onStock}" class="form-select">
+                            <option th:value="ON_STOCK">В наявності</option>
+                            <option th:value="AVAILABLE">Під замовлення</option>
+                            <option th:value="WAITING">Очікується</option>
+                            <option th:value="ABSENT">Немає в наявності</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="categories" class="form-label">Категорії:</label>
+                        <select multiple id="categories" th:field="*{categories}" class="form-select">
+                            <option th:each="category : ${allCategories}" th:value="${category.id}" th:text="${category.title}"></option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Додати товар</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+</body>
+</html>

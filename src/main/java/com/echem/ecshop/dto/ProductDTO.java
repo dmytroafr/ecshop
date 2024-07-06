@@ -1,10 +1,12 @@
 package com.echem.ecshop.dto;
 
 import com.echem.ecshop.domain.Category;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 
 @Builder
@@ -21,8 +23,6 @@ public class ProductDTO {
     public String photoUrl;
     public String producer;
     public String countryProducer;
-
     public String onStock;
-
-    public List<Category> categories = new ArrayList<>();
+    public List<Category> categories;
 }
