@@ -6,18 +6,21 @@ server:
   error:
     include-message: always
     include-binding-errors: always
-  servlet:
-    session:
-      timeout: 24h
+
 #  ssl:
 #    key-store: file:/etc/letsencrypt/live/e-chem.com.ua/keystore.p12
 #    key-store-password: ${KEY_PASS}
 #    key-alias: tomcat
 #    key-store-type: PKCS12
 spring:
+#  це я для методу PATCH включив
+  mvc:
+    hiddenmethod:
+      filter:
+        enabled: true
+# ----------------
   application:
     name: internet-shop
-
   jpa:
     hibernate:
       ddl-auto: validate
@@ -25,9 +28,13 @@ spring:
     properties:
       hibernate.hibernate.dialect: org.hibernate.dialect.PostgresDialect
       hibernate:
-        format_sql: true
+        format_sql: false
+#      connection:
+#        useUnicode: true
+#        characterEncoding: utf8
+#        collation: uk_UA.UTF-8
   datasource:
-    url: jdbc:postgresql://localhost:5432/database_ec
+    url: jdbc:postgresql://localhost:5432/cool_one
     username: ${POSTGRES_USER}
     password: ${POSTGRES_PASS}
     driver-class-name: org.postgresql.Driver
@@ -49,9 +56,18 @@ spring:
           connectiontimeout: 5000
           timeout: 2000
           writetimeout: 5000
+  groovy:
+    template:
+      cache: false
 
 currency:
   url: https://v6.exchangerate-api.com/v6/${C_TOKEN}/latest/
-#logging:
-#  level:
-#    org.springframework.security: DEBUG
+logging:
+  level:
+    org.springframework.security: INFO
+    com.echem.ecshop.service: INFO
+  file:
+    path: "classpath:logs"
+    name: eclogs.log
+  pattern:
+    file: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"

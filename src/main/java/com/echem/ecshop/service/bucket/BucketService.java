@@ -6,7 +6,8 @@ import com.echem.ecshop.dto.BucketDTO;
 
 public interface BucketService {
 
-    BucketDTO getBucketDtoByUser(Long userId);
+    BucketDTO getBucketDtoByUserId(Long userId);
+
     void createBucket (User user);
     void addBucketDetails(Long productId, Long userId);
     void deleteProductFromBucket(Long productId, Long userId);

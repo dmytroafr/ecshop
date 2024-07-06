@@ -27,6 +27,7 @@ public class BucketServiceImpl implements BucketService {
 
     @Override
     public void addBucketDetails(Long productId, Long userId) {
+        log.debug("Adding bucket details for {}", productId);
         Product productRef = productService.getProductRef(productId);
         Bucket bucket = getBucketById(userId);
         bucket.addProduct(productRef);
@@ -36,6 +37,7 @@ public class BucketServiceImpl implements BucketService {
     }
     @Override
     public void createBucket (User user){
+        log.debug("Creating bucket method");
         Bucket bucket = new Bucket();
         bucket.setUser(user);
         Bucket newBucket = bucketRepository.save(bucket);
@@ -53,8 +55,9 @@ public class BucketServiceImpl implements BucketService {
     }
 
     @Override
-    public BucketDTO getBucketDtoByUser(Long userId) {
-        log.info("start getBucketDtoByUser");
+    public BucketDTO getBucketDtoByUserId(Long userId) {
+        log.debug("Getting bucket DTO for {}", userId);
+
         Bucket bucket = getBucketById(userId);
         log.info("Found bucket {}, by userId ", bucket.getId());
 
@@ -72,6 +75,7 @@ public class BucketServiceImpl implements BucketService {
     }
 
     private static List<BucketDetailDTO> summarizeBucketDetailsDTO(List<Product> inBucketProductList) {
+        log.debug("Summarizing bucket details for {} products private method", inBucketProductList.size());
         Map<Long, BucketDetailDTO> bucketDetailMap = new HashMap<>();
         if (inBucketProductList.isEmpty()){
             return Collections.emptyList();
@@ -91,6 +95,7 @@ public class BucketServiceImpl implements BucketService {
 
     @Override
     public void deleteProductFromBucket(Long productId, Long userId) {
+        log.debug("Deleting product {} from bucket {} method", productId, userId);
         Bucket bucket = getBucketById(userId);
         bucket.removeProduct(productId);
         bucketRepository.save(bucket);
@@ -113,6 +118,7 @@ public class BucketServiceImpl implements BucketService {
 
     @Override
     public void clearBucket(Long id) {
+        log.debug("Clearing bucket {}", id);
         Bucket bucket = getBucketById(id);
         bucket.getProductList().clear();
         bucketRepository.save(bucket);

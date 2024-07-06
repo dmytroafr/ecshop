@@ -24,8 +24,16 @@ public class OrderController {
         this.orderService = orderService;
     }
 
-    @PreAuthorize("hasAnyAuthority()")
-    @PostMapping("/create")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @GetMapping
+    public String findAllOrders (Model model){
+        List<OrderDTO> orders = orderService.findAll();
+        model.addAttribute("orders", orders);
+        return "orders";
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @PostMapping
     public String makeAnOrder (@ModelAttribute OrderRequest orderRequest, Principal principal, HttpSession httpSession) {
         if (principal==null){
             return "redirect:/login";
@@ -37,6 +45,7 @@ public class OrderController {
         return "redirect:/orders/" + orderId;
     }
 
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/{orderId}")
     public String successOrder (@PathVariable Long orderId, Model model){
         String massage = "Ваше замовлення було успішно оформлене, очікуйте на виконання. Дякуємо";
@@ -46,11 +55,5 @@ public class OrderController {
         return "result";
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
-    @GetMapping
-    public String findAllOrders (Model model){
-        List<OrderDTO> orders = orderService.findAll();
-        model.addAttribute("orders", orders);
-        return "orders";
-    }
+
 }

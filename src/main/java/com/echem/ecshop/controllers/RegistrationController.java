@@ -14,22 +14,23 @@ public class RegistrationController {
     public RegistrationController(RegistrationService registrationService) {this.registrationService = registrationService;}
 
     @GetMapping
-    public String registration(){
+    public String registration(@ModelAttribute RegistrationRequest registrationRequest){
         return "registration";
     }
 
-    @PostMapping()
-    public String createUser(@ModelAttribute("registrationRequest") RegistrationRequest request, Model model) {
 
-        registrationService.register(request);
+//    Треба ще завалідувати
+    @PostMapping()
+    public String createUser(RegistrationRequest registrationRequest, Model model) {
+        registrationService.register(registrationRequest);
+
         String result = "Для закінчення реєстрації Вам відправлено листа на Ваш email," +
                 "будь ласка, підтвердіть свій email перейшовши за посиланням";
         model.addAttribute("result", result);
         return "index";
     }
 
-    //  Може тут треба пост??
-    @PostMapping("/confirm")
+    @GetMapping("/confirm")
     public String confirmToken (@RequestParam("token") String token, Model model) {
 
         registrationService.confirmToken(token);

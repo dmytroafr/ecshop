@@ -1,20 +1,3 @@
--- drop table if exists buckets_products cascade;
--- drop table if exists categories cascade;
--- drop table if exists confirmation_token cascade;
--- drop table if exists order_details cascade;
--- drop table if exists orders cascade;
--- drop table if exists orders_details cascade;
--- drop table if exists products cascade;
--- drop table if exists products_categories cascade;
--- drop table if exists users cascade;
--- drop sequence if exists bucket_seq;
--- drop sequence if exists category_seq;
--- drop sequence if exists order_details_seq;
--- drop sequence if exists order_seq;
--- drop sequence if exists product_seq;
--- drop sequence if exists token_seq;
--- drop sequence if exists user_seq;
-
 create sequence bucket_seq start with 1 increment by 1;
 create sequence category_seq start with 1 increment by 1;
 create sequence order_details_seq start with 1 increment by 1;
@@ -34,7 +17,7 @@ create table users (
     last_name varchar(255),
     password varchar(255) not null,
     phone varchar(255),
-    role varchar(255) check (role in ('CLIENT','ADMIN','MANAGER')),
+    role varchar(255) check (role in ('ROLE_CLIENT','ROLE_ADMIN','ROLE_MANAGER')),
     username varchar(255) not null unique ,
     created timestamp(6),
     primary key (id));
@@ -43,7 +26,7 @@ create table buckets (
     id bigint not null,
     user_id bigint unique,
     primary key (id),
-    constraint user_id_fk foreign key (user_id) references users(id));
+    constraint user_id_fk foreign key (id) references users(id));
 
 create table products (
     opt_price numeric(38,2),
@@ -60,7 +43,6 @@ create table products (
 create table buckets_products (
     bucket_id bigint not null,
     product_id bigint not null,
-    PRIMARY KEY (bucket_id, product_id),
     constraint product_id_fk foreign key (product_id) references products(id),
     constraint bucket_id_fk foreign key (bucket_id) references buckets(id));
 
@@ -118,6 +100,6 @@ insert into users (id, enabled, account_non_locked, account_non_expired, credent
                    last_name, password, phone, role, username, created)
 values (1,true, true, true, true, 'dima@e-chem.com.ua', 'Afrosin', 'Dmytro',
         '$2a$12$g4Vi5h.Jo/Lyp4gWuuIU0u37RaLhmTzCAq0vUWMOY.H5Ntw6QnePG',
-        '+380957913429', 'ADMIN', 'dima', now());
+        '+380957913429', 'ROLE_ADMIN', 'dima', now());
 alter sequence user_seq restart with 2;
 insert into buckets (id, user_id) VALUES (1,1);

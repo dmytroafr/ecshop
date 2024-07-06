@@ -47,20 +47,20 @@
         <div class="row justify-content-center">
             <div class="col-md-6">
             <h2 class="text-center my-4">Реєстрація</h2>
-            <form th:action="@{/registration}"  method="post">
+            <form th:action="@{/registration}" th:object="${registrationRequest}" method="post">
                 <div class="mb-3">
                     <label for="username" class="form-label">Ім'я</label>
-                    <input type="text" class="form-control" name="username" id="username" required />
+                    <input type="text" class="form-control" th:field="*{username}" name="username" id="username" required />
                 </div>
 
                 <div class="mb-3">
                     <label for="email" class="form-label">Електронна пошта</label>
-                    <input type="email" class="form-control" name="email" id="email" required />
+                    <input type="email" class="form-control" th:field="*{email}" name="email" id="email" required />
                 </div>
 
                 <div class="mb-3">
                     <label for="password" class="form-label">Пароль</label>
-                    <input type="password" class="form-control" name="password" id="password" required />
+                    <input type="password" class="form-control" th:field="*{password}" name="password" id="password" required />
                 </div>
 
                 <button type="submit" class="btn btn-primary w-100">Зареєструватися</button>

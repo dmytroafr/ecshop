@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="uk" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="uk" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:data-th-name="http://www.w3.org/1999/xhtml">
 <head>
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-09Q73E6BWG"></script>
@@ -47,6 +47,9 @@
       <div class="row justify-content-center">
         <div class="col-md-6">
           <form action="/auth" method="post">
+            <input type="hidden"
+                   data-th-name="${_csrf.parameterName}"
+                   data-th-value="${_csrf.token}">
             <div class="mb-3">
               <label for="userName" class="form-label">Ім'я</label>
               <input type="text" class="form-control" name="username" id="userName" />
@@ -59,6 +62,9 @@
 
             <button type="submit" class="btn btn-primary w-100">Увійти</button>
           </form>
+          <br>
+            <a class="btn btn-primary w-100" th:href="@{/registration}">Реєстрація</a>
+
         </div>
       </div>
     </div>

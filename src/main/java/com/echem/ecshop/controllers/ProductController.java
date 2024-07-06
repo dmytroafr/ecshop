@@ -1,22 +1,19 @@
 package com.echem.ecshop.controllers;
 
-import com.echem.ecshop.domain.Role;
+import com.echem.ecshop.domain.OnStock;
 import com.echem.ecshop.dto.ProductDTO;
-import com.echem.ecshop.dto.UserDTO;
 import com.echem.ecshop.service.product.ProductService;
-import jakarta.servlet.http.HttpSession;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.security.Principal;
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
-
+@Slf4j
 @Controller
 @RequestMapping("/products")
 public class ProductController {
@@ -28,62 +25,76 @@ public class ProductController {
     }
 
     @GetMapping
-    public String findAllOnStockByPage(Model model,Pageable pageable){
-        Page<ProductDTO> allOnOnStock = productService.findAllOnOnStock(pageable);
-        return getString(model, allOnOnStock);
+    public String findAllProducts(
+            @RequestParam(required = false, defaultValue = "title") String sortField,
+            @RequestParam(required = false, defaultValue = "asc") String sortDir,
+            @RequestParam(required = false, defaultValue = "0") Long categoryId,
+            @RequestParam(required = false, defaultValue = "ON_STOCK") OnStock onStock,
+            Model model,
+            Pageable pageable) {
+
+        Pageable pageRequest = PageRequest.of(
+                pageable.getPageNumber(),
+                pageable.getPageSize(),
+                Sort.by(Sort.Direction.fromString(sortDir), sortField));
+
+        log.info("Our pageable {}",pageRequest);
+        Page<ProductDTO> products = productService.getProductsByGroupAndStock(
+                categoryId, pageRequest,
+                onStock);
+
+        model.addAttribute("sortField", sortField);
+        model.addAttribute("sortDir", sortDir);
+        model.addAttribute("reverseSortDir", sortDir.equals("asc") ? "desc" : "asc");
+        model.addAttribute("categoryId", categoryId);
+        model.addAttribute("products", products);
+        return "products/products";
     }
 
-    private String getString(Model model, Page<ProductDTO> allOnOnStock) {
-        model.addAttribute("products", allOnOnStock);
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @GetMapping("/edit")
+    public String findAllProductsAdmin(
+            @RequestParam(required = false, defaultValue = "title") String sortField,
+            @RequestParam(required = false, defaultValue = "asc") String sortDir,
+            Model model,
+            Pageable pageable) {
 
-        int totalPages = allOnOnStock.getTotalPages();
-        if (totalPages > 0) {
-            List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages)
-                    .boxed()
-                    .collect(Collectors.toList());
-            model.addAttribute("pageNumbers", pageNumbers);
-        }
-        return "products";
+        Pageable pageRequest = PageRequest.of(
+                pageable.getPageNumber(),
+                pageable.getPageSize(),
+                Sort.by(Sort.Direction.fromString(sortDir), sortField));
+
+        Page<ProductDTO> products = productService.findAll(pageRequest);
+
+        model.addAttribute("sortField", sortField);
+        model.addAttribute("sortDir", sortDir);
+        model.addAttribute("reverseSortDir", sortDir.equals("asc") ? "desc" : "asc");
+        model.addAttribute("products", products);
+        model.addAttribute("productDTO", new ProductDTO());
+        return "products/editProducts";
+    }
+
+    @PatchMapping("/{productId}")
+    public String updateProductList(@ModelAttribute("productDTO") ProductDTO productDTO,
+                                    @PathVariable("productId") Long productId) {
+        log.info("Trying to update product price by id");
+        productService.updateProduct(productId, productDTO);
+        return "redirect:/products/edit";
     }
 
 
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @GetMapping("/create")
-    public String sendProductDto (Principal principal, HttpSession httpSession){
-        if (principal == null){
-            return "redirect:/login";
-        }
-        UserDTO userDTO = (UserDTO) httpSession.getAttribute("user");
-        if (!userDTO.getRole().equals(Role.ADMIN)){
-            return "redirect:/login";
-        }
-        return "addProducts";
+    public String sendProductDto (Model model){
+        model.addAttribute("productDTO", new ProductDTO());
+        model.addAttribute("allCategories", productService.getAllCategories());
+        return "products/addProducts";
     }
-    @PreAuthorize("hasAuthority('ADMIN')")
-    @PostMapping("/create")
-    public String addNewProduct(@ModelAttribute("productDTO") ProductDTO productDTO, Model model, Pageable pageable){
+
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @PostMapping
+    public String addNewProduct(@ModelAttribute("productDTO") ProductDTO productDTO){
         productService.addNewProduct(productDTO);
-        model.addAttribute("products", productService.findAllOnOnStock(pageable));
-        return "products";
+        return "redirect:/products";
     }
-    @PreAuthorize("hasAuthority('ADMIN')")
-    @GetMapping("/{productId}")
-    public String setPrice (@PathVariable Long productId, @RequestParam(name = "price") double price, Principal principal, HttpSession httpSession){
-        if (principal==null){
-            return "redirect:/login";
-        }
-        UserDTO userDTO = (UserDTO) httpSession.getAttribute("user");
-        if (!userDTO.getRole().equals(Role.ADMIN)){
-            return "redirect:/login";
-        }
-        productService.setNewPrice(productId, price);
-        return "products";
-    }
-    @GetMapping("/group")
-    public String getPageableByGroup(@RequestParam("categoryId") Long categoryId, Model model, Pageable pageable){
-
-        Page<ProductDTO> productDTOPage = productService.getProductsByGroup(categoryId, pageable);
-        return getString(model, productDTOPage);
-    }
-
 }

@@ -1,6 +1,5 @@
 package com.echem.ecshop.service.email;
 
-import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -25,6 +24,7 @@ public class EmailService implements EmailSender{
     @Override
     @Async
     public void send(String to, String email, String subject) {
+        log.info("Method send in EmailService sending email to " + to);
         try {
             MimeMessage mimeMessage = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(mimeMessage);
@@ -34,9 +34,9 @@ public class EmailService implements EmailSender{
             helper.setFrom(mailFrom);
             mailSender.send(mimeMessage);
             log.info("Email sent to {}", to);
-        } catch (MessagingException e) {
+        } catch (Exception e) {
             log.error("Fail to send an email",e);
-            throw new IllegalStateException("Fail to send an email");
+//            throw new IllegalStateException("Fail to send an email");
         }
     }
 }

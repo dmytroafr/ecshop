@@ -36,14 +36,17 @@ public class OrderServiceImpl implements OrderService{
 
     private final OrderMapper mapper = OrderMapper.MAPPER;
 
-    public OrderServiceImpl(OrderRepository orderRepository, BucketService bucketService, ProductService productService, EmailService emailService, UserService userService) {
+    public OrderServiceImpl(OrderRepository orderRepository,
+                            BucketService bucketService,
+                            EmailService emailService,
+                            UserService userService,
+                            ProductService productService) {
         this.orderRepository = orderRepository;
         this.bucketService = bucketService;
         this.emailService = emailService;
         this.userService = userService;
         this.productService = productService;
     }
-
 
     @Transactional
     @Override
@@ -52,7 +55,7 @@ public class OrderServiceImpl implements OrderService{
         Order order = createEmptyOrder(userDTO);
         log.info("Created order and set User and Order Status");
 
-        BucketDTO bucketDto = bucketService.getBucketDtoByUser(userDTO.getId());
+        BucketDTO bucketDto = bucketService.getBucketDtoByUserId(userDTO.id);
         List<OrderDetails> details = getOrderDetails(bucketDto, order);
         order.setDetails(details);
         order.setSum(new BigDecimal(bucketDto.sum));
@@ -67,10 +70,11 @@ public class OrderServiceImpl implements OrderService{
 
         orderInform(userDTO, order);
         bucketService.clearBucket(bucketDto.getId());
+        log.info("Bucket was cleared");
         return order;
     }
 
-    private void orderInform (UserDTO userDTO, Order order) {
+    public void orderInform(UserDTO userDTO, Order order) {
         String massage = "Ваше замовлення прийнято у роботу, Номер замовлення "+ order.getId();
         emailService.send(userDTO.getEmail(),massage, "Ваше замовлення");
         emailService.send("sales@e-chem.com.ua", order.toString(), "#" + order.getId());
@@ -88,6 +92,7 @@ public class OrderServiceImpl implements OrderService{
     }
 
     private List<OrderDetails> getOrderDetails(BucketDTO bucketDTO, Order order) {
+        log.debug("Get order details for {} private method", order.getId());
         return bucketDTO.productList.stream()
                 .map(productDto -> {
                     OrderDetails detail = new OrderDetails();

@@ -23,9 +23,10 @@ public class CurrencyServiceImpl implements CurrencyService{
 	private String currencyUrl;
 
 	private String getResponse(String currency){
+		log.info("CurrencyService: Get currency response");
 		RestTemplate restTemplate = new RestTemplate();
 		String string = restTemplate.getForEntity(currencyUrl + currency, String.class).toString();
-		log.info("Received response");
+		log.info("CurrencyService: Received response with currencies");
 		return string;
 	}
 
@@ -39,7 +40,7 @@ public class CurrencyServiceImpl implements CurrencyService{
 		}
 		Map<String, Double> collect = currencyList.stream()
 				.collect(Collectors.toMap(s -> s.substring(1, 4), s -> Double.parseDouble(s.substring(6))));
-		log.info("Mapped Response string into Map");
+		log.info("CurrencyService: Mapped Response string into Map");
 		return collect;
 	}
 
@@ -47,9 +48,10 @@ public class CurrencyServiceImpl implements CurrencyService{
 	@Cacheable(cacheNames = "currency", key = "#currency")
 	@Override
 	public CompletableFuture<String> getRate(String currency){
-		log.info("Try to get rate of {}", currency);
-		CompletableFuture<String> rate = CompletableFuture.completedFuture("1 " + currency + " коштує " + getMap(currency).get("UAH") + " грн");
-		log.info("Got rate of {}", currency);
+		log.info("CurrencyService: Try to get rate of {}", currency);
+		CompletableFuture<String> rate = CompletableFuture
+				.completedFuture("1 " + currency + " коштує " + getMap(currency).get("UAH") + " грн");
+		log.info("CurrencyService: Got rate of {}", currency);
 		return rate;
 	}
 }

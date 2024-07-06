@@ -22,6 +22,6 @@ public interface UserService  extends UserDetailsService {
     String signUpUser(RegistrationRequest request);
     void enableUser (String email);
 
-    Map<String,Object> getUserDetailsMap (String username);
+    Map<String,String> getUserDetailsMap (String username);
     List<UserDTO> getUsers();
 }

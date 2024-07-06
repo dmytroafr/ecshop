@@ -7,9 +7,9 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.security.Principal;
 import java.util.List;
 import java.util.Map;
 
@@ -24,31 +24,22 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/profile")
-    public String profileUser(Model model, Principal principal) throws Exception {
-        log.info("request to /users/profile");
-        if (principal==null) {
-            log.error("Principal is null");
-            throw new IllegalAccessException("User has not been logged in");
-        }
-        log.info("principal {} authenticated", principal.getName());
-        Map<String, Object> userMap = userService.getUserDetailsMap(principal.getName());
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/{username}")
+    public String profileUser(@PathVariable String username, Model model){
+        log.info("request to /users/{username}");
+        Map<String, String> userMap = userService.getUserDetailsMap(username);
         model.addAttribute("user", userMap);
         log.info("UserMap was sent to view");
-        return "profile";
+        return "users/profile";
     }
 
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping
-    public String getAllUsers(Model model, Principal principal) throws Exception {
+    public String getAllUsers(Model model){
         log.info("request to /users");
-        if (principal==null) {
-            log.error("Principal is null");
-            throw new IllegalAccessException("User has not been logged in");
-        }
-        log.info("principal {} authenticated", principal.getName());
         List<UserDTO> users = userService.getUsers();
         model.addAttribute("users", users);
-        return "users";
+        return "users/users";
     }
 }

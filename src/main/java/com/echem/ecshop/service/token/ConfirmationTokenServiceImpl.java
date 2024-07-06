@@ -32,6 +32,7 @@ public class ConfirmationTokenServiceImpl implements ConfirmationTokenService{
 
     @Override
     public void setConfirmed(String token){
+        log.debug("Methof setConfirmed with token {}", token);
         ConfirmationToken confirmationToken = getToken(token)
                 .orElseThrow(() -> {
                     log.error("Token not found");

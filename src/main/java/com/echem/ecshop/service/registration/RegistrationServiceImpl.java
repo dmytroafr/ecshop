@@ -32,6 +32,7 @@ public class RegistrationServiceImpl implements RegistrationService{
     @Transactional
     @Override
     public void register(RegistrationRequest request) {
+        log.debug("Method register was called");
         String token = userService.signUpUser(request);
         log.info("User {} was signet uo successfully",request.username());
         String link = serverHost + "registration/confirm?token=" + token;
@@ -46,6 +47,7 @@ public class RegistrationServiceImpl implements RegistrationService{
     @Transactional
     @Override
     public void confirmToken(String token) {
+        log.debug("Method confirmToken was called");
         ConfirmationToken confirmationToken = tokenService.getToken(token)
                 .orElseThrow(()->{
                     log.error("Token {} did not found", token);
