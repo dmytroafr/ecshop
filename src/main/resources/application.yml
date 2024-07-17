@@ -34,7 +34,7 @@ spring:
 #        characterEncoding: utf8
 #        collation: uk_UA.UTF-8
   datasource:
-    url: jdbc:postgresql://localhost:5432/cool_one
+    url: jdbc:postgresql://localhost:5432/database_ec
     username: ${POSTGRES_USER}
     password: ${POSTGRES_PASS}
     driver-class-name: org.postgresql.Driver
