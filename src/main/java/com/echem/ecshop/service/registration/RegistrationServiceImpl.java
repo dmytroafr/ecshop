@@ -31,18 +31,22 @@ public class RegistrationServiceImpl implements RegistrationService{
 
     @Transactional
     @Override
-    public void register(RegistrationRequest request) {
+    public String register(RegistrationRequest request) {
         log.debug("Method register was called");
         String token = userService.signUpUser(request);
         log.info("User {} was signet uo successfully",request.username());
-        String link = serverHost + "registration/confirm?token=" + token;
+//        String link = serverHost + "registration/confirm?token=" + token;
+        String link = "registration/confirm?token=" + token;
 
-        String message = String.format("Привіт, " + request.username() +
-                ", перейдіть за наступним посиланням для підтвердження адреси вашої пошти:" +
-                "\n%s\n\nДякуємо,\nЗ повагою,\nКоманда Екохім", link);
+//        String message = String.format("Привіт, " + request.username() +
+//                ", перейдіть за наступним посиланням для підтвердження адреси вашої пошти:" +
+//                "\n%s\n\nДякуємо,\nЗ повагою,\nКоманда Екохім", link);
 
-        emailSender.send(request.email(), message, "Підтвердження реєстрації");
-        log.info("User {} was successfully registered",request.username());
+        String message = "Привіт, ви зареєструвалися на сайті e-chem.com.ua";
+
+//        emailSender.send(request.email(), message, "Підтвердження реєстрації");
+//        log.info("User {} was successfully registered",request.username());
+        return token;
     }
     @Transactional
     @Override

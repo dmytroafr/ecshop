@@ -26,7 +26,7 @@ create table buckets (
     id bigint not null,
     user_id bigint unique,
     primary key (id),
-    constraint user_id_fk foreign key (id) references users(id));
+    constraint user_id_fk foreign key (user_id) references users(id));
 
 create table products (
     opt_price numeric(38,2),
@@ -103,3 +103,5 @@ values (1,true, true, true, true, 'dima@e-chem.com.ua', 'Afrosin', 'Dmytro',
         '+380957913429', 'ROLE_ADMIN', 'dima', now());
 alter sequence user_seq restart with 2;
 insert into buckets (id, user_id) VALUES (1,1);
+alter sequence bucket_seq restart with 2;
+alter sequence token_seq restart with 2;

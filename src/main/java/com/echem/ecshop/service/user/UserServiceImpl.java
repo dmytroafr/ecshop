@@ -34,10 +34,7 @@ public class UserServiceImpl implements UserService{
 
 	private final UserMapper mapper = UserMapper.MAPPER;
 
-	public UserServiceImpl(UserRepository userRepository,
-						   ConfirmationTokenService confirmationTokenService,
-						   BucketService bucketService,
-						   PasswordEncoder passwordEncoder) {
+	public UserServiceImpl(UserRepository userRepository, ConfirmationTokenService confirmationTokenService, BucketService bucketService, PasswordEncoder passwordEncoder) {
 		this.userRepository = userRepository;
 		this.confirmationTokenService = confirmationTokenService;
 		this.bucketService = bucketService;
