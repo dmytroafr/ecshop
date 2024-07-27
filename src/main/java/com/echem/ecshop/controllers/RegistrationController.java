@@ -28,14 +28,8 @@ public class RegistrationController {
 
     @PostMapping()
     public String createUser(RegistrationRequest registrationRequest) {
-
-
-
         String token = registrationService.register(registrationRequest);
-
-
         registrationService.confirmToken(token);
-
         return "index";
     }
 

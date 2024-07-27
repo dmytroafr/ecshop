@@ -1,0 +1,15 @@
+server:
+  port: 443
+#  host: https://185.69.153.13/
+  host: https://e-chem.com.ua/
+  ssl:
+    key-store: file:/etc/letsencrypt/live/e-chem.com.ua/keystore.p12
+    key-store-password: ${KEY_PASS}
+    key-alias: tomcat
+    key-store-type: PKCS12
+
+spring:
+  application:
+    name: internet-shop-server
+  datasource:
+    url: jdbc:postgresql://localhost:5432/ec

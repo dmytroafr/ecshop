@@ -1,0 +1,10 @@
+server:
+  port: 8083
+  host: http://localhost:8083/
+
+spring:
+  application:
+    name: internet-shop-local
+  datasource:
+    url: jdbc:postgresql://localhost:5432/database_ec
+#    url: jdbc:postgresql://host.docker.internal:5432/database_ec
