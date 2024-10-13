@@ -1,6 +1,5 @@
 server:
   port: 443
-#  host: https://185.69.153.13/
   host: https://e-chem.com.ua/
   ssl:
     key-store: file:/etc/letsencrypt/live/e-chem.com.ua/keystore.p12

@@ -15,7 +15,7 @@
           Привіт,
           <a th:href="@{/users/{username}(username=${#authentication.principal.username})}">
             <span sec:authentication="principal.username">Bill</span>
-          </a>.
+          </a>. :)
           <a th:href="@{/buckets}" sec:authorize="isAuthenticated()">Корзина</a>
           <a th:href="@{/logout}">Вихід</a>
         </li>

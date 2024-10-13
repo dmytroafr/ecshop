@@ -34,7 +34,7 @@ public class WebSecurityConfig {
                 .csrf(Customizer.withDefaults())
                 .authorizeHttpRequests(requests -> requests
                         .requestMatchers(
-                                        "/", "/about", "/conditions", "/contacts","/products",
+                                        "/","/sitemap.xml", "/about", "/conditions", "/contacts","/products","/products/*",
                                         "/login", "/registration", "/error",
                                         "/static/**", "/images/**", "/fragments/**", "/css/**")
                                         .permitAll()

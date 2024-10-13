@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="uk" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-09Q73E6BWG"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'G-09Q73E6BWG');
+    </script>
+
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+            integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM"
+            crossorigin="anonymous"
+    />
+    <title>Екохім - Товар</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/styles.css}" />
+</head>
+
+<body class="bg-body-tertiary">
+<div th:insert="~{fragments/menu :: #nav-menu}"></div>
+<img th:src="@{/images/header.jpg}" class="img-fluid mx-auto" alt="ecochem, екохім"/>
+<div th:insert="~{fragments/menu :: #navigator}"></div>
+
+<div class="container">
+    <div class="row">
+        <div id="bar" class="col-sm-2">
+            <address>
+                ТОВ "Екохім Розвиток"<br><br>
+                Продажі:<br>
+                +380 (44) 334-59-40<br><br>
+                Офіс<br>
+                +380 (95) 791-34-29<br><br>
+                Київ, вул. Алматинська 8<br>
+                оф 103<br><br>
+                office@e-chem.com.ua<br>
+            </address>
+            <div>
+                <p><a th:href="@{/products?categoryId=1}">Засоби для поверхонь</a></p>
+                <p><a th:href="@{/products?categoryId=2}">Засоби для інструментів</a></p>
+                <p><a th:href="@{/products?categoryId=3}">Антисептики</a></p>
+                <p><a th:href="@{/products?categoryId=5}">Стерилізаційні пакети</a></p>
+                <p><a th:href="@{/products?categoryId=4}">Засоби для гігієни</a></p>
+                <p><a th:href="@{/products?categoryId=0}">Усі категорії</a></p>
+            </div>
+        </div>
+
+        <div class="col-sm-10">
+            <h3 th:text="${product.title}">Назва товару</h3>
+            <div class="row">
+                <div class="col-md-6">
+                    <img th:src="${product.photoUrl}" class="img-fluid" alt="Фото товару"/>
+                </div>
+                <div class="col-md-6">
+                    <h5>Опис</h5>
+                    <p th:text="${product.productDescription}">Опис товару...</p>
+                    <h5>Ціна</h5>
+                    <p th:text="${product.price} + ' грн'">Ціна товару</p>
+<!--                    <h5>Одиниці виміру</h5>-->
+<!--                    <p th:text="${product.unit}">Одиниці</p>-->
+                    <h5>Виробник</h5>
+                    <p th:text="${product.producer}">Виробник товару</p>
+                    <div class="mt-4">
+                        <a th:href="@{/buckets/{id}/add(id=${product.id})}" class="btn btn-primary">
+                            Додати до корзини
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+        crossorigin="anonymous"
+></script>
+</body>
+</html>

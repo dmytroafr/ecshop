@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ProductService {
     Product getProductRef (Long id);
@@ -19,8 +20,8 @@ public interface ProductService {
     Page<ProductDTO> getProductsByGroupAndStock(Long categoryId, Pageable pageable, OnStock onStock);
     Page<ProductDTO> findAll(Pageable pageable);
 
-
-
+    ProductDTO getProductDto(Long productId);
+    List<ProductDTO> getAllProducts();
 
     void addNewProduct(ProductDTO productDTO);
     void updateProduct(Long productId, ProductDTO productDTO);

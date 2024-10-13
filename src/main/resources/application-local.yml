@@ -6,5 +6,5 @@ spring:
   application:
     name: internet-shop-local
   datasource:
-    url: jdbc:postgresql://localhost:5432/database_ec
+    url: jdbc:postgresql://localhost:5432/ec
 #    url: jdbc:postgresql://host.docker.internal:5432/database_ec

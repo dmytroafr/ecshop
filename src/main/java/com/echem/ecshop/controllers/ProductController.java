@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -39,6 +40,7 @@ public class ProductController {
                 Sort.by(Sort.Direction.fromString(sortDir), sortField));
 
         log.info("Our pageable {}",pageRequest);
+
         Page<ProductDTO> products = productService.getProductsByGroupAndStock(
                 categoryId, pageRequest,
                 onStock);
@@ -74,13 +76,13 @@ public class ProductController {
         return "products/editProducts";
     }
 
-    @PatchMapping("/{productId}")
-    public String updateProductList(@ModelAttribute("productDTO") ProductDTO productDTO,
-                                    @PathVariable("productId") Long productId) {
-        log.info("Trying to update product price by id");
-        productService.updateProduct(productId, productDTO);
-        return "redirect:/products/edit";
-    }
+//    @PatchMapping("/{productId}")
+//    public String updateProductList(@ModelAttribute("productDTO") ProductDTO productDTO,
+//                                    @PathVariable("productId") Long productId) {
+//        log.info("Trying to update product price by id");
+//        productService.updateProduct(productId, productDTO);
+//        return "redirect:/products/edit";
+//    }
 
 
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
@@ -96,5 +98,17 @@ public class ProductController {
     public String addNewProduct(@ModelAttribute("productDTO") ProductDTO productDTO){
         productService.addNewProduct(productDTO);
         return "redirect:/products";
+    }
+    @GetMapping("/{productId}")
+    public String getProduct(@PathVariable("productId") Long productId, Model model){
+
+        if (productId<=0){
+            throw new IllegalArgumentException();
+        }
+
+        ProductDTO productDto = productService.getProductDto(productId);
+
+        model.addAttribute("product", productDto);
+        return "products/product";
     }
 }

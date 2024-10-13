@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -154,5 +155,20 @@ public class ProductServiceImp implements ProductService{
             log.info("Updated onStock {}", product.getOnStock());
         }
         productRepository.save(product);
+    }
+
+    @Override
+    public ProductDTO getProductDto(Long productId) {
+        Optional<Product> optionalProduct = productRepository.findById(productId);
+        if (optionalProduct.isEmpty()){
+            throw new NoSuchElementException("Product with id=" + productId + " doesn't exists");
+        }
+        return mapper.fromProduct(optionalProduct.get());
+    }
+
+    @Override
+    public List<ProductDTO> getAllProducts() {
+        List<Product> all = productRepository.findAll();
+        return mapper.fromProductList(all);
     }
 }
