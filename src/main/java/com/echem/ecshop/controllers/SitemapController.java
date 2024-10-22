@@ -38,23 +38,19 @@ public class SitemapController {
             Document doc = builder.newDocument();
 
             // Створюємо кореневий елемент <urlset>
-            Element urlset = doc.createElement("urlset");
-            urlset.setAttribute("xmlns", "http://www.sitemaps.org/schemas/sitemap/0.9");
-            doc.appendChild(urlset);
+            Element urlSet = doc.createElement("urlset");
+            urlSet.setAttribute("xmlns", "https://www.sitemaps.org/schemas/sitemap/0.9");
+            doc.appendChild(urlSet);
 
             // Додаємо сторінки сайту
-            addUrl(doc, urlset, "https://e-chem.com.ua/", LocalDate.now().toString(), "monthly", "1.0");
-            addUrl(doc, urlset, "https://e-chem.com.ua/products", LocalDate.now().toString(), "weekly", "0.8");
-            addUrl(doc, urlset, "https://e-chem.com.ua/contact", LocalDate.now().toString(), "yearly", "0.5");
+            addUrl(doc, urlSet, "https://e-chem.com.ua/", LocalDate.now().toString(), "monthly", "1.0");
+            addUrl(doc, urlSet, "https://e-chem.com.ua/products", LocalDate.now().toString(), "weekly", "0.8");
+            addUrl(doc, urlSet, "https://e-chem.com.ua/contact", LocalDate.now().toString(), "yearly", "0.5");
 
             // Отримуємо продукти з бази даних і додаємо до sitemap
-            List<ProductDTO> products = productService.getAllProducts();
-            List<ProductDTO> onStock = products.stream()
-                    .filter(productDTO -> productDTO.onStock.equals("ON_STOCK"))
-                    .toList();
-
-            for (ProductDTO product : onStock) {
-                addUrl(doc, urlset, "https://e-chem.com.ua/products/" + product.getId(),
+            List<ProductDTO> products = productService.getAllAvailableProductDTOs();
+            for (ProductDTO product : products) {
+                addUrl(doc, urlSet, "https://e-chem.com.ua/products/" + product.getId(),
                         LocalDate.now().toString(), "weekly", "0.8");
             }
 

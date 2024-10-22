@@ -1,16 +1,13 @@
 package com.echem.ecshop.service.product;
 
 
-import com.echem.ecshop.dao.CategoryRepository;
 import com.echem.ecshop.dao.ProductRepository;
-import com.echem.ecshop.domain.Category;
 import com.echem.ecshop.domain.OnStock;
 import com.echem.ecshop.domain.Product;
 import com.echem.ecshop.dto.ProductDTO;
 import com.echem.ecshop.mapper.ProductMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -24,11 +21,25 @@ public class ProductServiceImp implements ProductService{
 
     private final ProductMapper mapper = ProductMapper.MAPPER;
     private final ProductRepository productRepository;
-    private final CategoryRepository categoryRepository;
 
-    public ProductServiceImp(ProductRepository productRepository, CategoryRepository categoryRepository) {
+    public ProductServiceImp(ProductRepository productRepository) {
         this.productRepository = productRepository;
-        this.categoryRepository = categoryRepository;
+    }
+
+
+    @Override
+    public ProductDTO getProductDtoById(Long productId) {
+        Optional<Product> optionalProduct = productRepository.findById(productId);
+        if (optionalProduct.isEmpty()){
+            throw new NoSuchElementException("Product with id=" + productId + " doesn't exists");
+        }
+        return mapper.fromProduct(optionalProduct.get());
+    }
+
+    @Override
+    public Page<ProductDTO> getAllAvailableProductDTOs(Pageable pageable) {
+        Page<Product> allAvailableProducts = productRepository.findAllAvailable(pageable);
+        return allAvailableProducts.map(mapper::fromProduct);
     }
 
     @Override
@@ -40,74 +51,20 @@ public class ProductServiceImp implements ProductService{
         log.info("Product {} was saved by Id {}", savedProduct.getTitle(), savedProduct.getId());
     }
 
-//    @Cacheable(cacheNames = "products")
-//    @Override
-//    public Page<ProductDTO> findAllOnOnStock(Pageable pageable, OnStock onStock) {
-//        Page<Product> productPage = productRepository
-//                .findAllByOnStock(PageRequest.of(pageable.getPageNumber(), pageable.getPageSize()),onStock);
-//        log.info("Page {} from {}, total elements {} on STOCK",
-//                pageable.getPageNumber(), productPage.getTotalPages(), productPage.getTotalElements());
-//
-//        Page<ProductDTO> map = productPage.map(mapper::fromProduct);
-//        log.info("Mapped Page<Product> to Page<ProductDTO> on STOCK");
-//
-//        return map;
-//    }
-
-    @Override
-    public Page<ProductDTO> findAll(Pageable pageable) {
-        Page<Product> productPage = productRepository
-                .findAll(PageRequest.of(pageable.getPageNumber(), pageable.getPageSize()));
-        log.info("Page {} from {}, total elements {}",
-                pageable.getPageNumber(), productPage.getTotalPages(), productPage.getTotalElements());
-
-        Page<ProductDTO> map = productPage.map(mapper::fromProduct);
-        log.info("Mapped Page<Product> to Page<ProductDTO>");
-        return map;
-    }
-
-//    @Override
-//    public void setNewPrice(Long productId, double price) {
-//        log.debug("Setting new price for product {} setNewPrice() method", productId);
-//        Product product = productRepository.getReferenceById(productId);
-//        product.setPrice(new BigDecimal(price));
-//        productRepository.save(product);
-//        log.info("Price was changed");
-//    }
-
     @Override
     public Product getProductRef(Long productId) {
-        log.debug("Get productRef by id {}", productId);
-        Product referenceById = productRepository.getReferenceById(productId);
-        log.info("Found product ref {}", referenceById);
-        return referenceById;
-    }
-
-    @Override
-    public Page<ProductDTO> getProductsByGroupAndStock(Long categoryId, Pageable pageable, OnStock onStock) {
-
-        Page<Product> groupPage;
-        if (categoryId!=0){
-            log.info("Get products by category id {}", categoryId);
-            groupPage = productRepository.findAllByGroup(pageable, onStock, categoryId);
-        } else {
-            log.info("Get products by all categories");
-            groupPage = productRepository.findAllByOnStock(pageable, onStock);
+        if (productId == null || productId <= 0) {
+            throw new IllegalArgumentException("Invalid product ID: " + productId);
         }
 
-        log.info("Page {} from {}, total elements {} by GROUP {}",
-                pageable.getPageNumber(), groupPage.getTotalPages(), groupPage.getTotalElements(), categoryId);
-
-        Page<ProductDTO> map = groupPage.map(mapper::fromProduct);
-        log.info("Mapped Page<Product> to Page<ProductDTO> by GROUP {}", categoryId);
-
-        return map;
+        return productRepository.findById(productId)
+                .orElseThrow(() -> new NoSuchElementException("Product not found with ID: " + productId));
     }
 
     @Override
-    public List<Category> getAllCategories() {
-        log.debug("Get all categories");
-        return categoryRepository.findAll();
+    public Page<ProductDTO> getProductsByCategory(Pageable pageable, Long categoryId) {
+        Page<Product> groupPage = productRepository.findAllAvailableByCategory(pageable, categoryId);
+        return groupPage.map(mapper::fromProduct);
     }
 
     @Override
@@ -158,17 +115,8 @@ public class ProductServiceImp implements ProductService{
     }
 
     @Override
-    public ProductDTO getProductDto(Long productId) {
-        Optional<Product> optionalProduct = productRepository.findById(productId);
-        if (optionalProduct.isEmpty()){
-            throw new NoSuchElementException("Product with id=" + productId + " doesn't exists");
-        }
-        return mapper.fromProduct(optionalProduct.get());
-    }
-
-    @Override
-    public List<ProductDTO> getAllProducts() {
-        List<Product> all = productRepository.findAll();
-        return mapper.fromProductList(all);
+    public List<ProductDTO> getAllAvailableProductDTOs() {
+        List<Product> allAvailableProducts = productRepository.findAll();
+        return mapper.fromProductList(allAvailableProducts);
     }
 }

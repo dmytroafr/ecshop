@@ -35,7 +35,7 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests(requests -> requests
                         .requestMatchers(
                                         "/","/sitemap.xml", "/about", "/conditions", "/contacts","/products","/products/*",
-                                        "/login", "/registration", "/error",
+                                        "/login", "/registration", "/error","/v1/**",
                                         "/static/**", "/images/**", "/fragments/**", "/css/**")
                                         .permitAll()
                         .anyRequest().authenticated()

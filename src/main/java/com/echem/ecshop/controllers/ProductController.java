@@ -1,6 +1,5 @@
 package com.echem.ecshop.controllers;
 
-import com.echem.ecshop.domain.OnStock;
 import com.echem.ecshop.dto.ProductDTO;
 import com.echem.ecshop.service.product.ProductService;
 import lombok.extern.slf4j.Slf4j;
@@ -8,7 +7,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -30,7 +28,6 @@ public class ProductController {
             @RequestParam(required = false, defaultValue = "title") String sortField,
             @RequestParam(required = false, defaultValue = "asc") String sortDir,
             @RequestParam(required = false, defaultValue = "0") Long categoryId,
-            @RequestParam(required = false, defaultValue = "ON_STOCK") OnStock onStock,
             Model model,
             Pageable pageable) {
 
@@ -39,11 +36,13 @@ public class ProductController {
                 pageable.getPageSize(),
                 Sort.by(Sort.Direction.fromString(sortDir), sortField));
 
-        log.info("Our pageable {}",pageRequest);
+        Page<ProductDTO> products;
 
-        Page<ProductDTO> products = productService.getProductsByGroupAndStock(
-                categoryId, pageRequest,
-                onStock);
+        if (categoryId == 0 ){
+            products = productService.getAllAvailableProductDTOs(pageRequest);
+        } else {
+            products = productService.getProductsByCategory(pageRequest, categoryId);
+        }
 
         model.addAttribute("sortField", sortField);
         model.addAttribute("sortDir", sortDir);
@@ -53,28 +52,28 @@ public class ProductController {
         return "products/products";
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @GetMapping("/edit")
-    public String findAllProductsAdmin(
-            @RequestParam(required = false, defaultValue = "title") String sortField,
-            @RequestParam(required = false, defaultValue = "asc") String sortDir,
-            Model model,
-            Pageable pageable) {
-
-        Pageable pageRequest = PageRequest.of(
-                pageable.getPageNumber(),
-                pageable.getPageSize(),
-                Sort.by(Sort.Direction.fromString(sortDir), sortField));
-
-        Page<ProductDTO> products = productService.findAll(pageRequest);
-
-        model.addAttribute("sortField", sortField);
-        model.addAttribute("sortDir", sortDir);
-        model.addAttribute("reverseSortDir", sortDir.equals("asc") ? "desc" : "asc");
-        model.addAttribute("products", products);
-        model.addAttribute("productDTO", new ProductDTO());
-        return "products/editProducts";
-    }
+//    @PreAuthorize("hasRole('ROLE_ADMIN')")
+//    @GetMapping("/edit")
+//    public String findAllProductsAdmin(
+//            @RequestParam(required = false, defaultValue = "title") String sortField,
+//            @RequestParam(required = false, defaultValue = "asc") String sortDir,
+//            Model model,
+//            Pageable pageable) {
+//
+//        Pageable pageRequest = PageRequest.of(
+//                pageable.getPageNumber(),
+//                pageable.getPageSize(),
+//                Sort.by(Sort.Direction.fromString(sortDir), sortField));
+//
+//        Page<ProductDTO> products = productService.getAllAvailableProductDTOs(pageRequest);
+//
+//        model.addAttribute("sortField", sortField);
+//        model.addAttribute("sortDir", sortDir);
+//        model.addAttribute("reverseSortDir", sortDir.equals("asc") ? "desc" : "asc");
+//        model.addAttribute("products", products);
+//        model.addAttribute("productDTO", new ProductDTO());
+//        return "products/editProducts";
+//    }
 
 //    @PatchMapping("/{productId}")
 //    public String updateProductList(@ModelAttribute("productDTO") ProductDTO productDTO,
@@ -85,13 +84,13 @@ public class ProductController {
 //    }
 
 
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
-    @GetMapping("/create")
-    public String sendProductDto (Model model){
-        model.addAttribute("productDTO", new ProductDTO());
-        model.addAttribute("allCategories", productService.getAllCategories());
-        return "products/addProducts";
-    }
+//    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+//    @GetMapping("/create")
+//    public String sendProductDto (Model model){
+//        model.addAttribute("productDTO", new ProductDTO());
+//        model.addAttribute("allCategories", productService.getAllCategories());
+//        return "products/addProducts";
+//    }
 
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @PostMapping
@@ -99,15 +98,13 @@ public class ProductController {
         productService.addNewProduct(productDTO);
         return "redirect:/products";
     }
+
     @GetMapping("/{productId}")
     public String getProduct(@PathVariable("productId") Long productId, Model model){
-
         if (productId<=0){
             throw new IllegalArgumentException();
         }
-
-        ProductDTO productDto = productService.getProductDto(productId);
-
+        ProductDTO productDto = productService.getProductDtoById(productId);
         model.addAttribute("product", productDto);
         return "products/product";
     }
