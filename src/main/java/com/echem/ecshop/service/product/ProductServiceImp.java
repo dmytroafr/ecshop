@@ -7,6 +7,7 @@ import com.echem.ecshop.domain.Product;
 import com.echem.ecshop.dto.ProductDTO;
 import com.echem.ecshop.mapper.ProductMapper;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -26,7 +27,7 @@ public class ProductServiceImp implements ProductService{
         this.productRepository = productRepository;
     }
 
-
+    @Cacheable(value = "productsCache", key = "#productId")
     @Override
     public ProductDTO getProductDtoById(Long productId) {
         Optional<Product> optionalProduct = productRepository.findById(productId);
@@ -52,7 +53,7 @@ public class ProductServiceImp implements ProductService{
     }
 
     @Override
-    public Product getProductRef(Long productId) {
+    public Product getProduct(Long productId) {
         if (productId == null || productId <= 0) {
             throw new IllegalArgumentException("Invalid product ID: " + productId);
         }
@@ -116,7 +117,11 @@ public class ProductServiceImp implements ProductService{
 
     @Override
     public List<ProductDTO> getAllAvailableProductDTOs() {
-        List<Product> allAvailableProducts = productRepository.findAll();
-        return mapper.fromProductList(allAvailableProducts);
+        List<Product> allProducts = productRepository.findAll();
+        List<Product> onStock = allProducts.stream()
+                .filter(Product::isAvailable)
+                .toList();
+
+        return mapper.fromProductList(onStock);
     }
 }

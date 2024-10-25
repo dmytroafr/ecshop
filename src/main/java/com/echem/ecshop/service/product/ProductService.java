@@ -1,7 +1,6 @@
 package com.echem.ecshop.service.product;
 
 
-import com.echem.ecshop.domain.Category;
 import com.echem.ecshop.domain.Product;
 import com.echem.ecshop.dto.ProductDTO;
 import org.springframework.data.domain.Page;
@@ -24,7 +23,7 @@ public interface ProductService {
      * @param productId
      * @return Product Entity
      */
-    Product getProductRef (Long productId);
+    Product getProduct(Long productId);
 
     /**
      * Method fo sitemap

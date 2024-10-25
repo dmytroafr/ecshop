@@ -8,6 +8,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
+
 
 public interface ProductRepository extends JpaRepository<Product, Long> {
 
@@ -18,4 +20,8 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     @EntityGraph(attributePaths = {"categories"})
     @Query("select p from Product p where p.onStock='ON_STOCK'")
     Page<Product> findAllAvailable(Pageable pageable);
+
+    @Override
+    @EntityGraph(attributePaths = {"categories"})
+    List<Product> findAll();
 }

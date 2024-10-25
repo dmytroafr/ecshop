@@ -49,6 +49,7 @@ public class SitemapController {
 
             // Отримуємо продукти з бази даних і додаємо до sitemap
             List<ProductDTO> products = productService.getAllAvailableProductDTOs();
+
             for (ProductDTO product : products) {
                 addUrl(doc, urlSet, "https://e-chem.com.ua/products/" + product.getId(),
                         LocalDate.now().toString(), "weekly", "0.8");
