@@ -7,6 +7,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/v1/products")
 public class RestProductController {
@@ -31,6 +33,13 @@ public class RestProductController {
         Page<ProductDTO> allAvailableProducts = productService.getAllAvailableProductDTOs(pageable);
         return ResponseEntity.ok(allAvailableProducts);
     }
+
+    @GetMapping("/all")
+    public ResponseEntity<List<ProductDTO>> getAllProductsDto(){
+        List<ProductDTO> allAvailableProductDTOs = productService.getAllAvailableProductDTOs();
+        return ResponseEntity.ok(allAvailableProductDTOs);
+    }
+
 
 
 

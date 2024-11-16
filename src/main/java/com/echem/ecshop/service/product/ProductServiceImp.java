@@ -44,20 +44,10 @@ public class ProductServiceImp implements ProductService{
     }
 
     @Override
-    public void addNewProduct(ProductDTO productDTO) {
-        Product newProduct = mapper.toProduct(productDTO);
-        log.info("Mapped ProductDTO to Product");
-
-        Product savedProduct = productRepository.save(newProduct);
-        log.info("Product {} was saved by Id {}", savedProduct.getTitle(), savedProduct.getId());
-    }
-
-    @Override
     public Product getProduct(Long productId) {
         if (productId == null || productId <= 0) {
             throw new IllegalArgumentException("Invalid product ID: " + productId);
         }
-
         return productRepository.findById(productId)
                 .orElseThrow(() -> new NoSuchElementException("Product not found with ID: " + productId));
     }
@@ -69,59 +59,63 @@ public class ProductServiceImp implements ProductService{
     }
 
     @Override
-    public void updateProduct(Long productId, ProductDTO productDTO) {
-        log.debug("Updating product");
+    public List<ProductDTO> getAllAvailableProductDTOs() {
+        List<Product> allProducts = productRepository.findAll();
+        List<Product> onStock = allProducts.stream()
+                .filter(Product::isAvailable)
+                .toList();
+        return mapper.fromProductList(onStock);
+    }
 
+    @Override
+    public void addNewProduct(ProductDTO productDTO) {
+        Product newProduct = mapper.toProduct(productDTO);
+        Product savedProduct = productRepository.save(newProduct);
+        log.info("Product {} was saved with Id {}", savedProduct.getTitle(), savedProduct.getId());
+    }
+
+    @Override
+    public void updateProduct(Long productId, ProductDTO productDTO) {
         if (productDTO==null || productId==null){
             throw new IllegalArgumentException("ProductDTO or it's Id cannot be null");
         }
-
         Product product = productRepository
                 .findById(productId)
                 .orElseThrow(() -> new NoSuchElementException("Product with id " + productId + " not found"));
 
         if (productDTO.getTitle()!=null){
             product.setTitle(productDTO.getTitle());
-            log.info("Updated title {}", product.getTitle());
+            log.debug("Updated title {}", product.getTitle());
         }
         if (productDTO.getPrice()!=null){
             product.setPrice(productDTO.getPrice());
-            log.info("Updated price {}", product.getPrice());
+            log.debug("Updated price {}", product.getPrice());
         }
         if (productDTO.getProductDescription()!=null){
             product.setProductDescription(productDTO.getProductDescription());
-            log.info("Updated productDescription {}", product.getProductDescription());
+            log.debug("Updated productDescription {}", product.getProductDescription());
         }
         if (productDTO.getCountryProducer()!=null){
             product.setCountryProducer(productDTO.getCountryProducer());
-            log.info("Updated countryProducer {}", product.getCountryProducer());
+            log.debug("Updated countryProducer {}", product.getCountryProducer());
         }
         if (productDTO.getPhotoUrl()!=null){
             product.setPhotoUrl(productDTO.getPhotoUrl());
-            log.info("Updated photoUrl {}", product.getPhotoUrl());
+            log.debug("Updated photoUrl {}", product.getPhotoUrl());
         }
         if (productDTO.getOptPrice()!=null){
             product.setOptPrice(productDTO.getOptPrice());
-            log.info("Updated optPrice {}", product.getOptPrice());
+            log.debug("Updated optPrice {}", product.getOptPrice());
         }
         if (productDTO.getProducer()!=null){
             product.setProducer(productDTO.getProducer());
-            log.info("Updated producer {}", product.getProducer());
+            log.debug("Updated producer {}", product.getProducer());
         }
         if (productDTO.getOnStock()!=null){
             product.setOnStock(OnStock.valueOf(productDTO.getOnStock()));
-            log.info("Updated onStock {}", product.getOnStock());
+            log.debug("Updated onStock {}", product.getOnStock());
         }
         productRepository.save(product);
-    }
-
-    @Override
-    public List<ProductDTO> getAllAvailableProductDTOs() {
-        List<Product> allProducts = productRepository.findAll();
-        List<Product> onStock = allProducts.stream()
-                .filter(Product::isAvailable)
-                .toList();
-
-        return mapper.fromProductList(onStock);
+        log.info("Product {} was successfully updated", productDTO.getTitle());
     }
 }

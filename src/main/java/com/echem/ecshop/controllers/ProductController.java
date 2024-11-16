@@ -84,21 +84,6 @@ public class ProductController {
 //    }
 
 
-//    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
-//    @GetMapping("/create")
-//    public String sendProductDto (Model model){
-//        model.addAttribute("productDTO", new ProductDTO());
-//        model.addAttribute("allCategories", productService.getAllCategories());
-//        return "products/addProducts";
-//    }
-
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
-    @PostMapping
-    public String addNewProduct(@ModelAttribute("productDTO") ProductDTO productDTO){
-        productService.addNewProduct(productDTO);
-        return "redirect:/products";
-    }
-
     @GetMapping("/{productId}")
     public String getProduct(@PathVariable("productId") Long productId, Model model){
         if (productId<=0){
@@ -107,5 +92,12 @@ public class ProductController {
         ProductDTO productDto = productService.getProductDtoById(productId);
         model.addAttribute("product", productDto);
         return "products/product";
+    }
+
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @PostMapping
+    public String addNewProduct(@ModelAttribute("productDTO") ProductDTO productDTO){
+        productService.addNewProduct(productDTO);
+        return "redirect:/products";
     }
 }

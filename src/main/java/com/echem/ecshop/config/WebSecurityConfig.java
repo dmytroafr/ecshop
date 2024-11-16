@@ -31,7 +31,7 @@ public class WebSecurityConfig {
     protected SecurityFilterChain securityFilterChain (HttpSecurity http) throws Exception {
 
         return http
-                .csrf(Customizer.withDefaults())
+                .csrf().disable()
                 .authorizeHttpRequests(requests -> requests
                         .requestMatchers(
                                         "/","/sitemap.xml", "/about", "/conditions", "/contacts","/products","/products/*",
@@ -47,7 +47,7 @@ public class WebSecurityConfig {
                         .defaultSuccessUrl("/",true)
                 )
                 .httpBasic(Customizer.withDefaults())
-                .logout((logout) -> logout
+                .logout(logout -> logout
                         .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
                         .logoutSuccessUrl("/").deleteCookies("JSESSIONID")
                         .invalidateHttpSession(true)
@@ -72,27 +72,5 @@ public class WebSecurityConfig {
     public static PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
     }
-
-
-
-
-//    @Bean
-//    public WebServerFactoryCustomizer<ConfigurableServletWebServerFactory> webServerFactoryCustomizer(){
-//        return factory -> {
-//            if (factory instanceof TomcatServletWebServerFactory) {
-//                ((TomcatServletWebServerFactory) factory).addAdditionalTomcatConnectors(createHttpConnector());
-//            }
-//        };
-//    }
-//
-//    private Connector createHttpConnector() {
-//        Connector connector = new Connector(TomcatServletWebServerFactory.DEFAULT_PROTOCOL);
-//        connector.setScheme("http");
-//        connector.setPort(8080);
-//        connector.setSecure(false);
-//        connector.setRedirectPort(443);
-//        return connector;
-//    }
-
 
 }

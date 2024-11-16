@@ -27,10 +27,8 @@ public class UserController {
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/{username}")
     public String profileUser(@PathVariable String username, Model model){
-        log.info("request to /users/{username}");
-        Map<String, String> userMap = userService.getUserDetailsMap(username);
-        model.addAttribute("user", userMap);
-        log.info("UserMap was sent to view");
+        Map<String, String> mappedUser = userService.getUserDetailsMap(username);
+        model.addAttribute("user", mappedUser);
         return "users/profile";
     }
 
@@ -38,8 +36,8 @@ public class UserController {
     @GetMapping
     public String getAllUsers(Model model){
         log.info("request to /users");
-        List<UserDTO> users = userService.getUsers();
-        model.addAttribute("users", users);
+        List<UserDTO> allUsers = userService.getUsers();
+        model.addAttribute("users", allUsers);
         return "users/users";
     }
 }

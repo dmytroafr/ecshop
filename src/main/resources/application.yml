@@ -42,4 +42,4 @@ spring:
       cache: false
 
 currency:
-  url: https://v6.exchangerate-api.com/v6/${C_TOKEN}/latest/
+  url: https://v6.exchangerate-api.com/v6/${C_TOKEN}/latest/UAH

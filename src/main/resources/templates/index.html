@@ -1,13 +1,14 @@
 <!DOCTYPE html>
 <html lang="uk" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
+  <!-- Підключення HTMX -->
+  <script src="https://unpkg.com/htmx.org@2.0.3" integrity="sha384-0895/pl2MU10Hqc6jd4RvrthNlDiE9U1tWmX7WRESftEDRosgxNsQG/Ze9YMRzHq" crossorigin="anonymous"></script>
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-09Q73E6BWG"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
-
     gtag('config', 'G-09Q73E6BWG');
   </script>
 
@@ -22,8 +23,18 @@
 <div th:insert="~{fragments/menu :: #nav-menu}"></div>
 <img th:src="@{/images/header.jpg}" class="img-fluid mx-auto" alt="ecochem, екохім"/>
 <div th:insert="~{fragments/menu :: #navigator}"></div>
-<div th:text="${currency}" class="container"></div>
-
+<!--<div th:text="${currency}" class="container"></div>-->
+  <div> 100 грн коштує: <a id="currency-value">1</a> <select
+            name="currency"
+            id="currency-select"
+            hx-post="/v1/update-currency"
+            hx-target="#currency-value"
+            hx-trigger="change">
+      <option th:each="currency : ${rates}"
+              th:value="${currency}"
+              th:text="${currency}"></option>
+    </select>
+  </div>
 <div class="container">
   <div class="row">
     <div th:insert="~{fragments/menu :: #bar}" class="col-sm-2"></div>
