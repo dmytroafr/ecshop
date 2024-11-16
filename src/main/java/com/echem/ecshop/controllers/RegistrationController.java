@@ -13,17 +13,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/registration")
 public class RegistrationController {
 
-    private final UserService userService;
     private final RegistrationService registrationService;
 
-    public RegistrationController(UserService userService, RegistrationService registrationService) {
-        this.userService = userService;
+    public RegistrationController(RegistrationService registrationService) {
         this.registrationService = registrationService;
     }
 
     @GetMapping
     public String registration(@ModelAttribute RegistrationRequest registrationRequest){
-        return "registration";
+        return "fragments/registration :: registration";
     }
 
     @PostMapping()

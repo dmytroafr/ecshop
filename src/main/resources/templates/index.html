@@ -24,28 +24,27 @@
 <img th:src="@{/images/header.jpg}" class="img-fluid mx-auto" alt="ecochem, екохім"/>
 <div th:insert="~{fragments/menu :: #navigator}"></div>
 <!--<div th:text="${currency}" class="container"></div>-->
-  <div> 100 грн коштує: <a id="currency-value">1</a> <select
-            name="currency"
-            id="currency-select"
-            hx-post="/v1/update-currency"
-            hx-target="#currency-value"
-            hx-trigger="change">
-      <option th:each="currency : ${rates}"
-              th:value="${currency}"
-              th:text="${currency}"></option>
-    </select>
-  </div>
+<div class="container-fluid">
+  <p> 100 грн коштує: <span id="currency-value"></span> <select
+          name="currency"
+          id="currency-select"
+          hx-post="/v1/update-currency"
+          hx-target="#currency-value"
+          hx-trigger="change, load"
+          hx-headers='{"X-CSRF-TOKEN": "${_csrf.token}"}'>
+    <option value="USD" selected>Доллар США (USD)</option>
+    <option value="EUR">Євро (EUR)</option>
+    <option value="PLN">Польский злотий (PLN)</option>
+  </select> </p>
+</div>
 <div class="container">
   <div class="row">
     <div th:insert="~{fragments/menu :: #bar}" class="col-sm-2"></div>
       <div class="col-sm-10">
-        <div class="row">
+        <div class="row" id="main-content">
           Welcome to our online shop. The site is under construction, so please be patient.
         </div>
-        <div class="row" th:if="${result}" th:text="${result}"></div>
       </div>
-
-
   </div>
 </div>
 

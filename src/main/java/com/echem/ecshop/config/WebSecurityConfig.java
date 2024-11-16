@@ -31,7 +31,7 @@ public class WebSecurityConfig {
     protected SecurityFilterChain securityFilterChain (HttpSecurity http) throws Exception {
 
         return http
-                .csrf().disable()
+                .csrf(Customizer.withDefaults())
                 .authorizeHttpRequests(requests -> requests
                         .requestMatchers(
                                         "/","/sitemap.xml", "/about", "/conditions", "/contacts","/products","/products/*",
@@ -48,10 +48,11 @@ public class WebSecurityConfig {
                 )
                 .httpBasic(Customizer.withDefaults())
                 .logout(logout -> logout
-                        .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-                        .logoutSuccessUrl("/").deleteCookies("JSESSIONID")
+                        .logoutRequestMatcher(new AntPathRequestMatcher("/logout", "GET"))
+                        .logoutSuccessUrl("/")
                         .invalidateHttpSession(true)
-                )
+                        .deleteCookies("JSESSIONID")
+                        .permitAll())
         .build();
     }
 

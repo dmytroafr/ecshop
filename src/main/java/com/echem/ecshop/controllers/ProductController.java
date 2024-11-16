@@ -49,40 +49,8 @@ public class ProductController {
         model.addAttribute("reverseSortDir", sortDir.equals("asc") ? "desc" : "asc");
         model.addAttribute("categoryId", categoryId);
         model.addAttribute("products", products);
-        return "products/products";
+        return "fragments/content :: products";
     }
-
-//    @PreAuthorize("hasRole('ROLE_ADMIN')")
-//    @GetMapping("/edit")
-//    public String findAllProductsAdmin(
-//            @RequestParam(required = false, defaultValue = "title") String sortField,
-//            @RequestParam(required = false, defaultValue = "asc") String sortDir,
-//            Model model,
-//            Pageable pageable) {
-//
-//        Pageable pageRequest = PageRequest.of(
-//                pageable.getPageNumber(),
-//                pageable.getPageSize(),
-//                Sort.by(Sort.Direction.fromString(sortDir), sortField));
-//
-//        Page<ProductDTO> products = productService.getAllAvailableProductDTOs(pageRequest);
-//
-//        model.addAttribute("sortField", sortField);
-//        model.addAttribute("sortDir", sortDir);
-//        model.addAttribute("reverseSortDir", sortDir.equals("asc") ? "desc" : "asc");
-//        model.addAttribute("products", products);
-//        model.addAttribute("productDTO", new ProductDTO());
-//        return "products/editProducts";
-//    }
-
-//    @PatchMapping("/{productId}")
-//    public String updateProductList(@ModelAttribute("productDTO") ProductDTO productDTO,
-//                                    @PathVariable("productId") Long productId) {
-//        log.info("Trying to update product price by id");
-//        productService.updateProduct(productId, productDTO);
-//        return "redirect:/products/edit";
-//    }
-
 
     @GetMapping("/{productId}")
     public String getProduct(@PathVariable("productId") Long productId, Model model){

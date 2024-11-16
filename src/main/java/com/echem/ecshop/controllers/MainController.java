@@ -20,51 +20,35 @@ import java.util.concurrent.ExecutionException;
 @Controller
 public class MainController {
 
-    private final CurrencyService currencyService;
-    private final SessionObjectHolder sessionObjectHolder;
     private final UserService userService;
 
-    public MainController(CurrencyService currencyService,
-                          SessionObjectHolder sessionObjectHolder,
-                          UserService userService) {
-        this.currencyService = currencyService;
-        this.sessionObjectHolder = sessionObjectHolder;
+    public MainController(UserService userService) {
         this.userService = userService;
     }
 
     @GetMapping({"","/"})
-    public String index (Model model, HttpSession httpSession, Principal principal) throws ExecutionException, InterruptedException {
-
-        if (principal != null && httpSession.getAttribute("user") == null) {
-            UserDTO userDTO = userService.getUserDTOByUserName(principal.getName());
-            httpSession.setAttribute("user", userDTO);
+    public String index (HttpSession httpSession, Principal principal) {
+        if (principal != null) {
+            if (httpSession.getAttribute("user") == null) {
+                UserDTO userDTO = userService.getUserDTOByUserName(principal.getName());
+                httpSession.setAttribute("user", userDTO);
+            }
         }
-
-        List<String> currencies = List.of("USD", "EUR", "PLN");
-        model.addAttribute("rates", currencies);
-
         return "index";
     }
 
     @GetMapping ("/login")
     public String login(){
-        return "login";
+        return "fragments/registration :: login";
     }
 
     @GetMapping ("/conditions")
     public String conditions(){
-        return "conditions";
-    }
-
-    @GetMapping("/about")
-    public String about(){
-        sessionObjectHolder.addClicks();
-        return "about";
+        return "fragments/content :: conditions";
     }
 
     @GetMapping("/contacts")
     public String contacts(){
-        sessionObjectHolder.addClicks();
-        return "contacts";
+        return "fragments/content :: contacts";
     }
 }
