@@ -3,10 +3,7 @@ package com.echem.ecshop.controllers.REST;
 import com.echem.ecshop.service.currency.CurrencyRates;
 import com.echem.ecshop.service.currency.CurrencyService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.concurrent.ExecutionException;
 
@@ -21,9 +18,9 @@ public class CurrencyController {
         this.currencyService = currencyService;
     }
 
-    @PostMapping("/v1/update-currency")
+    @GetMapping("/v1/update-currency")
     @ResponseBody
-    public String updateCurrency(@RequestParam String currency) throws ExecutionException, InterruptedException {
+    public String updateCurrency(@RequestParam(name = "currency") String currency) throws ExecutionException, InterruptedException {
         log.info("Отримано запит для валюти: {}", currency);
         CurrencyRates rates = currencyService.currencyRates().get();
 
