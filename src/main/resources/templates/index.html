@@ -34,14 +34,32 @@
     <option value="PLN">Польский злотий (PLN)</option>
   </select> </p>
 </div>
+
+<div class="container">
+  <div class="d-grid gap-2 d-md-block">
+    <button type="button" class="btn btn-outline-primary"
+            hx-get="/products?categoryId=1" hx-target="#main-content">Засоби для поверхонь</button>
+    <button type="button" class="btn btn-outline-primary"
+            hx-get="/products?categoryId=2" hx-target="#main-content">Засоби для інструментів</button>
+    <button type="button" class="btn btn-outline-primary"
+            hx-get="/products?categoryId=3" hx-target="#main-content">Антисептики</button>
+    <button type="button" class="btn btn-outline-primary"
+            hx-get="/products?categoryId=5" hx-target="#main-content">Стерилізаційні пакети</button>
+    <button type="button" class="btn btn-outline-primary"
+            hx-get="/products?categoryId=4" hx-target="#main-content">Засоби для гігієни</button>
+    <button type="button" class="btn btn-outline-primary"
+            hx-get="/products?categoryId=1" hx-target="#main-content" disabled>Промислова хімія</button>
+  </div>
+</div>
+
 <div class="container">
   <div class="row">
     <div th:insert="~{fragments/menu :: #bar}" class="col-sm-2"></div>
-      <div class="col-sm-10">
-        <div class="row" id="main-content">
-          Welcome to our online shop. The site is under construction, so please be patient.
-        </div>
+    <div class="col-sm-10">
+      <div class="row" id="main-content">
+        Welcome to our online shop. The site is under construction, so please be patient.
       </div>
+    </div>
   </div>
 </div>
 
