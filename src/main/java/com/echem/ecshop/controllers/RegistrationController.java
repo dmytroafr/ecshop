@@ -21,7 +21,7 @@ public class RegistrationController {
 
     @GetMapping
     public String registration(@ModelAttribute RegistrationRequest registrationRequest){
-        return "fragments/registration :: registration";
+        return "registration";
     }
 
     @PostMapping()

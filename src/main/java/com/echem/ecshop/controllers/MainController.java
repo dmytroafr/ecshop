@@ -30,8 +30,9 @@ public class MainController {
 
     @GetMapping ("/login")
     public String login(){
-        return "fragments/registration :: login";
+        return "login";
     }
+
 
     @GetMapping ("/conditions")
     public String conditions(){

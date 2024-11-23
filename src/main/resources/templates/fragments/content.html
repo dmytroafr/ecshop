@@ -184,44 +184,7 @@
     </p>
 </div>
 
-<div class="col-sm-10" th:fragment="products">
-    <h3>Товари</h3>
-    <div class="mb-3">
-        <p>Сортувати за : <a th:href="@{/products(sortField='title', sortDir=${reverseSortDir}, categoryId=${categoryId})}">назвою</a>
-            <a th:href="@{/products(sortField='price', sortDir=${reverseSortDir}, categoryId=${categoryId})}">ціною</a></p>
 
-    </div>
-    <div class="row">
-        <div class="card" th:each="product:${products}" style="width: 14rem">
-            <img th:src="${product.photoUrl}" class="card-img-top img" alt="..."/>
-            <div class="card-body">
-                <a th:href="@{/products/{id}(id=${product.id})}">
-                    <h6 class="card-title" th:text="${product.title}">Card title</h6>
-                </a>
-                <p class="card-text" th:text="${product.price}">Some</p>
-                <p class="card-text" th:text="${product.onStock}">Some</p>
-                <p class="card-text" th:text="${product.categories[0].title}">Some</p>
-                <a th:href="@{/buckets/{id}/add(id=${product.id})}" class="btn btn-primary" style="alignment-baseline: bottom">
-                    Додати товар до корзини</a>
-            </div>
-        </div>
-    </div>
-    <div class="nav justify-content-center">
-        <nav aria-label="Page navigation">
-            <ul class="pagination">
-                <li class="page-item" th:classappend="${products.first} ? 'disabled'">
-                    <a class="page-link" th:href="@{/products(page=${products.number - 1}, sortField=${sortField}, sortDir=${sortDir}, categoryId=${categoryId})}">Previous</a>
-                </li>
-                <li class="page-item" th:each="i : ${#numbers.sequence(0, products.totalPages - 1)}" th:classappend="${i == products.number} ? 'active'">
-                    <a class="page-link" th:href="@{/products(page=${i}, sortField=${sortField}, sortDir=${sortDir}, categoryId=${categoryId})}" th:text="${i + 1}"></a>
-                </li>
-                <li class="page-item" th:classappend="${products.last} ? 'disabled'">
-                    <a class="page-link" th:href="@{/products(page=${products.number + 1}, sortField=${sortField}, sortDir=${sortDir}, categoryId=${categoryId})}">Next</a>
-                </li>
-            </ul>
-        </nav>
-    </div>
-</div>
 
 </body>
 </html>

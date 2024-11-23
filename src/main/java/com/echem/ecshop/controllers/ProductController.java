@@ -49,8 +49,38 @@ public class ProductController {
         model.addAttribute("reverseSortDir", sortDir.equals("asc") ? "desc" : "asc");
         model.addAttribute("categoryId", categoryId);
         model.addAttribute("products", products);
-        return "fragments/content :: products";
+        return "products/products";
     }
+
+    @GetMapping("/category")
+    public String findAllProductsByCategory(
+            @RequestParam(required = false, defaultValue = "title") String sortField,
+            @RequestParam(required = false, defaultValue = "asc") String sortDir,
+            @RequestParam(required = false, defaultValue = "0") Long categoryId,
+            Model model,
+            Pageable pageable) {
+
+        Pageable pageRequest = PageRequest.of(
+                pageable.getPageNumber(),
+                pageable.getPageSize(),
+                Sort.by(Sort.Direction.fromString(sortDir), sortField));
+
+        Page<ProductDTO> products;
+
+        if (categoryId == 0 ){
+            products = productService.getAllAvailableProductDTOs(pageRequest);
+        } else {
+            products = productService.getProductsByCategory(pageRequest, categoryId);
+        }
+
+        model.addAttribute("sortField", sortField);
+        model.addAttribute("sortDir", sortDir);
+        model.addAttribute("reverseSortDir", sortDir.equals("asc") ? "desc" : "asc");
+        model.addAttribute("categoryId", categoryId);
+        model.addAttribute("products", products);
+        return "products/products :: products";
+    }
+
 
     @GetMapping("/{productId}")
     public String getProduct(@PathVariable("productId") Long productId, Model model){

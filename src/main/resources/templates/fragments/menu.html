@@ -14,20 +14,22 @@
     <a class="navbar-brand" th:href="@{/}"><b>ЕКО</b>ХІМ</a>
     <div class="navbar-text justify-content-end">
       <div sec:authorize="isAuthenticated()">
-        <li>
-          Привіт,
-          <a th:href="@{/users/{username}(username=${#authentication.principal.username})}">
-            <span sec:authentication="principal.username">Bill</span>
-          </a>. :)
-          <a th:href="@{/buckets}" sec:authorize="isAuthenticated()">Корзина</a>
-          <a href="/logout">Вихід</a>
-        </li>
+        <ul>
+          <li>
+            Вітаємо,
+            <a th:href="@{/users/{username}(username=${#authentication.principal.username})}">
+              <span sec:authentication="principal.username">Bill</span>.
+            </a>
+            <a th:href="@{/buckets}" sec:authorize="isAuthenticated()">Ваш кошик.</a>
+            <a href="/logout">Вихід</a>
+          </li>
+        </ul>
       </div>
       <div sec:authorize="!isAuthenticated()">
         <ul>
           <li>
-            <a hx-get="/login" hx-target="#main-content">Увійти</a>
-            <a hx-get="/registration" hx-target="#main-content">Реєстрація</a>
+            <a th:href="@{/login}">Увійти</a>
+            <a th:href="@{/registration}">Реєстрація</a>
           </li>
         </ul>
       </div>
@@ -45,7 +47,7 @@
           <a class="nav-link active" aria-current="page" th:href="@{/}">Головна</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link active" hx-get="/products" hx-target="#main-content">Усі товари</a>
+          <a class="nav-link active" th:href="@{/products}">Усі товари</a>
         </li>
         <li class="nav-item">
           <a class="nav-link active" hx-get="/contacts" hx-target="#main-content">Контакти</a>
