@@ -2,11 +2,15 @@ package com.echem.ecshop.controllers;
 
 import com.echem.ecshop.dto.UserDTO;
 import com.echem.ecshop.service.user.UserService;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import java.security.Principal;
+import java.util.Arrays;
 
 @Controller
 public class MainController {
