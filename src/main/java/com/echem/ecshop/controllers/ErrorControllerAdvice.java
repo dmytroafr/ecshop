@@ -10,10 +10,10 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 public class ErrorControllerAdvice {
 
     @ExceptionHandler(Exception.class)
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ResponseStatus(HttpStatus.OK)
     public String exception(Exception exception, Model model){
         String errorMessage = exception !=null ? exception.getMessage() : "Unknown Error";
-        model.addAttribute("errorMessage", errorMessage);
+        model.addAttribute("errorMessage", "Something went wrong");
         return "error";
     }
 }

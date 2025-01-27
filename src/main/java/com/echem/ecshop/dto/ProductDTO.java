@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.ListIterator;
+import java.util.Spliterator;
 
 @Builder
 @Data
@@ -15,6 +17,7 @@ import java.util.List;
 @NoArgsConstructor
 public class ProductDTO {
 
+    Spliterator
     public Long id;
     public String title;
     public BigDecimal price;
