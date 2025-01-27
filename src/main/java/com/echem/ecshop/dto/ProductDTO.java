@@ -17,7 +17,6 @@ import java.util.Spliterator;
 @NoArgsConstructor
 public class ProductDTO {
 
-    Spliterator
     public Long id;
     public String title;
     public BigDecimal price;
