@@ -6,6 +6,14 @@ server:
     key-store-password: ${KEY_PASS}
     key-alias: tomcat
     key-store-type: PKCS12
+  tomcat:
+    accesslog:
+      enabled: true
+      directory: /var/log/e-chem
+      prefix: access_log
+      suffix: .log
+      rename-on-rotate: true
+      file-date-format: ''  # прибрати дату з назви файлу
 
 spring:
   application:
