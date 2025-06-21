@@ -4,6 +4,7 @@ import com.echem.ecshop.dto.UserDTO;
 import com.echem.ecshop.service.user.UserService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import java.security.Principal;
@@ -18,7 +19,7 @@ public class MainController {
     }
 
     @GetMapping({"","/"})
-    public String index (HttpSession httpSession, Principal principal) {
+    public String index (HttpSession httpSession, Principal principal, Model model) {
         if (principal != null) {
             if (httpSession.getAttribute("user") == null) {
                 UserDTO userDTO = userService.getUserDTOByUserName(principal.getName());
@@ -32,7 +33,6 @@ public class MainController {
     public String login(){
         return "login";
     }
-
 
     @GetMapping ("/conditions")
     public String conditions(){

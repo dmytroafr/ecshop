@@ -34,7 +34,7 @@ public class RegistrationServiceImpl implements RegistrationService{
     public String register(RegistrationRequest request) {
         log.debug("Method register was called");
         String token = userService.signUpUser(request);
-        log.info("User {} was signet uo successfully",request.username());
+        log.info("User {} was signed up successfully",request.username());
 //        String link = serverHost + "registration/confirm?token=" + token;
         String link = "registration/confirm?token=" + token;
 
@@ -55,17 +55,17 @@ public class RegistrationServiceImpl implements RegistrationService{
         ConfirmationToken confirmationToken = tokenService.getToken(token)
                 .orElseThrow(()->{
                     log.error("Token {} did not found", token);
-                    return new IllegalStateException("token not found");
+                    return new IllegalStateException("Token not found");
                 });
 
         if (confirmationToken.getConfirmedAt() != null){
             log.error("Token {} already confirmed", confirmationToken.getToken());
-            throw new IllegalStateException("email already confirmed");
+            throw new IllegalStateException("Token already confirmed");
         }
         LocalDateTime expiresAt = confirmationToken.getExpiresAt();
         if (expiresAt.isBefore(LocalDateTime.now())){
             log.error("Token {} expired", confirmationToken.getToken());
-            throw new IllegalStateException("token expired");
+            throw new IllegalStateException("Token expired");
         }
         tokenService.setConfirmed(token);
         log.info("Token {} confirmed", confirmationToken.getToken());

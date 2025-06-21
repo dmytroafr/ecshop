@@ -13,3 +13,13 @@ spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/ec
 #    url: jdbc:postgresql://host.docker.internal:5432/database_ec
+
+logging:
+  level:
+    root: INFO
+#    com.yourpackage: DEBUG  # Замініть на свій пакет
+  file:
+    name: /var/log/e-chem/info.log  # Повний шлях до лог-файлу
+  pattern:
+    file: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"
+    console: "%d{HH:mm:ss} %-5level %logger{36} - %msg%n"
