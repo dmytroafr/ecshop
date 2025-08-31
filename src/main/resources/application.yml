@@ -1,19 +1,5 @@
-server:
-  port: 8080
-  host: http://localhost:8080/
-#  port: 443
-#  host: https://185.69.153.13/
-  error:
-    include-message: always
-    include-binding-errors: always
-
-#  ssl:
-#    key-store: file:/etc/letsencrypt/live/e-chem.com.ua/keystore.p12
-#    key-store-password: ${KEY_PASS}
-#    key-alias: tomcat
-#    key-store-type: PKCS12
 spring:
-#  це я для методу PATCH включив
+  #  це я для методу PATCH включив
   mvc:
     hiddenmethod:
       filter:
@@ -29,20 +15,15 @@ spring:
       hibernate.hibernate.dialect: org.hibernate.dialect.PostgresDialect
       hibernate:
         format_sql: false
-#      connection:
-#        useUnicode: true
-#        characterEncoding: utf8
-#        collation: uk_UA.UTF-8
   datasource:
-    url: jdbc:postgresql://localhost:5432/cool_one
     username: ${POSTGRES_USER}
     password: ${POSTGRES_PASS}
     driver-class-name: org.postgresql.Driver
   flyway:
     baseline-on-migrate: true
   mail:
-    host: mail.adm.tools
-    port: 2525
+    host: mail.e-chem.com.ua
+    port: 587
     username: confirmation-email@e-chem.com.ua
     password: ${SMTP_PASS}
     properties:
@@ -61,13 +42,4 @@ spring:
       cache: false
 
 currency:
-  url: https://v6.exchangerate-api.com/v6/${C_TOKEN}/latest/
-logging:
-  level:
-    org.springframework.security: INFO
-    com.echem.ecshop.service: INFO
-  file:
-    path: "classpath:logs"
-    name: eclogs.log
-  pattern:
-    file: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
+  url: https://v6.exchangerate-api.com/v6/${C_TOKEN}/latest/UAH

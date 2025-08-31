@@ -7,10 +7,7 @@ import jakarta.servlet.http.HttpSession;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 
@@ -50,12 +47,12 @@ public class BucketController {
         return "redirect:/products";
     }
 
+
+    // delete method
     @PreAuthorize("isAuthenticated()")
-    @PostMapping ("/{productId}/delete")
-    public String deleteProduct (@PathVariable Long productId, Principal principal, HttpSession httpSession){
-        if (principal==null){
-            return "redirect:/login";
-        }
+    @DeleteMapping("/{productId}/delete")
+    public String deleteProduct (@PathVariable Long productId, HttpSession httpSession){
+
         UserDTO userDTO = (UserDTO) httpSession.getAttribute("user");
         if (userDTO == null) {
             return "redirect:/login";
@@ -63,6 +60,10 @@ public class BucketController {
         bucketService.deleteProductFromBucket(productId, userDTO.getId());
         return "redirect:/buckets";
     }
+
+
+
+
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/{productId}/increase")

@@ -1,0 +1,25 @@
+server:
+  port: 8083
+  host: http://localhost:8083/
+
+spring:
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+  application:
+    name: internet-shop-local
+  datasource:
+    url: jdbc:postgresql://localhost:5432/ec
+#    url: jdbc:postgresql://host.docker.internal:5432/database_ec
+
+logging:
+  level:
+    root: INFO
+#    com.yourpackage: DEBUG  # Замініть на свій пакет
+  file:
+    name: /var/log/e-chem/info.log  # Повний шлях до лог-файлу
+  pattern:
+    file: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"
+    console: "%d{HH:mm:ss} %-5level %logger{36} - %msg%n"

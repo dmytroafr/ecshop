@@ -28,7 +28,7 @@ public class BucketServiceImpl implements BucketService {
     @Override
     public void addBucketDetails(Long productId, Long userId) {
         log.debug("Adding bucket details for {}", productId);
-        Product productRef = productService.getProductRef(productId);
+        Product productRef = productService.getProduct(productId);
         Bucket bucket = getBucketById(userId);
         bucket.addProduct(productRef);
         log.info("Add product {} to bucket {}", productId, bucket.getId());

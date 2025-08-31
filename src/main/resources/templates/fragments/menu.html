@@ -2,29 +2,36 @@
 <html lang="uk" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
   <meta charset="UTF-8" />
+  <!-- Підключення HTMX -->
+  <script src="https://unpkg.com/htmx.org@2.0.3" integrity="sha384-0895/pl2MU10Hqc6jd4RvrthNlDiE9U1tWmX7WRESftEDRosgxNsQG/Ze9YMRzHq" crossorigin="anonymous"></script>
   <title>Title</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous" />
 </head>
 <body>
+
 <nav id="nav-menu" class="navbar navbar-expand-lg bg-body-tertiary">
   <div class="container-fluid">
     <a class="navbar-brand" th:href="@{/}"><b>ЕКО</b>ХІМ</a>
     <div class="navbar-text justify-content-end">
       <div sec:authorize="isAuthenticated()">
-        <li>
-          Привіт,
-          <a th:href="@{/users/{username}(username=${#authentication.principal.username})}">
-            <span sec:authentication="principal.username">Bill</span>
-          </a>.
-          <a th:href="@{/buckets}" sec:authorize="isAuthenticated()">Корзина</a>
-          <a th:href="@{/logout}">Вихід</a>
-        </li>
+        <ul>
+          <li>
+            Вітаємо,
+            <a th:href="@{/users/{username}(username=${#authentication.principal.username})}">
+              <span sec:authentication="principal.username">Bill</span>.
+            </a>
+            <a th:href="@{/buckets}" sec:authorize="isAuthenticated()">Ваш кошик.</a>
+            <a href="/logout">Вихід</a>
+          </li>
+        </ul>
       </div>
       <div sec:authorize="!isAuthenticated()">
-        <li>
-          <a th:href="@{/login}">Увійти</a>
-          <a th:href="@{/registration}">Реєстрація</a>
-        </li>
+        <ul>
+          <li>
+            <a th:href="@{/login}">Увійти</a>
+            <a th:href="@{/registration}">Реєстрація</a>
+          </li>
+        </ul>
       </div>
     </div>
   </div>
@@ -37,19 +44,16 @@
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
       <ul class="navbar-nav">
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" th:href="@{/about}">Про нас</a>
+          <a class="nav-link active" aria-current="page" th:href="@{/}">Головна</a>
         </li>
         <li class="nav-item">
           <a class="nav-link active" th:href="@{/products}">Усі товари</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link active" th:href="@{/contacts}">Контакти</a>
+          <a class="nav-link active" hx-get="/contacts" hx-target="#main-content">Контакти</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link active" th:href="@{/conditions}">Оферта</a>
-        </li>
-        <li class="nav-item" sec:authorize="hasRole('ROLE_ADMIN')">
-          <a class="nav-link active" th:href="@{/products/edit}">Редагування цін товарів</a>
+          <a class="nav-link active" hx-get="/conditions" hx-target="#main-content"> Оферта</a>
         </li>
       </ul>
     </div>

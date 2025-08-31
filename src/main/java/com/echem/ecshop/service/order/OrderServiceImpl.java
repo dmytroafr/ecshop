@@ -96,7 +96,7 @@ public class OrderServiceImpl implements OrderService{
         return bucketDTO.productList.stream()
                 .map(productDto -> {
                     OrderDetails detail = new OrderDetails();
-                    detail.setProduct(productService.getProductRef(productDto.getProductId()));
+                    detail.setProduct(productService.getProduct(productDto.getProductId()));
                     detail.setAmount(productDto.getAmount());
                     detail.setPrice(productDto.getPrice());
                     detail.setOrder(order);

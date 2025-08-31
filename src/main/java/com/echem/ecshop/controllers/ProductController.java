@@ -1,6 +1,5 @@
 package com.echem.ecshop.controllers;
 
-import com.echem.ecshop.domain.OnStock;
 import com.echem.ecshop.dto.ProductDTO;
 import com.echem.ecshop.service.product.ProductService;
 import lombok.extern.slf4j.Slf4j;
@@ -29,7 +28,6 @@ public class ProductController {
             @RequestParam(required = false, defaultValue = "title") String sortField,
             @RequestParam(required = false, defaultValue = "asc") String sortDir,
             @RequestParam(required = false, defaultValue = "0") Long categoryId,
-            @RequestParam(required = false, defaultValue = "ON_STOCK") OnStock onStock,
             Model model,
             Pageable pageable) {
 
@@ -38,10 +36,13 @@ public class ProductController {
                 pageable.getPageSize(),
                 Sort.by(Sort.Direction.fromString(sortDir), sortField));
 
-        log.info("Our pageable {}",pageRequest);
-        Page<ProductDTO> products = productService.getProductsByGroupAndStock(
-                categoryId, pageRequest,
-                onStock);
+        Page<ProductDTO> products;
+
+        if (categoryId == 0 ){
+            products = productService.getAllAvailableProductDTOs(pageRequest);
+        } else {
+            products = productService.getProductsByCategory(pageRequest, categoryId);
+        }
 
         model.addAttribute("sortField", sortField);
         model.addAttribute("sortDir", sortDir);
@@ -51,11 +52,11 @@ public class ProductController {
         return "products/products";
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @GetMapping("/edit")
-    public String findAllProductsAdmin(
+    @GetMapping("/category")
+    public String findAllProductsByCategory(
             @RequestParam(required = false, defaultValue = "title") String sortField,
             @RequestParam(required = false, defaultValue = "asc") String sortDir,
+            @RequestParam(required = false, defaultValue = "0") Long categoryId,
             Model model,
             Pageable pageable) {
 
@@ -64,31 +65,31 @@ public class ProductController {
                 pageable.getPageSize(),
                 Sort.by(Sort.Direction.fromString(sortDir), sortField));
 
-        Page<ProductDTO> products = productService.findAll(pageRequest);
+        Page<ProductDTO> products;
+
+        if (categoryId == 0 ){
+            products = productService.getAllAvailableProductDTOs(pageRequest);
+        } else {
+            products = productService.getProductsByCategory(pageRequest, categoryId);
+        }
 
         model.addAttribute("sortField", sortField);
         model.addAttribute("sortDir", sortDir);
         model.addAttribute("reverseSortDir", sortDir.equals("asc") ? "desc" : "asc");
+        model.addAttribute("categoryId", categoryId);
         model.addAttribute("products", products);
-        model.addAttribute("productDTO", new ProductDTO());
-        return "products/editProducts";
-    }
-
-    @PatchMapping("/{productId}")
-    public String updateProductList(@ModelAttribute("productDTO") ProductDTO productDTO,
-                                    @PathVariable("productId") Long productId) {
-        log.info("Trying to update product price by id");
-        productService.updateProduct(productId, productDTO);
-        return "redirect:/products/edit";
+        return "products/products :: products";
     }
 
 
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
-    @GetMapping("/create")
-    public String sendProductDto (Model model){
-        model.addAttribute("productDTO", new ProductDTO());
-        model.addAttribute("allCategories", productService.getAllCategories());
-        return "products/addProducts";
+    @GetMapping("/{productId}")
+    public String getProduct(@PathVariable("productId") Long productId, Model model){
+        if (productId<=0){
+            throw new IllegalArgumentException();
+        }
+        ProductDTO productDto = productService.getProductDtoById(productId);
+        model.addAttribute("product", productDto);
+        return "products/product";
     }
 
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")

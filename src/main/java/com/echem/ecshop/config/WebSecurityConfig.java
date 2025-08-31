@@ -17,7 +17,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
-@EnableWebSecurity(debug = true)
+@EnableWebSecurity
 @EnableMethodSecurity(securedEnabled = true, jsr250Enabled = true)
 public class WebSecurityConfig {
 
@@ -34,8 +34,8 @@ public class WebSecurityConfig {
                 .csrf(Customizer.withDefaults())
                 .authorizeHttpRequests(requests -> requests
                         .requestMatchers(
-                                        "/", "/about", "/conditions", "/contacts","/products",
-                                        "/login", "/registration", "/error",
+                                        "/","/sitemap.xml", "/about", "/conditions", "/contacts","/products","/products/*",
+                                        "/login", "/registration", "/error","/v1/**",
                                         "/static/**", "/images/**", "/fragments/**", "/css/**")
                                         .permitAll()
                         .anyRequest().authenticated()
@@ -47,11 +47,12 @@ public class WebSecurityConfig {
                         .defaultSuccessUrl("/",true)
                 )
                 .httpBasic(Customizer.withDefaults())
-                .logout((logout) -> logout
-                        .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-                        .logoutSuccessUrl("/").deleteCookies("JSESSIONID")
+                .logout(logout -> logout
+                        .logoutRequestMatcher(new AntPathRequestMatcher("/logout", "GET"))
+                        .logoutSuccessUrl("/")
                         .invalidateHttpSession(true)
-                )
+                        .deleteCookies("JSESSIONID")
+                        .permitAll())
         .build();
     }
 
@@ -72,28 +73,6 @@ public class WebSecurityConfig {
     public static PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
     }
-
-
-
-
-
-//    @Bean
-//    public WebServerFactoryCustomizer<ConfigurableServletWebServerFactory> webServerFactoryCustomizer(){
-//        return factory -> {
-//            if (factory instanceof TomcatServletWebServerFactory) {
-//                ((TomcatServletWebServerFactory) factory).addAdditionalTomcatConnectors(createHttpConnector());
-//            }
-//        };
-//    }
-//
-//    private Connector createHttpConnector() {
-//        Connector connector = new Connector(TomcatServletWebServerFactory.DEFAULT_PROTOCOL);
-//        connector.setScheme("http");
-//        connector.setPort(8080);
-//        connector.setSecure(false);
-//        connector.setRedirectPort(443);
-//        return connector;
-//    }
 
 
 }

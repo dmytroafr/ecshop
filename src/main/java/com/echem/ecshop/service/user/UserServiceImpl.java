@@ -34,10 +34,7 @@ public class UserServiceImpl implements UserService{
 
 	private final UserMapper mapper = UserMapper.MAPPER;
 
-	public UserServiceImpl(UserRepository userRepository,
-						   ConfirmationTokenService confirmationTokenService,
-						   BucketService bucketService,
-						   PasswordEncoder passwordEncoder) {
+	public UserServiceImpl(UserRepository userRepository, ConfirmationTokenService confirmationTokenService, BucketService bucketService, PasswordEncoder passwordEncoder) {
 		this.userRepository = userRepository;
 		this.confirmationTokenService = confirmationTokenService;
 		this.bucketService = bucketService;
@@ -100,7 +97,7 @@ public class UserServiceImpl implements UserService{
 				request.email(),
 				Role.ROLE_CLIENT);
 		save(user);
-		log.info("New User with username {} created and saved into BD", user.getUsername());
+		log.info("New User with username {} created and saved into DB", user.getUsername());
 
 		String token = UUID.randomUUID().toString();
 		log.info("Token {} created", token);
@@ -116,7 +113,7 @@ public class UserServiceImpl implements UserService{
 	}
 
 	@CachePut(value = "users", key = "#user.username")
-	public User save(User user) {
+	private User save(User user) {
 		log.info("Saving User {}", user.getUsername());
 		return userRepository.save(user);
 	}
