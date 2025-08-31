@@ -1,18 +1,18 @@
 server:
-  port: 443
-  host: https://e-chem.com.ua/
-  ssl:
-    key-store: file:/etc/letsencrypt/live/e-chem.com.ua/keystore.p12
-    key-store-password: ${KEY_PASS}
-    key-alias: tomcat
-    key-store-type: PKCS12
+  port: 8080
+#  host: https://e-chem.com.ua/
+#  ssl:
+#    key-store: file:/etc/letsencrypt/live/e-chem.com.ua/keystore.p12
+#    key-store-password: ${KEY_PASS}
+#    key-alias: tomcat
+#    key-store-type: PKCS12
   tomcat:
     accesslog:
       enabled: true
       directory: /var/log/e-chem
       prefix: access_log
       suffix: .log
-      rename-on-rotate: true
+      rename-on-rotate: false
       file-date-format: ''  # прибрати дату з назви файлу
 
 spring:
@@ -25,8 +25,8 @@ logging:
   level:
     root: INFO
 #    com.yourpackage: DEBUG  # Замініть на свій пакет
-  file:
-    name: /var/log/e-chem/info.log  # Повний шлях до лог-файлу
+#  file:
+#    name: /var/log/e-chem/info.log  # Повний шлях до лог-файлу
   pattern:
-    file: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"
-    console: "%d{HH:mm:ss} %-5level %logger{36} - %msg%n"
+#    file: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"
+    console: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"
