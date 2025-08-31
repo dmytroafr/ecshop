@@ -20,8 +20,8 @@ public class RegistrationServiceImpl implements RegistrationService{
     private final ConfirmationTokenService tokenService;
     private final EmailSender emailSender;
 
-    @Value("${server.host}")
-    private String serverHost;
+    // @Value("${server.host}")
+    // private String serverHost;
 
     public RegistrationServiceImpl(UserService userService, ConfirmationTokenService tokenService, EmailSender emailSender) {
         this.userService = userService;
