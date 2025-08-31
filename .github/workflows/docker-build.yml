@@ -61,6 +61,7 @@ jobs:
           docker push dmytroafro/ecshop:${{ env.GIT_SHA }}
           docker push dmytroafro/ecshop:latest
       
+      
       # 10. Deploy
       - name: Deploy to VPS
         uses: appleboy/ssh-action@v0.1.6
