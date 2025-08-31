@@ -1,5 +1,5 @@
 server:
-  port: 8080
+  port: 8085
 #  host: https://e-chem.com.ua/
 #  ssl:
 #    key-store: file:/etc/letsencrypt/live/e-chem.com.ua/keystore.p12
