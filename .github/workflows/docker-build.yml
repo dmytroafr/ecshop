@@ -60,3 +60,16 @@ jobs:
         run: |
           docker push dmytroafro/ecshop:${{ env.GIT_SHA }}
           docker push dmytroafro/ecshop:latest
+      
+      # 10. Deploy
+      - name: Deploy to VPS
+        uses: appleboy/ssh-action@v0.1.6
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          port: 2323
+          script: |
+            cd ~/ecshop
+            docker compose pull
+            docker compose up -d
