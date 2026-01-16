@@ -21,6 +21,11 @@ spring:
     driver-class-name: org.postgresql.Driver
   flyway:
     baseline-on-migrate: true
+  data:
+    web:
+      pageable:
+        default-page-size: 12
+        max-page-size: 100
   mail:
     host: mail.e-chem.com.ua
     port: 587

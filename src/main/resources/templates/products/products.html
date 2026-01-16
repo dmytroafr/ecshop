@@ -62,9 +62,22 @@
       <div class="col-sm-10" id="main-content" th:fragment="products">
         <h3>Товари Екохім Розвиток</h3>
         <div class="mb-3">
-          <p>Сортувати за : <a
-              th:href="@{/products(sortField='title', sortDir=${reverseSortDir}, categoryId=${categoryId})}">назвою</a>
-            <a th:href="@{/products(sortField='price', sortDir=${reverseSortDir}, categoryId=${categoryId})}">ціною</a>
+          <p>Сортувати за : 
+            <a th:if="${categoryId == 0}"
+               th:href="@{/products(sortField='title', sortDir=${reverseSortDir}, page=0)}">назвою</a>
+            <a th:if="${categoryId != 0}"
+               hx-get="/products/category"
+               th:attr="hx-vals='{&quot;page&quot;:0,&quot;sortField&quot;:&quot;title&quot;,&quot;sortDir&quot;:&quot;' + ${reverseSortDir} + '&quot;,&quot;categoryId&quot;:' + ${categoryId} + '}'"
+               hx-target="#main-content"
+               hx-swap="outerHTML">назвою</a>
+            
+            <a th:if="${categoryId == 0}"
+               th:href="@{/products(sortField='price', sortDir=${reverseSortDir}, page=0)}">ціною</a>
+            <a th:if="${categoryId != 0}"
+               hx-get="/products/category"
+               th:attr="hx-vals='{&quot;page&quot;:0,&quot;sortField&quot;:&quot;price&quot;,&quot;sortDir&quot;:&quot;' + ${reverseSortDir} + '&quot;,&quot;categoryId&quot;:' + ${categoryId} + '}'"
+               hx-target="#main-content"
+               hx-swap="outerHTML">ціною</a>
           </p>
         </div>
         <div class="row">
@@ -83,21 +96,111 @@
             </div>
           </div>
         </div>
-        <!--      <div class="nav justify-content-center">-->
-        <!--        <nav aria-label="Page navigation">-->
-        <!--          <ul class="pagination">-->
-        <!--            <li class="page-item" th:classappend="${products.first} ? 'disabled'">-->
-        <!--              <a class="page-link" th:href="@{/products(page=${products.number - 1}, sortField=${sortField}, sortDir=${sortDir}, categoryId=${categoryId})}">Previous</a>-->
-        <!--            </li>-->
-        <!--            <li class="page-item" th:each="i : ${#numbers.sequence(0, products.totalPages - 1)}" th:classappend="${i == products.number} ? 'active'">-->
-        <!--              <a class="page-link" th:href="@{/products(page=${i}, sortField=${sortField}, sortDir=${sortDir}, categoryId=${categoryId})}" th:text="${i + 1}"></a>-->
-        <!--            </li>-->
-        <!--            <li class="page-item" th:classappend="${products.last} ? 'disabled'">-->
-        <!--              <a class="page-link" th:href="@{/products(page=${products.number + 1}, sortField=${sortField}, sortDir=${sortDir}, categoryId=${categoryId})}">Next</a>-->
-        <!--            </li>-->
-        <!--          </ul>-->
-        <!--        </nav>-->
-        <!--      </div>-->
+        
+        <!-- Пагінація з розумним відображенням сторінок -->
+        <div class="nav justify-content-center" th:if="${products.totalPages > 1}">
+          <nav aria-label="Page navigation">
+            <ul class="pagination">
+              <!-- Кнопка "Попередня" -->
+              <li class="page-item" th:classappend="${products.first} ? 'disabled'">
+                <a class="page-link" 
+                   th:if="${categoryId == 0}"
+                   th:href="@{/products(page=${products.number - 1}, sortField=${sortField}, sortDir=${sortDir})}"
+                   aria-label="Previous">
+                  <span aria-hidden="true">&laquo;</span>
+                </a>
+                <a class="page-link" 
+                   th:if="${categoryId != 0}"
+                   hx-get="/products/category"
+                   th:attr="hx-vals='{&quot;page&quot;:' + ${products.number - 1} + ',&quot;sortField&quot;:&quot;' + ${sortField} + '&quot;,&quot;sortDir&quot;:&quot;' + ${sortDir} + '&quot;,&quot;categoryId&quot;:' + ${categoryId} + '}'"
+                   hx-target="#main-content"
+                   hx-swap="outerHTML"
+                   aria-label="Previous">
+                  <span aria-hidden="true">&laquo;</span>
+                </a>
+              </li>
+
+              <!-- Перша сторінка -->
+              <li class="page-item" th:if="${products.number > 2}" th:classappend="${0 == products.number} ? 'active'">
+                <a class="page-link"
+                   th:if="${categoryId == 0}"
+                   th:href="@{/products(page=0, sortField=${sortField}, sortDir=${sortDir})}">1</a>
+                <a class="page-link"
+                   th:if="${categoryId != 0}"
+                   hx-get="/products/category"
+                   th:attr="hx-vals='{&quot;page&quot;:0,&quot;sortField&quot;:&quot;' + ${sortField} + '&quot;,&quot;sortDir&quot;:&quot;' + ${sortDir} + '&quot;,&quot;categoryId&quot;:' + ${categoryId} + '}'"
+                   hx-target="#main-content"
+                   hx-swap="outerHTML">1</a>
+              </li>
+
+              <!-- Три крапки перед поточною сторінкою -->
+              <li class="page-item disabled" th:if="${products.number > 3}">
+                <span class="page-link">...</span>
+              </li>
+
+              <!-- Сторінки навколо поточної (±2) -->
+              <th:block th:with="startPage=${products.number - 2 < 0 ? 0 : products.number - 2}, 
+                                 endPage=${products.number + 2 >= products.totalPages ? products.totalPages - 1 : products.number + 2}">
+                <li class="page-item" 
+                    th:each="i : ${#numbers.sequence(startPage, endPage)}"
+                    th:classappend="${i == products.number} ? 'active'">
+                  <a class="page-link"
+                     th:if="${categoryId == 0}"
+                     th:href="@{/products(page=${i}, sortField=${sortField}, sortDir=${sortDir})}"
+                     th:text="${i + 1}"></a>
+                  <a class="page-link"
+                     th:if="${categoryId != 0}"
+                     hx-get="/products/category"
+                     th:attr="hx-vals='{&quot;page&quot;:' + ${i} + ',&quot;sortField&quot;:&quot;' + ${sortField} + '&quot;,&quot;sortDir&quot;:&quot;' + ${sortDir} + '&quot;,&quot;categoryId&quot;:' + ${categoryId} + '}'"
+                     hx-target="#main-content"
+                     hx-swap="outerHTML"
+                     th:text="${i + 1}"></a>
+                </li>
+              </th:block>
+
+              <!-- Три крапки після поточної сторінки -->
+              <li class="page-item disabled" th:if="${products.number < products.totalPages - 4}">
+                <span class="page-link">...</span>
+              </li>
+
+              <!-- Остання сторінка -->
+              <li class="page-item" 
+                  th:if="${products.number < products.totalPages - 3}"
+                  th:classappend="${products.totalPages - 1 == products.number} ? 'active'">
+                <a class="page-link"
+                   th:if="${categoryId == 0}"
+                   th:href="@{/products(page=${products.totalPages - 1}, sortField=${sortField}, sortDir=${sortDir})}"
+                   th:text="${products.totalPages}"></a>
+                <a class="page-link"
+                   th:if="${categoryId != 0}"
+                   hx-get="/products/category"
+                   th:attr="hx-vals='{&quot;page&quot;:' + ${products.totalPages - 1} + ',&quot;sortField&quot;:&quot;' + ${sortField} + '&quot;,&quot;sortDir&quot;:&quot;' + ${sortDir} + '&quot;,&quot;categoryId&quot;:' + ${categoryId} + '}'"
+                   hx-target="#main-content"
+                   hx-swap="outerHTML"
+                   th:text="${products.totalPages}"></a>
+              </li>
+
+              <!-- Кнопка "Наступна" -->
+              <li class="page-item" th:classappend="${products.last} ? 'disabled'">
+                <a class="page-link"
+                   th:if="${categoryId == 0}"
+                   th:href="@{/products(page=${products.number + 1}, sortField=${sortField}, sortDir=${sortDir})}"
+                   aria-label="Next">
+                  <span aria-hidden="true">&raquo;</span>
+                </a>
+                <a class="page-link"
+                   th:if="${categoryId != 0}"
+                   hx-get="/products/category"
+                   th:attr="hx-vals='{&quot;page&quot;:' + ${products.number + 1} + ',&quot;sortField&quot;:&quot;' + ${sortField} + '&quot;,&quot;sortDir&quot;:&quot;' + ${sortDir} + '&quot;,&quot;categoryId&quot;:' + ${categoryId} + '}'"
+                   hx-target="#main-content"
+                   hx-swap="outerHTML"
+                   aria-label="Next">
+                  <span aria-hidden="true">&raquo;</span>
+                </a>
+              </li>
+            </ul>
+          </nav>
+        </div>
       </div>
     </div>
   </div>
