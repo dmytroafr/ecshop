@@ -64,20 +64,24 @@
         <div class="mb-3">
           <p>Сортувати за : 
             <a th:if="${categoryId == 0}"
-               th:href="@{/products(sortField='title', sortDir=${reverseSortDir}, page=0)}">назвою</a>
+               th:href="@{/products(sortField='title', sortDir=${sortField == 'title' ? reverseSortDir : 'asc'}, page=0)}"
+               th:text="'назвою ' + ${sortField == 'title' ? (sortDir == 'asc' ? '↑' : '↓') : ''}"></a>
             <a th:if="${categoryId != 0}"
                hx-get="/products/category"
-               th:attr="hx-vals='{&quot;page&quot;:0,&quot;sortField&quot;:&quot;title&quot;,&quot;sortDir&quot;:&quot;' + ${reverseSortDir} + '&quot;,&quot;categoryId&quot;:' + ${categoryId} + '}'"
+               th:attr="hx-vals='{&quot;page&quot;:0,&quot;sortField&quot;:&quot;title&quot;,&quot;sortDir&quot;:&quot;' + ${sortField == 'title' ? reverseSortDir : 'asc'} + '&quot;,&quot;categoryId&quot;:' + ${categoryId} + '}'"
                hx-target="#main-content"
-               hx-swap="outerHTML">назвою</a>
+               hx-swap="outerHTML"
+               th:text="'назвою ' + ${sortField == 'title' ? (sortDir == 'asc' ? '↑' : '↓') : ''}"></a>
             
             <a th:if="${categoryId == 0}"
-               th:href="@{/products(sortField='price', sortDir=${reverseSortDir}, page=0)}">ціною</a>
+               th:href="@{/products(sortField='price', sortDir=${sortField == 'price' ? reverseSortDir : 'asc'}, page=0)}"
+               th:text="'ціною ' + ${sortField == 'price' ? (sortDir == 'asc' ? '↑' : '↓') : ''}"></a>
             <a th:if="${categoryId != 0}"
                hx-get="/products/category"
-               th:attr="hx-vals='{&quot;page&quot;:0,&quot;sortField&quot;:&quot;price&quot;,&quot;sortDir&quot;:&quot;' + ${reverseSortDir} + '&quot;,&quot;categoryId&quot;:' + ${categoryId} + '}'"
+               th:attr="hx-vals='{&quot;page&quot;:0,&quot;sortField&quot;:&quot;price&quot;,&quot;sortDir&quot;:&quot;' + ${sortField == 'price' ? reverseSortDir : 'asc'} + '&quot;,&quot;categoryId&quot;:' + ${categoryId} + '}'"
                hx-target="#main-content"
-               hx-swap="outerHTML">ціною</a>
+               hx-swap="outerHTML"
+               th:text="'ціною ' + ${sortField == 'price' ? (sortDir == 'asc' ? '↑' : '↓') : ''}"></a>
           </p>
         </div>
         <div class="row">
