@@ -24,4 +24,6 @@ public interface UserService  extends UserDetailsService {
 
     Map<String,String> getUserDetailsMap (String username);
     List<UserDTO> getUsers();
+    
+    void changePassword(String username, String currentPassword, String newPassword);
 }

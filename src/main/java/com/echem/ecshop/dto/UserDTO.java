@@ -31,6 +31,7 @@ public class UserDTO {
     public Map<String, String> getMap(){
         Map<String, String> map = new HashMap<>();
         String empty = "";
+        map.put("username", username!=null?username:empty);
         map.put("firstName", firstName!=null?firstName:empty);
         map.put("lastName", lastName!=null?lastName:empty);
         map.put("phone", phone!=null?phone:empty);

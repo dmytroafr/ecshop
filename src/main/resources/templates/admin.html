@@ -14,10 +14,23 @@
             margin: 20px 0;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
         }
+        .stats-card-small {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 10px 0;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
         .stats-number {
             font-size: 3rem;
             font-weight: bold;
             margin: 10px 0;
+        }
+        .stats-number-small {
+            font-size: 2rem;
+            font-weight: bold;
+            margin: 5px 0;
         }
         .stats-label {
             font-size: 1.2rem;
@@ -30,6 +43,21 @@
             border-radius: 5px;
             margin-bottom: 30px;
         }
+        .table-container {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        .badge-role {
+            font-size: 0.9em;
+        }
+        .status-NEW { background-color: #17a2b8; }
+        .status-APPROVED { background-color: #ffc107; }
+        .status-PAID { background-color: #28a745; }
+        .status-CANCELLED { background-color: #dc3545; }
+        .status-CLOSED { background-color: #6c757d; }
     </style>
 </head>
 <body>
@@ -38,9 +66,11 @@
 <div class="container mt-5">
     <div class="admin-header text-center">
         <h1><i class="bi bi-speedometer2"></i> Адміністративна панель</h1>
-        <p class="mb-0">Статистика відвідувань сайту</p>
+        <p class="mb-0">Управління та статистика сайту</p>
     </div>
 
+    <!-- Статистика відвідувань -->
+    <h3 class="mb-3">📊 Статистика відвідувань</h3>
     <div class="row">
         <div class="col-md-6">
             <div class="stats-card text-center">
@@ -56,25 +86,103 @@
         </div>
     </div>
 
-    <div class="row mt-4">
-        <div class="col-12">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Інформація</h5>
-                    <p class="card-text">
-                        Статистика оновлюється автоматично при кожному відвідуванні сайту.
-                        Лічильник за добу обнуляється щодня о 00:00.
-                    </p>
-                    <p class="card-text">
-                        <small class="text-muted">Дані зберігаються в базі даних PostgreSQL</small>
-                    </p>
-                </div>
+    <!-- Загальна статистика -->
+    <h3 class="mb-3 mt-4">📈 Загальна статистика</h3>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="stats-card-small text-center">
+                <div class="stats-label">👥 Всього користувачів</div>
+                <div class="stats-number-small" th:text="${totalUsers}">0</div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="stats-card-small text-center">
+                <div class="stats-label">🛒 Всього замовлень</div>
+                <div class="stats-number-small" th:text="${totalOrders}">0</div>
             </div>
         </div>
     </div>
 
-    <div class="mt-4 text-center">
-        <a th:href="@{/}" class="btn btn-primary">Повернутися на головну</a>
+    <!-- Список користувачів -->
+    <div class="table-container mt-5">
+        <h3 class="mb-4">👥 Користувачі системи</h3>
+        <div class="table-responsive">
+            <table class="table table-striped table-hover">
+                <thead class="table-dark">
+                    <tr>
+                        <th>ID</th>
+                        <th>Ім'я користувача</th>
+                        <th>Ім'я</th>
+                        <th>Прізвище</th>
+                        <th>Email</th>
+                        <th>Телефон</th>
+                        <th>Роль</th>
+                        <th>Статус</th>
+                        <th>Дата реєстрації</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="user : ${users}">
+                        <td th:text="${user.id}">1</td>
+                        <td th:text="${user.username}">username</td>
+                        <td th:text="${user.firstName}">Ім'я</td>
+                        <td th:text="${user.lastName}">Прізвище</td>
+                        <td th:text="${user.email}">email@example.com</td>
+                        <td th:text="${user.phone}">+380...</td>
+                        <td>
+                            <span class="badge badge-role" 
+                                  th:classappend="${user.role.name() == 'ROLE_ADMIN' ? 'bg-danger' : (user.role.name() == 'ROLE_MANAGER' ? 'bg-warning' : 'bg-primary')}"
+                                  th:text="${user.role.name()}">ROLE</span>
+                        </td>
+                        <td>
+                            <span class="badge" 
+                                  th:classappend="${user.enabled ? 'bg-success' : 'bg-secondary'}"
+                                  th:text="${user.enabled ? 'Активний' : 'Неактивний'}">Статус</span>
+                        </td>
+                        <td th:text="${#temporals.format(user.created, 'dd.MM.yyyy HH:mm')}">01.01.2024</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Список замовлень -->
+    <div class="table-container mt-5">
+        <h3 class="mb-4">🛒 Замовлення</h3>
+        <div class="table-responsive">
+            <table class="table table-striped table-hover">
+                <thead class="table-dark">
+                    <tr>
+                        <th>ID</th>
+                        <th>Дата створення</th>
+                        <th>Сума</th>
+                        <th>Статус</th>
+                        <th>Доставка</th>
+                        <th>Оплата</th>
+                        <th>Оновлено</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="order : ${orders}">
+                        <td th:text="${order.id}">1</td>
+                        <td th:text="${#temporals.format(order.created, 'dd.MM.yyyy HH:mm')}">01.01.2024</td>
+                        <td th:text="${order.sum + ' грн'}">1000 грн</td>
+                        <td>
+                            <span class="badge" 
+                                  th:classappend="${'status-' + order.status.name()}"
+                                  th:text="${order.status.name()}">STATUS</span>
+                        </td>
+                        <td th:text="${order.delivery}">Доставка</td>
+                        <td th:text="${order.payment}">Оплата</td>
+                        <td th:text="${order.updated != null ? #temporals.format(order.updated, 'dd.MM.yyyy HH:mm') : '-'}">-</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="mt-4 text-center mb-5">
+        <a th:href="@{/}" class="btn btn-primary btn-lg">Повернутися на головну</a>
     </div>
 </div>
 

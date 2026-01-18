@@ -154,5 +154,23 @@ public class UserServiceImpl implements UserService{
 						});
 	}
 
+	@Override
+	@Transactional
+	public void changePassword(String username, String currentPassword, String newPassword) {
+		log.debug("Method changePassword({}) called", username);
+		User user = getUserByUsername(username);
+		
+		// Перевірка поточного пароля
+		if (!passwordEncoder.matches(currentPassword, user.getPassword())) {
+			log.error("Current password is incorrect for user {}", username);
+			throw new IllegalArgumentException("Поточний пароль невірний");
+		}
+		
+		// Встановлення нового пароля
+		String encodedPassword = passwordEncoder.encode(newPassword);
+		user.setPassword(encodedPassword);
+		save(user);
+		log.info("Password successfully changed for user {}", username);
+	}
 
 }
