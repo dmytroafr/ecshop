@@ -34,6 +34,9 @@ public class Product {
     @Column(name = "order_count")
     private Long orderCount = 0L;
 
+    // @BatchSize оптимізує завантаження categories: замість N+1 запитів буде 1 + ceil(N/25) запитів
+    // Використовується коли categories потрібні при pagination з @EntityGraph
+    @org.hibernate.annotations.BatchSize(size = 25)
     @ManyToMany(cascade = CascadeType.PERSIST)
     @JoinTable(name = "products_categories",
             joinColumns = @JoinColumn(name = "product_id"),
