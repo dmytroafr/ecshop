@@ -21,7 +21,9 @@
               <span sec:authentication="principal.username">Bill</span>.
             </a>я
             <a th:href="@{/buckets}" sec:authorize="isAuthenticated()">Ваш кошик.</a>
-            <a th:href="@{/logout}">Вихід</a>
+            <form th:action="@{/logout}" method="post" style="display:inline;">
+              <button type="submit" style="background:none;border:none;color:#0d6efd;cursor:pointer;padding:0;text-decoration:underline;">Вихід</button>
+            </form>
           </li>
         </ul>
       </div>

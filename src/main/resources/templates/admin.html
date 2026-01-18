@@ -69,6 +69,16 @@
         <p class="mb-0">Управління та статистика сайту</p>
     </div>
 
+    <!-- Повідомлення про успіх/помилку -->
+    <div th:if="${successMessage}" class="alert alert-success alert-dismissible fade show" role="alert">
+        <span th:text="${successMessage}"></span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+    <div th:if="${errorMessage}" class="alert alert-danger alert-dismissible fade show" role="alert">
+        <span th:text="${errorMessage}"></span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+
     <!-- Статистика відвідувань -->
     <h3 class="mb-3">📊 Статистика відвідувань</h3>
     <div class="row">
@@ -160,6 +170,7 @@
                         <th>Доставка</th>
                         <th>Оплата</th>
                         <th>Оновлено</th>
+                        <th>Дії</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -175,6 +186,18 @@
                         <td th:text="${order.delivery}">Доставка</td>
                         <td th:text="${order.payment}">Оплата</td>
                         <td th:text="${order.updated != null ? #temporals.format(order.updated, 'dd.MM.yyyy HH:mm') : '-'}">-</td>
+                        <td>
+                            <form th:action="@{/admin/order/update-status}" method="post" class="d-inline">
+                                <input type="hidden" name="orderId" th:value="${order.id}"/>
+                                <select name="status" class="form-select form-select-sm d-inline-block" style="width: auto;" 
+                                        onchange="this.form.submit()">
+                                    <option th:each="status : ${T(com.echem.ecshop.domain.OrderStatus).values()}"
+                                            th:value="${status}"
+                                            th:text="${status.name()}"
+                                            th:selected="${status == order.status}"></option>
+                                </select>
+                            </form>
+                        </td>
                     </tr>
                 </tbody>
             </table>

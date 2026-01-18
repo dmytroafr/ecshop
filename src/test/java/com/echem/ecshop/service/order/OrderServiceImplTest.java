@@ -248,4 +248,172 @@ class OrderServiceImplTest {
 
         verify(orderRepository).save(any(Order.class));
     }
+
+    @Test
+    void testMakeOrder_UpdatesProductRatings() {
+        testProduct.setOrderCount(5L);
+        
+        when(userService.getUserByUsername("testuser")).thenReturn(testUser);
+        when(bucketService.getBucketDtoByUserId(1L)).thenReturn(testBucketDTO);
+        when(productService.getProduct(1L)).thenReturn(testProduct);
+        when(orderRepository.save(any(Order.class))).thenAnswer(invocation -> {
+            Order order = invocation.getArgument(0);
+            order.setId(1L);
+            return order;
+        });
+        doNothing().when(emailService).send(anyString(), anyString(), anyString());
+        doNothing().when(bucketService).clearBucket(1L);
+
+        orderService.makeOrder(testOrderRequest, testUserDTO);
+
+        // Перевіряємо що orderCount збільшився на кількість замовлених товарів (2)
+        assertEquals(7L, testProduct.getOrderCount());
+        verify(productService).getProduct(1L);
+    }
+
+    @Test
+    void testMakeOrder_UpdatesProductRatings_WithNullOrderCount() {
+        testProduct.setOrderCount(null);
+        
+        when(userService.getUserByUsername("testuser")).thenReturn(testUser);
+        when(bucketService.getBucketDtoByUserId(1L)).thenReturn(testBucketDTO);
+        when(productService.getProduct(1L)).thenReturn(testProduct);
+        when(orderRepository.save(any(Order.class))).thenAnswer(invocation -> {
+            Order order = invocation.getArgument(0);
+            order.setId(1L);
+            return order;
+        });
+        doNothing().when(emailService).send(anyString(), anyString(), anyString());
+        doNothing().when(bucketService).clearBucket(1L);
+
+        orderService.makeOrder(testOrderRequest, testUserDTO);
+
+        // Перевіряємо що orderCount встановився на кількість замовлених товарів
+        assertEquals(2L, testProduct.getOrderCount());
+    }
+
+    @Test
+    void testMakeOrder_UpdatesProductRatings_WithMultipleProducts() {
+        Product product2 = new Product();
+        product2.setId(2L);
+        product2.setTitle("Product 2");
+        product2.setPrice(new BigDecimal("150.00"));
+        product2.setOrderCount(10L);
+
+        BucketDetailDTO detail1 = new BucketDetailDTO(testProduct);
+        detail1.setAmount(new BigDecimal(3));
+        detail1.setSum(299.97);
+
+        BucketDetailDTO detail2 = new BucketDetailDTO(product2);
+        detail2.setAmount(new BigDecimal(5));
+        detail2.setSum(750.00);
+
+        testProduct.setOrderCount(2L);
+        testBucketDTO.setProductList(new ArrayList<>(List.of(detail1, detail2)));
+        testBucketDTO.aggregate();
+
+        when(userService.getUserByUsername("testuser")).thenReturn(testUser);
+        when(bucketService.getBucketDtoByUserId(1L)).thenReturn(testBucketDTO);
+        when(productService.getProduct(anyLong())).thenAnswer(invocation -> {
+            Long id = invocation.getArgument(0);
+            return id.equals(1L) ? testProduct : product2;
+        });
+        when(orderRepository.save(any(Order.class))).thenAnswer(invocation -> {
+            Order order = invocation.getArgument(0);
+            order.setId(1L);
+            return order;
+        });
+        doNothing().when(emailService).send(anyString(), anyString(), anyString());
+        doNothing().when(bucketService).clearBucket(1L);
+
+        orderService.makeOrder(testOrderRequest, testUserDTO);
+
+        // Перевіряємо що обидва товари оновились
+        assertEquals(5L, testProduct.getOrderCount()); // 2 + 3
+        assertEquals(15L, product2.getOrderCount()); // 10 + 5
+    }
+
+    @Test
+    void testFindOrdersByUsername_Success() {
+        Order order1 = new Order();
+        order1.setId(1L);
+        order1.setUser(testUser);
+        order1.setStatus(OrderStatus.NEW);
+        order1.setDetails(new ArrayList<>());
+
+        Order order2 = new Order();
+        order2.setId(2L);
+        order2.setUser(testUser);
+        order2.setStatus(OrderStatus.CLOSED);
+        order2.setDetails(new ArrayList<>());
+
+        when(orderRepository.findByUsername("testuser")).thenReturn(List.of(order1, order2));
+
+        List<OrderDTO> result = orderService.findOrdersByUsername("testuser");
+
+        assertNotNull(result);
+        assertEquals(2, result.size());
+        verify(orderRepository).findByUsername("testuser");
+    }
+
+    @Test
+    void testFindOrdersByUsername_EmptyResult() {
+        when(orderRepository.findByUsername("nonexistent")).thenReturn(new ArrayList<>());
+
+        List<OrderDTO> result = orderService.findOrdersByUsername("nonexistent");
+
+        assertNotNull(result);
+        assertTrue(result.isEmpty());
+        verify(orderRepository).findByUsername("nonexistent");
+    }
+
+    @Test
+    void testUpdateOrderStatus_Success() {
+        Order order = new Order();
+        order.setId(1L);
+        order.setUser(testUser);
+        order.setStatus(OrderStatus.NEW);
+        order.setDetails(new ArrayList<>());
+
+        when(orderRepository.findById(1L)).thenReturn(Optional.of(order));
+        when(orderRepository.save(any(Order.class))).thenReturn(order);
+
+        orderService.updateOrderStatus(1L, OrderStatus.APPROVED);
+
+        assertEquals(OrderStatus.APPROVED, order.getStatus());
+        verify(orderRepository).findById(1L);
+        verify(orderRepository).save(order);
+    }
+
+    @Test
+    void testUpdateOrderStatus_OrderNotFound() {
+        when(orderRepository.findById(999L)).thenReturn(Optional.empty());
+
+        assertThrows(NoSuchElementException.class, () -> {
+            orderService.updateOrderStatus(999L, OrderStatus.PAID);
+        });
+
+        verify(orderRepository).findById(999L);
+        verify(orderRepository, never()).save(any(Order.class));
+    }
+
+    @Test
+    void testUpdateOrderStatus_AllStatuses() {
+        Order order = new Order();
+        order.setId(1L);
+        order.setUser(testUser);
+        order.setStatus(OrderStatus.NEW);
+
+        when(orderRepository.findById(1L)).thenReturn(Optional.of(order));
+        when(orderRepository.save(any(Order.class))).thenReturn(order);
+
+        // Тестуємо всі можливі статуси
+        for (OrderStatus status : OrderStatus.values()) {
+            orderService.updateOrderStatus(1L, status);
+            assertEquals(status, order.getStatus());
+        }
+
+        verify(orderRepository, times(OrderStatus.values().length)).findById(1L);
+        verify(orderRepository, times(OrderStatus.values().length)).save(order);
+    }
 }

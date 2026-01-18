@@ -1,6 +1,7 @@
 package com.echem.ecshop.controllers;
 
 import com.echem.ecshop.dto.UserDTO;
+import com.echem.ecshop.service.order.OrderService;
 import com.echem.ecshop.service.user.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -25,6 +26,9 @@ class UserControllerTest {
     @Mock
     private UserService userService;
 
+    @Mock
+    private OrderService orderService;
+
     @InjectMocks
     private UserController userController;
 
@@ -43,10 +47,12 @@ class UserControllerTest {
 
         when(userService.getUserDetailsMap("testuser")).thenReturn(userMap);
 
-        mockMvc.perform(get("/users/testuser"))
+        mockMvc.perform(get("/users/testuser")
+                        .principal(() -> "testuser"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("users/profile"))
-                .andExpect(model().attributeExists("user"));
+                .andExpect(model().attributeExists("user"))
+                .andExpect(model().attributeExists("username"));
 
         verify(userService).getUserDetailsMap("testuser");
     }

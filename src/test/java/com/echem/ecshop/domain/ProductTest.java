@@ -77,6 +77,7 @@ class ProductTest {
                 "Producer",
                 "Country",
                 OnStock.ON_STOCK,
+                0L,
                 null
         );
 

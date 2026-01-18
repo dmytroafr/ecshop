@@ -1,6 +1,7 @@
 package com.echem.ecshop.service.order;
 
 import com.echem.ecshop.domain.Order;
+import com.echem.ecshop.domain.OrderStatus;
 import com.echem.ecshop.dto.OrderDTO;
 import com.echem.ecshop.dto.OrderRequest;
 import com.echem.ecshop.dto.UserDTO;
@@ -12,4 +13,5 @@ public interface OrderService {
     OrderDTO getOrderById (Long orderId);
     List<OrderDTO> findAll();
     List<OrderDTO> findOrdersByUsername(String username);
+    void updateOrderStatus(Long orderId, OrderStatus newStatus);
 }

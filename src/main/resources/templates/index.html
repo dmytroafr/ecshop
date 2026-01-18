@@ -77,26 +77,19 @@
   <div class="row">
     <div th:insert="~{fragments/menu :: #bar}" class="col-sm-2"></div>
     <div class="col-sm-10">
-      <div class="welcome-banner">
-        <h1>🎉 Вітаємо в інтернет-магазині ЕКОХІМ!</h1>
-        <p class="lead mb-0">Широкий вибір якісних дезінфекційних засобів за доступними цінами</p>
-      </div>
-
       <div class="top-products-section">
-        <h2 class="mb-4">⭐ Топ-10 найпопулярніших товарів</h2>
-        
         <div th:if="${topProducts != null && !topProducts.isEmpty()}">
           <div class="row">
             <div th:each="product, iterStat : ${topProducts}" class="col-md-6 col-lg-4">
               <div class="product-card">
                 <div class="d-flex justify-content-between align-items-start mb-2">
-                  <h5 th:text="${product.title}">Назва товару</h5>
                   <span class="rating-badge" th:text="'#' + ${iterStat.count}">1</span>
                 </div>
-                <p class="text-muted small" th:text="${product.productDescription}">Опис товару</p>
+                <img th:src="${product.photoUrl}" class="card-img-top img mb-3" alt="..." style="max-height: 200px; object-fit: contain;"/>
+                <h5 class="mb-2" th:text="${product.title}">Назва товару</h5>
                 <div class="d-flex justify-content-between align-items-center">
                   <strong class="text-primary" th:text="${product.price + ' грн'}">100 грн</strong>
-                  <a th:href="@{/products/{id}(id=${product.productId})}" class="btn btn-sm btn-primary">
+                  <a th:href="@{/products/{id}(id=${product.id})}" class="btn btn-sm btn-primary">
                     Детальніше →
                   </a>
                 </div>

@@ -52,7 +52,7 @@ class ProductControllerTest {
     void testGetAllProducts() throws Exception {
         Page<ProductDTO> productPage = new PageImpl<>(List.of(testProductDTO));
 
-        when(productService.getAllAvailableProductDTOs(any(Pageable.class), anyString(), anyString()))
+        when(productService.getAllAvailableProductDTOs(any(Pageable.class)))
                 .thenReturn(productPage);
 
         mockMvc.perform(get("/products"))
@@ -60,7 +60,7 @@ class ProductControllerTest {
                 .andExpect(view().name("products/products"))
                 .andExpect(model().attributeExists("products"));
 
-        verify(productService).getAllAvailableProductDTOs(any(Pageable.class), anyString(), anyString());
+        verify(productService).getAllAvailableProductDTOs(any(Pageable.class));
     }
 
     @Test

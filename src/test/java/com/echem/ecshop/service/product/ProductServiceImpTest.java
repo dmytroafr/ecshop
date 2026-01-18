@@ -241,4 +241,93 @@ class ProductServiceImpTest {
         assertEquals(new BigDecimal("99.99"), testProduct.getPrice()); // Unchanged
         verify(productRepository).save(testProduct);
     }
-}
+
+    @Test
+    void testGetTopProducts_Success() {
+        Product product1 = new Product();
+        product1.setId(1L);
+        product1.setTitle("Popular Product 1");
+        product1.setPrice(new BigDecimal("99.99"));
+        product1.setOnStock(OnStock.ON_STOCK);
+        product1.setOrderCount(100L);
+
+        Product product2 = new Product();
+        product2.setId(2L);
+        product2.setTitle("Popular Product 2");
+        product2.setPrice(new BigDecimal("149.99"));
+        product2.setOnStock(OnStock.ON_STOCK);
+        product2.setOrderCount(50L);
+
+        Product product3 = new Product();
+        product3.setId(3L);
+        product3.setTitle("Popular Product 3");
+        product3.setPrice(new BigDecimal("79.99"));
+        product3.setOnStock(OnStock.ON_STOCK);
+        product3.setOrderCount(30L);
+
+        List<Product> topProducts = List.of(product1, product2, product3);
+        when(productRepository.findTopByOrderCount(any(Pageable.class))).thenReturn(topProducts);
+
+        List<ProductDTO> result = productService.getTopProducts(3);
+
+        assertNotNull(result);
+        assertEquals(3, result.size());
+        assertEquals("Popular Product 1", result.get(0).getTitle());
+        assertEquals("Popular Product 2", result.get(1).getTitle());
+        assertEquals("Popular Product 3", result.get(2).getTitle());
+        verify(productRepository).findTopByOrderCount(any(Pageable.class));
+    }
+
+    @Test
+    void testGetTopProducts_LimitTen() {
+        List<Product> products = new ArrayList<>();
+        for (int i = 1; i <= 15; i++) {
+            Product product = new Product();
+            product.setId((long) i);
+            product.setTitle("Product " + i);
+            product.setPrice(new BigDecimal("99.99"));
+            product.setOnStock(OnStock.ON_STOCK);
+            product.setOrderCount((long) (100 - i));
+            products.add(product);
+        }
+
+        when(productRepository.findTopByOrderCount(any(Pageable.class)))
+            .thenReturn(products.subList(0, 10));
+
+        List<ProductDTO> result = productService.getTopProducts(10);
+
+        assertNotNull(result);
+        assertEquals(10, result.size());
+        verify(productRepository).findTopByOrderCount(PageRequest.of(0, 10));
+    }
+
+    @Test
+    void testGetTopProducts_EmptyResult() {
+        when(productRepository.findTopByOrderCount(any(Pageable.class)))
+            .thenReturn(new ArrayList<>());
+
+        List<ProductDTO> result = productService.getTopProducts(10);
+
+        assertNotNull(result);
+        assertTrue(result.isEmpty());
+        verify(productRepository).findTopByOrderCount(any(Pageable.class));
+    }
+
+    @Test
+    void testGetTopProducts_OnlyAvailableProducts() {
+        Product availableProduct = new Product();
+        availableProduct.setId(1L);
+        availableProduct.setTitle("Available Product");
+        availableProduct.setPrice(new BigDecimal("99.99"));
+        availableProduct.setOnStock(OnStock.ON_STOCK);
+        availableProduct.setOrderCount(100L);
+
+        when(productRepository.findTopByOrderCount(any(Pageable.class)))
+            .thenReturn(List.of(availableProduct));
+
+        List<ProductDTO> result = productService.getTopProducts(10);
+
+        assertNotNull(result);
+        assertEquals(1, result.size());
+        assertEquals("Available Product", result.get(0).getTitle());
+    }}

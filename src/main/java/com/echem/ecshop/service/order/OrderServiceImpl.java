@@ -67,6 +67,9 @@ public class OrderServiceImpl implements OrderService{
 
         orderRepository.save(order);
         log.info("Order with id {} was created and saved into DB", order.getId());
+        
+        // Оновлення рейтингу товарів
+        updateProductRatings(details);
 
         orderInform(userDTO, order);
         bucketService.clearBucket(bucketDto.getId());
@@ -127,5 +130,28 @@ public class OrderServiceImpl implements OrderService{
         log.info("Returning list of orders for user {}", username);
         List<Order> orders = orderRepository.findByUsername(username);
         return orders.stream().map(mapper::orderToOrderDTO).collect(Collectors.toList());
+    }
+    
+    private void updateProductRatings(List<OrderDetails> details) {
+        details.forEach(detail -> {
+            var product = detail.getProduct();
+            if (product != null) {
+                Long currentCount = product.getOrderCount() != null ? product.getOrderCount() : 0L;
+                product.setOrderCount(currentCount + detail.getAmount().longValue());
+                log.debug("Updated order count for product {} to {}", product.getId(), product.getOrderCount());
+            }
+        });
+    }
+
+    @Override
+    @Transactional
+    public void updateOrderStatus(Long orderId, OrderStatus newStatus) {
+        log.info("Updating order {} status to {}", orderId, newStatus);
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new NoSuchElementException("Order not found with id: " + orderId));
+        
+        order.setStatus(newStatus);
+        orderRepository.save(order);
+        log.info("Order {} status updated successfully", orderId);
     }
 }
