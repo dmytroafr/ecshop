@@ -11,4 +11,5 @@ public interface OrderService {
     Order makeOrder(OrderRequest orderRequest, UserDTO userDTO);
     OrderDTO getOrderById (Long orderId);
     List<OrderDTO> findAll();
+    List<OrderDTO> findOrdersByUsername(String username);
 }

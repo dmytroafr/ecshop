@@ -16,6 +16,44 @@
   <title>Кошик замовлення</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
   <link rel="stylesheet" type="text/css" th:href="@{/css/styles.css}"/>
+  <style>
+    .bucket-header {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 20px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+    }
+    .bucket-table {
+      background: white;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+    .order-form {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      margin-top: 20px;
+    }
+    .quantity-controls {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .btn-delete {
+      background: #dc3545;
+      color: white;
+      border: none;
+      padding: 5px 15px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .btn-delete:hover {
+      background: #c82333;
+    }
+  </style>
 </head>
 
 <body class="bg-body-tertiary">
@@ -28,93 +66,66 @@
     <div th:insert="~{fragments/menu :: #bar}" class="col-sm-2"></div>
     <div class="col-sm-10">
       <div class="row" id="main-content">
-        <h4>Ваша корзина</h4>
-        <h5>Загальна сума : <b th:text="${bucket.sum}">0</b></h5>
+        <div class="bucket-header">
+          <h2>🛒 Ваш кошик</h2>
+          <h4 class="mb-0">Загальна сума: <b th:text="${bucket.sum + ' грн'}">0</b></h4>
+        </div>
 
-        <table class="table table-bordered">
-          <thead>
-          <tr>
-            <th>Назва товару</th>
-            <th>Кількість</th>
-            <th>Ціназ од.</th>
-            <th>Сума</th>
-            <th></th>
-          </tr>
-          </thead>
+        <div class="bucket-table">
+          <table class="table table-hover mb-0">
+            <thead class="table-dark">
+            <tr>
+              <th>Назва товару</th>
+              <th>Кількість</th>
+              <th>Ціна за од.</th>
+              <th>Сума</th>
+              <th>Дії</th>
+            </tr>
+            </thead>
 
-          <tbody>
-          <tr th:each="product : ${bucket.productList}" id="product-row-{{product.productId}}">
-            <td th:text="${product.title}">сир</td>
-            <td>
-              <div class="d-flex align-items-center">
-                <form th:action="@{/buckets/{productId}/decrease(productId=${product.productId})}" method="post" style="display:inline-block; margin-right: 5px;">
-                  <input type="hidden" name="_method" value="POST">
-                  <button type="submit" class="btn btn-outline-secondary btn-sm">-</button>
+            <tbody>
+            <tr th:each="product : ${bucket.productList}" th:id="'product-row-' + ${product.productId}">
+              <td><strong th:text="${product.title}">товар</strong></td>
+              <td>
+                <div class="quantity-controls">
+                  <form th:action="@{/buckets/{productId}/decrease(productId=${product.productId})}" method="post" style="display:inline-block;">
+                    <button type="submit" class="btn btn-outline-secondary btn-sm">➖</button>
+                  </form>
+                  <span class="fw-bold" th:text="${product.amount}">2</span>
+                  <form th:action="@{/buckets/{productId}/increase(productId=${product.productId})}" method="post" style="display:inline-block;">
+                    <button type="submit" class="btn btn-outline-secondary btn-sm">➕</button>
+                  </form>
+                </div>
+              </td>
+              <td th:text="${product.price + ' грн'}">11</td>
+              <td><strong th:text="${product.sum + ' грн'}">22</strong></td>
+              <td>
+                <form th:action="@{/buckets/{productId}/delete(productId=${product.productId})}" method="post" style="display:inline;">
+                  <input type="hidden" name="_method" value="DELETE">
+                  <button type="submit" class="btn-delete" onclick="return confirm('Ви впевнені?')">🗑️ Видалити</button>
                 </form>
-                <span th:text="${product.amount}">2</span>
-                <form th:action="@{/buckets/{productId}/increase(productId=${product.productId})}" method="post" style="display:inline-block; margin-left: 5px;">
-                  <input type="hidden" name="_method" value="POST">
-                  <button type="submit" class="btn btn-outline-secondary btn-sm">+</button>
-                </form>
-              </div>
-            </td>
-            <td th:text="${product.price}">11</td>
-            <td th:text="${product.sum}">22</td>
-            <td>
-              <form th:action="@{/buckets/{productId}/delete(productId=${product.productId})}" method="post">
-                <input type="hidden" name="_method" value="DELETE">
-                <button type="submit" onclick="return confirm('Ви впевнені?')">Видалити з кошику</button>
-              </form>
-            </td>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
 
-            <td>
-              <button
-                      class="btn btn-danger btn-sm"
-                      hx-delete="/buckets/{{product.productId}}/delete"
-                      hx-target="#product-row-{{product.productId}}"
-                      hx-swap="outerHTML"
-                      onclick="return confirm('Ви впевнені?')">Видалити</button>
-            </td>
-
-
-
-          </tr>
-          </tbody>
-        </table>
-
-        <form th:action="@{/orders}" method="post">
-          <div class="row">
-            <table class="table table-bordered">
-              <tr>
-                <th>Введіть місто та номер відділення нової пошта</th>
-              </tr>
-              <tr>
-                <td>
-                  <label class="form-label">
-                    <input type="text" class="form-control" name="delivery" />
-                  </label>
-                </td>
-              </tr>
-            </table>
+        <form th:action="@{/orders}" method="post" class="order-form">
+          <h4 class="mb-4">📋 Оформлення замовлення</h4>
+          
+          <div class="mb-3">
+            <label class="form-label"><strong>🚚 Місто та номер відділення Нової Пошти</strong></label>
+            <input type="text" class="form-control" name="delivery" placeholder="Наприклад: Київ, відділення №1" required />
           </div>
-          <div class="row">
-            <table class="table table-bordered">
-              <tr>
-                <th>Введіть бажаний метод оплати</th>
-              </tr>
-              <tr>
-                <td>
-                  <label class="form-label">
-                    <input type="text" class="form-control" name="payment" />
-                  </label>
-                </td>
-              </tr>
-            </table>
+          
+          <div class="mb-3">
+            <label class="form-label"><strong>💳 Метод оплати</strong></label>
+            <input type="text" class="form-control" name="payment" placeholder="Наприклад: Оплата при отриманні" required />
           </div>
 
-          <div class="row">
-            <button type="submit" class="btn btn-primary">Оформити замовлення</button>
-          </div>
+          <button type="submit" class="btn btn-success btn-lg w-100">
+            ✅ Оформити замовлення
+          </button>
         </form>
       </div>
     </div>

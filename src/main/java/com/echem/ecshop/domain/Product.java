@@ -30,6 +30,9 @@ public class Product {
     private String countryProducer;
     @Enumerated(EnumType.STRING)
     private OnStock onStock;
+    
+    @Column(name = "order_count")
+    private Long orderCount = 0L;
 
     @ManyToMany(cascade = CascadeType.PERSIST)
     @JoinTable(name = "products_categories",

@@ -66,6 +66,15 @@ public class ProductServiceImp implements ProductService{
                 .toList();
         return mapper.fromProductList(onStock);
     }
+    
+    @Override
+    public List<ProductDTO> getTopProducts(int limit) {
+        log.info("Getting top {} products", limit);
+        Pageable pageable = org.springframework.data.domain.PageRequest.of(0, limit);
+        List<Product> topProducts = productRepository.findTopByOrderCount(pageable);
+        log.info("Found {} top products", topProducts.size());
+        return mapper.fromProductList(topProducts);
+    }
 
     @Override
     public void addNewProduct(ProductDTO productDTO) {

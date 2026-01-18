@@ -1,7 +1,9 @@
 package com.echem.ecshop.controllers;
 
 import com.echem.ecshop.dto.ChangePasswordRequest;
+import com.echem.ecshop.dto.OrderDTO;
 import com.echem.ecshop.dto.UserDTO;
+import com.echem.ecshop.service.order.OrderService;
 import com.echem.ecshop.service.user.UserService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
@@ -22,9 +24,11 @@ import java.util.Map;
 public class UserController {
 
     private final UserService userService;
+    private final OrderService orderService;
 
-    public UserController(UserService userService) {
+    public UserController(UserService userService, OrderService orderService) {
         this.userService = userService;
+        this.orderService = orderService;
     }
 
     @PreAuthorize("isAuthenticated()")
@@ -104,5 +108,20 @@ public class UserController {
         List<UserDTO> allUsers = userService.getUsers();
         model.addAttribute("users", allUsers);
         return "users/users";
+    }
+    
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/{username}/orders")
+    public String getUserOrders(@PathVariable String username, Model model, Principal principal) {
+        // Перевірка, що користувач переглядає свої замовлення
+        if (!username.equals(principal.getName())) {
+            log.warn("User {} tried to access orders of {}", principal.getName(), username);
+            return "redirect:/users/" + principal.getName() + "/orders";
+        }
+        
+        List<OrderDTO> orders = orderService.findOrdersByUsername(username);
+        model.addAttribute("orders", orders);
+        model.addAttribute("username", username);
+        return "users/orders";
     }
 }

@@ -24,4 +24,8 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     @Override
     @EntityGraph(attributePaths = {"categories"})
     List<Product> findAll();
+    
+    @EntityGraph(attributePaths = {"categories"})
+    @Query("select p from Product p where p.onStock='ON_STOCK' order by p.orderCount desc, p.id asc")
+    List<Product> findTopByOrderCount(Pageable pageable);
 }

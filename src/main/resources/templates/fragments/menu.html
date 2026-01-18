@@ -21,7 +21,7 @@
               <span sec:authentication="principal.username">Bill</span>.
             </a>я
             <a th:href="@{/buckets}" sec:authorize="isAuthenticated()">Ваш кошик.</a>
-            <a href="/logout">Вихід</a>
+            <a th:href="@{/logout}">Вихід</a>
           </li>
         </ul>
       </div>

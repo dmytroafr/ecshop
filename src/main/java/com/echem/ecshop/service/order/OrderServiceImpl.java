@@ -121,4 +121,11 @@ public class OrderServiceImpl implements OrderService{
         List<Order> orders = orderRepository.findAll();
         return orders.stream().map(mapper::orderToOrderDTO).collect(Collectors.toList());
     }
+    
+    @Override
+    public List<OrderDTO> findOrdersByUsername(String username) {
+        log.info("Returning list of orders for user {}", username);
+        List<Order> orders = orderRepository.findByUsername(username);
+        return orders.stream().map(mapper::orderToOrderDTO).collect(Collectors.toList());
+    }
 }

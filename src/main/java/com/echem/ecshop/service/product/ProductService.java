@@ -30,4 +30,11 @@ public interface ProductService {
      * @return List of ProductDTOs
      */
     List<ProductDTO> getAllAvailableProductDTOs();
+    
+    /**
+     * Get top products by order count
+     * @param limit number of products to return
+     * @return List of top ProductDTOs
+     */
+    List<ProductDTO> getTopProducts(int limit);
 }

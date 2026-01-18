@@ -47,11 +47,15 @@
           <strong>✓ Успіх!</strong> <span th:text="${success}"></span>
         </div>
 
-        <!-- Кнопка зміни пароля -->
+        <!-- Кнопки дій -->
         <div class="profile-actions">
           <a th:href="@{/users/{username}/change-password(username=${username})}" 
              class="btn btn-primary">
             🔐 Змінити пароль
+          </a>
+          <a th:href="@{/users/{username}/orders(username=${username})}" 
+             class="btn btn-success">
+            📦 Історія замовлень
           </a>
         </div>
 
