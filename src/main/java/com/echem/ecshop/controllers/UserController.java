@@ -101,7 +101,8 @@ public class UserController {
         }
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    // Role enum already includes prefix ROLE_, so check authority directly
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @GetMapping
     public String getAllUsers(Model model){
         log.info("request to /users");

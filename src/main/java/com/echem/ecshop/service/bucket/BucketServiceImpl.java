@@ -48,7 +48,8 @@ public class BucketServiceImpl implements BucketService {
 
     private Bucket getBucketById(Long bucketId) {
         log.info("Getting bucket by bucketId {}", bucketId);
-        return bucketRepository.getBucketById(bucketId)
+        // Використовуємо JOIN FETCH для завантаження productList разом з Bucket
+        return bucketRepository.findByIdWithProducts(bucketId)
                 .orElseThrow(()-> {
                     log.error("Bucket by bucketId {} did not found", bucketId);
                     return new IllegalArgumentException(String.format("Bucket of user with bucketId %d not found", bucketId));
@@ -107,6 +108,7 @@ public class BucketServiceImpl implements BucketService {
     }
 
     @Override
+    @org.springframework.transaction.annotation.Transactional
     public void increaseProductAmount(Long productId, Long userId) {
         addBucketDetails(productId, userId);
         log.info("Were increased amount of product {} in bucket {}", productId, userId);

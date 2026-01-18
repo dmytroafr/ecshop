@@ -57,7 +57,7 @@ class BucketServiceImplTest {
     @Test
     void testAddBucketDetails_Success() {
         when(productService.getProduct(1L)).thenReturn(testProduct);
-        when(bucketRepository.getBucketById(1L)).thenReturn(Optional.of(testBucket));
+        when(bucketRepository.findByIdWithProducts(1L)).thenReturn(Optional.of(testBucket));
         when(bucketRepository.save(any(Bucket.class))).thenReturn(testBucket);
 
         bucketService.addBucketDetails(1L, 1L);
@@ -85,7 +85,7 @@ class BucketServiceImplTest {
         testBucket.getProductList().add(testProduct);
         testBucket.getProductList().add(testProduct);
 
-        when(bucketRepository.getBucketById(1L)).thenReturn(Optional.of(testBucket));
+        when(bucketRepository.findByIdWithProducts(1L)).thenReturn(Optional.of(testBucket));
 
         BucketDTO result = bucketService.getBucketDtoByUserId(1L);
 
@@ -97,7 +97,7 @@ class BucketServiceImplTest {
 
     @Test
     void testGetBucketDtoByUserId_EmptyBucket() {
-        when(bucketRepository.getBucketById(1L)).thenReturn(Optional.of(testBucket));
+        when(bucketRepository.findByIdWithProducts(1L)).thenReturn(Optional.of(testBucket));
 
         BucketDTO result = bucketService.getBucketDtoByUserId(1L);
 
@@ -108,7 +108,7 @@ class BucketServiceImplTest {
 
     @Test
     void testGetBucketDtoByUserId_NotFound() {
-        when(bucketRepository.getBucketById(999L)).thenReturn(Optional.empty());
+        when(bucketRepository.findByIdWithProducts(999L)).thenReturn(Optional.empty());
 
         assertThrows(IllegalArgumentException.class, () -> {
             bucketService.getBucketDtoByUserId(999L);
@@ -119,7 +119,7 @@ class BucketServiceImplTest {
     void testDeleteProductFromBucket_Success() {
         testBucket.getProductList().add(testProduct);
 
-        when(bucketRepository.getBucketById(1L)).thenReturn(Optional.of(testBucket));
+        when(bucketRepository.findByIdWithProducts(1L)).thenReturn(Optional.of(testBucket));
         when(bucketRepository.save(any(Bucket.class))).thenReturn(testBucket);
 
         bucketService.deleteProductFromBucket(1L, 1L);
@@ -131,7 +131,7 @@ class BucketServiceImplTest {
     @Test
     void testIncreaseProductAmount_Success() {
         when(productService.getProduct(1L)).thenReturn(testProduct);
-        when(bucketRepository.getBucketById(1L)).thenReturn(Optional.of(testBucket));
+        when(bucketRepository.findByIdWithProducts(1L)).thenReturn(Optional.of(testBucket));
         when(bucketRepository.save(any(Bucket.class))).thenReturn(testBucket);
 
         bucketService.increaseProductAmount(1L, 1L);
@@ -145,7 +145,7 @@ class BucketServiceImplTest {
         testBucket.getProductList().add(testProduct);
         testBucket.getProductList().add(testProduct);
 
-        when(bucketRepository.getBucketById(1L)).thenReturn(Optional.of(testBucket));
+        when(bucketRepository.findByIdWithProducts(1L)).thenReturn(Optional.of(testBucket));
         when(bucketRepository.save(any(Bucket.class))).thenReturn(testBucket);
 
         bucketService.decreaseProductAmount(1L, 1L);
@@ -159,7 +159,7 @@ class BucketServiceImplTest {
         testBucket.getProductList().add(testProduct);
         testBucket.getProductList().add(testProduct);
 
-        when(bucketRepository.getBucketById(1L)).thenReturn(Optional.of(testBucket));
+        when(bucketRepository.findByIdWithProducts(1L)).thenReturn(Optional.of(testBucket));
         when(bucketRepository.save(any(Bucket.class))).thenReturn(testBucket);
 
         bucketService.clearBucket(1L);
@@ -171,7 +171,7 @@ class BucketServiceImplTest {
     @Test
     void testAddBucketDetails_MultipleSameProducts() {
         when(productService.getProduct(1L)).thenReturn(testProduct);
-        when(bucketRepository.getBucketById(1L)).thenReturn(Optional.of(testBucket));
+        when(bucketRepository.findByIdWithProducts(1L)).thenReturn(Optional.of(testBucket));
         when(bucketRepository.save(any(Bucket.class))).thenReturn(testBucket);
 
         bucketService.addBucketDetails(1L, 1L);
@@ -191,7 +191,7 @@ class BucketServiceImplTest {
         testBucket.getProductList().add(testProduct);
         testBucket.getProductList().add(product2);
 
-        when(bucketRepository.getBucketById(1L)).thenReturn(Optional.of(testBucket));
+        when(bucketRepository.findByIdWithProducts(1L)).thenReturn(Optional.of(testBucket));
 
         BucketDTO result = bucketService.getBucketDtoByUserId(1L);
 

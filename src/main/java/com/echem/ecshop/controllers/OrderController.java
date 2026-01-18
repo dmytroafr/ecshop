@@ -27,7 +27,8 @@ public class OrderController {
         this.orderService = orderService;
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    // Role enum already includes prefix ROLE_, so check authority directly
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @GetMapping
     public String findAllOrders (Model model){
         List<OrderDTO> orders = orderService.findAll();
