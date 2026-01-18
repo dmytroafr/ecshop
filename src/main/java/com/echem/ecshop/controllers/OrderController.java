@@ -7,6 +7,7 @@ import com.echem.ecshop.dto.UserDTO;
 import com.echem.ecshop.service.order.OrderService;
 import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -53,12 +54,34 @@ public class OrderController {
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/{orderId}")
-    public String successOrder (@PathVariable Long orderId, Model model){
+    public String successOrder(@PathVariable Long orderId, HttpSession httpSession, Model model) {
         log.info("Displaying order confirmation page for order ID: {}", orderId);
-        String massage = "Ваше замовлення було успішно оформлене, очікуйте на виконання. Дякуємо";
-        model.addAttribute("massage",massage);
+        
+        UserDTO currentUser = (UserDTO) httpSession.getAttribute("user");
+        if (currentUser == null) {
+            log.warn("User session not found, redirecting to login");
+            return "redirect:/login";
+        }
+        
         OrderDTO orderById = orderService.getOrderById(orderId);
         log.debug("Loaded order details for order: {}", orderId);
+        
+        // Отримуємо повний Order для перевірки власника
+        Order fullOrder = orderService.getOrderEntityById(orderId);
+        
+        // Перевірка що користувач має доступ до цього замовлення
+        boolean isAdmin = currentUser.getRole() != null && currentUser.getRole().equals("ADMIN");
+        boolean isOwner = fullOrder.getUser().getId().equals(currentUser.getId());
+        
+        if (!isOwner && !isAdmin) {
+            log.warn("Access denied: User {} attempted to access order {} (owner: {})", 
+                currentUser.getId(), orderId, fullOrder.getUser().getId());
+            throw new AccessDeniedException("Ви не маєте доступу до цього замовлення");
+        }
+        
+        log.info("User {} successfully accessed order {}", currentUser.getId(), orderId);
+        String massage = "Ваше замовлення було успішно оформлене, очікуйте на виконання. Дякуємо";
+        model.addAttribute("massage", massage);
         model.addAttribute("order", orderById);
         return "result";
     }

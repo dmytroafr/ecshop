@@ -42,6 +42,7 @@ public class UserServiceImpl implements UserService{
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public UserDTO getUserDTOByUserName(String username) {
 		log.debug("Method getUserDTOByUserName({}) called",username);
 		User user = getUserByUsername(username);
@@ -50,6 +51,7 @@ public class UserServiceImpl implements UserService{
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public UserDTO getUserDTOByEmail(String email) {
 		log.debug("Method getUserDTOByEmail({}) called",email);
 		User user = getUserByEmail(email);
@@ -130,6 +132,7 @@ public class UserServiceImpl implements UserService{
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public Map<String, String> getUserDetailsMap(String username) {
 		log.debug("Method getUserDetailsMap({})", username);
 		UserDTO userDTO = getUserDTOByUserName(username);
@@ -137,6 +140,7 @@ public class UserServiceImpl implements UserService{
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public List<UserDTO> getUsers() {
 		log.debug("Method getUsers() called");
 		List<User> all = userRepository.findAll();

@@ -173,6 +173,7 @@ public class OrderServiceImpl implements OrderService{
     }
 
     @Override
+    @Transactional(readOnly = true)
     public OrderDTO getOrderById(Long orderId) {
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(() -> {
@@ -182,8 +183,20 @@ public class OrderServiceImpl implements OrderService{
 
         return mapper.orderToOrderDTO(order);
     }
+    
+    @Override
+    @Transactional(readOnly = true)
+    public Order getOrderEntityById(Long orderId) {
+        log.debug("Getting order entity by id {}", orderId);
+        return orderRepository.findById(orderId)
+                .orElseThrow(() -> {
+                    log.error("Order with id {} not found", orderId);
+                    return new NoSuchElementException("Order with id " + orderId + " not found");
+                });
+    }
 
     @Override
+    @Transactional(readOnly = true)
     public List<OrderDTO> findAll() {
         log.info("Returning list of orders");
         List<Order> orders = orderRepository.findAll();
@@ -191,6 +204,7 @@ public class OrderServiceImpl implements OrderService{
     }
     
     @Override
+    @Transactional(readOnly = true)
     public List<OrderDTO> findOrdersByUsername(String username) {
         log.info("Returning list of orders for user {}", username);
         List<Order> orders = orderRepository.findByUsername(username);

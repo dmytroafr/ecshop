@@ -26,6 +26,7 @@ public class BucketServiceImpl implements BucketService {
     }
 
     @Override
+    @org.springframework.transaction.annotation.Transactional
     public void addBucketDetails(Long productId, Long userId) {
         log.debug("Adding bucket details for {}", productId);
         Product productRef = productService.getProduct(productId);
@@ -36,6 +37,7 @@ public class BucketServiceImpl implements BucketService {
         log.info("Product {} were successfully added to Bucket {}",productId, bucket.getId());
     }
     @Override
+    @org.springframework.transaction.annotation.Transactional
     public void createBucket (User user){
         log.debug("Creating bucket method");
         Bucket bucket = new Bucket();
@@ -55,6 +57,7 @@ public class BucketServiceImpl implements BucketService {
     }
 
     @Override
+    @org.springframework.transaction.annotation.Transactional(readOnly = true)
     public BucketDTO getBucketDtoByUserId(Long userId) {
         log.debug("Getting bucket DTO for {}", userId);
 
@@ -94,6 +97,7 @@ public class BucketServiceImpl implements BucketService {
 
 
     @Override
+    @org.springframework.transaction.annotation.Transactional
     public void deleteProductFromBucket(Long productId, Long userId) {
         log.debug("Deleting product {} from bucket {} method", productId, userId);
         Bucket bucket = getBucketById(userId);
@@ -109,6 +113,7 @@ public class BucketServiceImpl implements BucketService {
     }
 
     @Override
+    @org.springframework.transaction.annotation.Transactional
     public void decreaseProductAmount(Long productId, Long userId) {
         Bucket bucket = getBucketById(userId);
         bucket.removeSingleProduct(productId);
@@ -117,6 +122,7 @@ public class BucketServiceImpl implements BucketService {
     }
 
     @Override
+    @org.springframework.transaction.annotation.Transactional
     public void clearBucket(Long id) {
         log.debug("Clearing bucket {}", id);
         Bucket bucket = getBucketById(id);

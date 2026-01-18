@@ -29,6 +29,7 @@ public class ProductServiceImp implements ProductService{
 
     @Cacheable(value = "productsCache", key = "#productId")
     @Override
+    @org.springframework.transaction.annotation.Transactional(readOnly = true)
     public ProductDTO getProductDtoById(Long productId) {
         Optional<Product> optionalProduct = productRepository.findById(productId);
         if (optionalProduct.isEmpty()){
@@ -38,12 +39,14 @@ public class ProductServiceImp implements ProductService{
     }
 
     @Override
+    @org.springframework.transaction.annotation.Transactional(readOnly = true)
     public Page<ProductDTO> getAllAvailableProductDTOs(Pageable pageable) {
         Page<Product> allAvailableProducts = productRepository.findAllAvailable(pageable);
         return allAvailableProducts.map(mapper::fromProduct);
     }
 
     @Override
+    @org.springframework.transaction.annotation.Transactional(readOnly = true)
     public Product getProduct(Long productId) {
         if (productId == null || productId <= 0) {
             throw new IllegalArgumentException("Invalid product ID: " + productId);
@@ -53,12 +56,14 @@ public class ProductServiceImp implements ProductService{
     }
 
     @Override
+    @org.springframework.transaction.annotation.Transactional(readOnly = true)
     public Page<ProductDTO> getProductsByCategory(Pageable pageable, Long categoryId) {
         Page<Product> groupPage = productRepository.findAllAvailableByCategory(pageable, categoryId);
         return groupPage.map(mapper::fromProduct);
     }
 
     @Override
+    @org.springframework.transaction.annotation.Transactional(readOnly = true)
     public List<ProductDTO> getAllAvailableProductDTOs() {
         List<Product> allProducts = productRepository.findAll();
         List<Product> onStock = allProducts.stream()
@@ -68,6 +73,7 @@ public class ProductServiceImp implements ProductService{
     }
     
     @Override
+    @org.springframework.transaction.annotation.Transactional(readOnly = true)
     public List<ProductDTO> getTopProducts(int limit) {
         log.info("Getting top {} products", limit);
         Pageable pageable = org.springframework.data.domain.PageRequest.of(0, limit);
@@ -77,6 +83,7 @@ public class ProductServiceImp implements ProductService{
     }
 
     @Override
+    @org.springframework.transaction.annotation.Transactional
     public void addNewProduct(ProductDTO productDTO) {
         Product newProduct = mapper.toProduct(productDTO);
         Product savedProduct = productRepository.save(newProduct);
@@ -84,6 +91,7 @@ public class ProductServiceImp implements ProductService{
     }
 
     @Override
+    @org.springframework.transaction.annotation.Transactional
     public void updateProduct(Long productId, ProductDTO productDTO) {
         if (productDTO==null || productId==null){
             throw new IllegalArgumentException("ProductDTO or it's Id cannot be null");

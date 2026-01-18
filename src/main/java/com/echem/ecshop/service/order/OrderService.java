@@ -11,6 +11,7 @@ import java.util.List;
 public interface OrderService {
     Order makeOrder(OrderRequest orderRequest, UserDTO userDTO);
     OrderDTO getOrderById (Long orderId);
+    Order getOrderEntityById(Long orderId);
     List<OrderDTO> findAll();
     List<OrderDTO> findOrdersByUsername(String username);
     void updateOrderStatus(Long orderId, OrderStatus newStatus);
