@@ -7,6 +7,7 @@ import com.echem.ecshop.service.order.OrderService;
 import com.echem.ecshop.service.statistics.SiteStatisticsService;
 import com.echem.ecshop.service.user.UserService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,6 +19,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
+@Slf4j
 @Controller
 @RequestMapping("/admin")
 @RequiredArgsConstructor
@@ -30,6 +32,7 @@ public class AdminController {
     @GetMapping
     @PreAuthorize("hasRole('ADMIN')")
     public String adminPanel(Model model) {
+        log.info("Admin panel accessed");
         // Статистика відвідувань
         Long totalVisits = statisticsService.getTotalVisits();
         Long dailyVisits = statisticsService.getDailyVisits();
@@ -54,6 +57,7 @@ public class AdminController {
             @RequestParam Long orderId,
             @RequestParam OrderStatus status,
             RedirectAttributes redirectAttributes) {
+        log.info("Attempting to update order {} status to {}", orderId, status);
         try {
             orderService.updateOrderStatus(orderId, status);
             redirectAttributes.addFlashAttribute("successMessage", 

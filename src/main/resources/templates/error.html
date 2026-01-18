@@ -43,11 +43,20 @@
     </div>
 
     <div class="col-sm-9">
-      <div class="row justify-content-center">
-        <div class="col-md-6">
-          <div th:text="${errorMessage}">text</div>
+      <div class="error-container" style="padding: 40px; text-align: center;">
+        <div style="font-size: 72px; color: #dc3545; margin-bottom: 20px;">
+          <span th:text="${statusCode != null ? statusCode : '500'}">500</span>
+        </div>
+        <h2 style="color: #343a40; margin-bottom: 20px;" th:text="${errorMessage}">Виникла помилка</h2>
+        <p style="color: #6c757d; font-size: 18px; margin-bottom: 30px;" th:text="${errorDetails}">
+          Будь ласка, спробуйте пізніше
+        </p>
+        <div>
+          <a th:href="@{/}" class="btn btn-primary btn-lg me-2">🏠 На головну</a>
+          <a th:href="@{/products}" class="btn btn-outline-primary btn-lg">🛍️ Товари</a>
         </div>
       </div>
+    </div>
     </div>
   </div>
 </div>

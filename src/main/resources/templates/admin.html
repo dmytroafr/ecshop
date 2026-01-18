@@ -42,6 +42,15 @@
             padding: 20px;
             border-radius: 5px;
             margin-bottom: 30px;
+            text-align: center;
+        }
+        .admin-header h1 {
+            margin: 0;
+            padding: 0;
+        }
+        .admin-header p {
+            margin: 10px 0 0 0;
+            padding: 0;
         }
         .table-container {
             background: white;
@@ -61,7 +70,9 @@
     </style>
 </head>
 <body>
-<div th:replace="~{fragments/menu}"></div>
+<div th:insert="~{fragments/menu :: #nav-menu}"></div>
+<img th:src="@{/images/header.jpg}" class="img-fluid mx-auto d-block" alt="ecochem, екохім"/>
+<div th:insert="~{fragments/menu :: #navigator}"></div>
 
 <div class="container mt-5">
     <div class="admin-header text-center">

@@ -84,8 +84,9 @@ public class ProductController {
 
     @GetMapping("/{productId}")
     public String getProduct(@PathVariable("productId") Long productId, Model model){
-        if (productId<=0){
-            throw new IllegalArgumentException();
+        if (productId == null || productId <= 0){
+            log.warn("Некоректний productId: {}", productId);
+            throw new IllegalArgumentException("ID товару має бути додатнім числом");
         }
         ProductDTO productDto = productService.getProductDtoById(productId);
         model.addAttribute("product", productDto);

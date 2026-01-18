@@ -80,9 +80,74 @@ public class OrderServiceImpl implements OrderService{
     public void orderInform(UserDTO userDTO, Order order) {
         String massage = "Ваше замовлення прийнято у роботу, Номер замовлення "+ order.getId();
         emailService.send(userDTO.getEmail(),massage, "Ваше замовлення");
-        emailService.send("sales@e-chem.com.ua", order.toString(), "#" + order.getId());
+        
+        // Формуємо красивий HTML email для адміністратора
+        String adminEmailBody = buildAdminOrderEmail(order);
+        emailService.send("sales@e-chem.com.ua", adminEmailBody, "🛒 Нове замовлення #" + order.getId());
 
         log.info("Order with id {} was sent by Emails", order.getId());
+    }
+    
+    private String buildAdminOrderEmail(Order order) {
+        StringBuilder html = new StringBuilder();
+        html.append("<!DOCTYPE html>");
+        html.append("<html><head><meta charset='UTF-8'><style>");
+        html.append("body { font-family: Arial, sans-serif; background-color: #f4f4f4; margin: 0; padding: 20px; }");
+        html.append(".container { background-color: #ffffff; border-radius: 10px; padding: 30px; max-width: 800px; margin: 0 auto; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }");
+        html.append(".header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; border-radius: 10px 10px 0 0; margin: -30px -30px 20px -30px; text-align: center; }");
+        html.append(".header h1 { margin: 0; font-size: 28px; }");
+        html.append(".info-section { background-color: #f8f9fa; padding: 15px; border-radius: 8px; margin-bottom: 20px; }");
+        html.append(".info-label { font-weight: bold; color: #495057; }");
+        html.append(".info-value { color: #212529; margin-left: 10px; }");
+        html.append(".status-badge { display: inline-block; padding: 5px 15px; border-radius: 20px; font-weight: bold; background-color: #17a2b8; color: white; }");
+        html.append("table { width: 100%; border-collapse: collapse; margin-top: 20px; }");
+        html.append("th { background-color: #343a40; color: white; padding: 12px; text-align: left; }");
+        html.append("td { padding: 12px; border-bottom: 1px solid #dee2e6; }");
+        html.append(".total-row { background-color: #e9ecef; font-weight: bold; font-size: 18px; }");
+        html.append(".footer { text-align: center; margin-top: 30px; color: #6c757d; font-size: 12px; }");
+        html.append("</style></head><body>");
+        html.append("<div class='container'>");
+        html.append("<div class='header'><h1>🛒 Нове замовлення #").append(order.getId()).append("</h1></div>");
+        
+        // Загальна інформація
+        html.append("<div class='info-section'>");
+        html.append("<h3>📋 Загальна інформація</h3>");
+        html.append("<p><span class='info-label'>📅 Дата створення:</span><span class='info-value'>").append(order.getCreated()).append("</span></p>");
+        html.append("<p><span class='info-label'>👤 Клієнт:</span><span class='info-value'>").append(order.getUser().getUsername())
+            .append(" (").append(order.getUser().getEmail()).append(")</span></p>");
+        html.append("<p><span class='info-label'>📱 Телефон:</span><span class='info-value'>").append(order.getUser().getPhone()).append("</span></p>");
+        html.append("<p><span class='info-label'>🚚 Доставка:</span><span class='info-value'>").append(order.getDelivery()).append("</span></p>");
+        html.append("<p><span class='info-label'>💳 Оплата:</span><span class='info-value'>").append(order.getPayment()).append("</span></p>");
+        html.append("<p><span class='info-label'>📊 Статус:</span> <span class='status-badge'>").append(order.getStatus().name()).append("</span></p>");
+        html.append("</div>");
+        
+        // Товари в замовленні
+        html.append("<h3>🛍️ Товари в замовленні</h3>");
+        html.append("<table>");
+        html.append("<thead><tr><th>Назва товару</th><th style='text-align: center;'>Кількість</th><th style='text-align: right;'>Ціна за од.</th><th style='text-align: right;'>Сума</th></tr></thead>");
+        html.append("<tbody>");
+        
+        for (OrderDetails detail : order.getDetails()) {
+            html.append("<tr>");
+            html.append("<td>").append(detail.getProduct().getTitle()).append("</td>");
+            html.append("<td style='text-align: center;'>").append(detail.getAmount()).append("</td>");
+            html.append("<td style='text-align: right;'>").append(detail.getPrice()).append(" грн</td>");
+            html.append("<td style='text-align: right;'>").append(detail.getAmount().multiply(detail.getPrice())).append(" грн</td>");
+            html.append("</tr>");
+        }
+        
+        html.append("<tr class='total-row'>");
+        html.append("<td colspan='3' style='text-align: right;'>Загальна сума:</td>");
+        html.append("<td style='text-align: right; color: #28a745;'>").append(order.getSum()).append(" грн</td>");
+        html.append("</tr>");
+        html.append("</tbody></table>");
+        
+        html.append("<div class='footer'>");
+        html.append("<p>Цей email згенеровано автоматично системою ЕКОХІМ</p>");
+        html.append("</div>");
+        html.append("</div></body></html>");
+        
+        return html.toString();
     }
 
     private Order createEmptyOrder(UserDTO userDTO) {

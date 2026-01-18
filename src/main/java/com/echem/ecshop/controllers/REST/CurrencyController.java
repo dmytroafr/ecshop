@@ -20,22 +20,33 @@ public class CurrencyController {
 
     @GetMapping("/v1/update-currency")
     @ResponseBody
-    public String updateCurrency(@RequestParam(name = "currency") String currency) throws ExecutionException, InterruptedException {
-        log.info("Отримано запит для валюти: {}", currency);
-        CurrencyRates rates = currencyService.currencyRates().get();
-
-        if (rates == null || rates.getConversionRates() == null) {
-            log.error("Курси валют відсутні!");
+    public String updateCurrency(@RequestParam(name = "currency") String currency) {
+        if (currency == null || currency.trim().isEmpty()) {
+            log.warn("Отримано порожній запит валюти");
             return "Невідомо";
         }
+        
+        try {
+            log.info("Отримано запит для валюти: {}", currency);
+            CurrencyRates rates = currencyService.currencyRates().get();
 
-        Double rateValue = rates.getConversionRates().get(currency);
-        log.info("Курс для {}: {}", currency, rateValue);
+            if (rates == null || rates.getConversionRates() == null) {
+                log.error("Курси валют відсутні!");
+                return "Невідомо";
+            }
 
-        if (rateValue == null) {
+            Double rateValue = rates.getConversionRates().get(currency);
+            log.info("Курс для {}: {}", currency, rateValue);
+
+            if (rateValue == null) {
+                log.warn("Курс для валюти {} не знайдено", currency);
+                return "Невідомо";
+            }
+            return String.format("%.2f", rateValue * 100);
+        } catch (Exception e) {
+            log.error("Помилка при отриманні курсу валюти {}: {}", currency, e.getMessage());
             return "Невідомо";
         }
-        return String.format("%.2f", rateValue * 100);
     }
 
 }

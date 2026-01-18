@@ -3,11 +3,13 @@ package com.echem.ecshop.service.statistics;
 import com.echem.ecshop.domain.SiteStatistics;
 import com.echem.ecshop.repository.SiteStatisticsRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class SiteStatisticsServiceImpl implements SiteStatisticsService {
@@ -18,6 +20,7 @@ public class SiteStatisticsServiceImpl implements SiteStatisticsService {
     @Transactional
     public void recordVisit() {
         LocalDate today = LocalDate.now();
+        log.debug("Recording visit for date: {}", today);
         
         SiteStatistics stats = statisticsRepository.findByVisitDate(today)
                 .orElseGet(() -> createNewDayStatistics(today));
@@ -26,6 +29,7 @@ public class SiteStatisticsServiceImpl implements SiteStatisticsService {
         stats.setTotalVisits(stats.getTotalVisits() + 1);
         
         statisticsRepository.save(stats);
+        log.debug("Visit recorded. Daily visits: {}, Total visits: {}", stats.getDailyVisits(), stats.getTotalVisits());
     }
     
     @Override

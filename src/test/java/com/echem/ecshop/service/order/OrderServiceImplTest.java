@@ -27,6 +27,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.contains;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -120,6 +121,23 @@ class OrderServiceImplTest {
         order.setId(1L);
         order.setUser(testUser);
         order.setStatus(OrderStatus.NEW);
+        order.setSum(new BigDecimal("100.00"));
+        order.setDelivery("Нова Пошта");
+        order.setPayment("Готівка");
+        
+        // Додаємо деталі замовлення
+        Product product = new Product();
+        product.setId(1L);
+        product.setTitle("Test Product");
+        product.setPrice(new BigDecimal("50.00"));
+        
+        OrderDetails detail = new OrderDetails();
+        detail.setProduct(product);
+        detail.setAmount(new BigDecimal("2"));
+        detail.setPrice(new BigDecimal("50.00"));
+        detail.setOrder(order);
+        
+        order.setDetails(List.of(detail));
 
         doNothing().when(emailService).send(anyString(), anyString(), anyString());
 
@@ -127,7 +145,7 @@ class OrderServiceImplTest {
 
         verify(emailService, times(2)).send(anyString(), anyString(), anyString());
         verify(emailService).send(eq("test@example.com"), anyString(), eq("Ваше замовлення"));
-        verify(emailService).send(eq("sales@e-chem.com.ua"), anyString(), eq("#1"));
+        verify(emailService).send(eq("sales@e-chem.com.ua"), anyString(), contains("Нове замовлення #1"));
     }
 
     @Test

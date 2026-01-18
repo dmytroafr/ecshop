@@ -32,9 +32,9 @@ public class RegistrationServiceImpl implements RegistrationService{
     @Transactional
     @Override
     public String register(RegistrationRequest request) {
-        log.debug("Method register was called");
+        log.info("Starting registration process for user: {}", request.username());
         String token = userService.signUpUser(request);
-        log.info("User {} was signed up successfully",request.username());
+        log.info("User {} successfully signed up, token generated", request.username());
 //        String link = serverHost + "registration/confirm?token=" + token;
         String link = "registration/confirm?token=" + token;
 
@@ -51,25 +51,25 @@ public class RegistrationServiceImpl implements RegistrationService{
     @Transactional
     @Override
     public void confirmToken(String token) {
-        log.debug("Method confirmToken was called");
+        log.info("Confirming registration token");
         ConfirmationToken confirmationToken = tokenService.getToken(token)
                 .orElseThrow(()->{
-                    log.error("Token {} did not found", token);
+                    log.error("Token not found: {}", token);
                     return new IllegalStateException("Token not found");
                 });
 
         if (confirmationToken.getConfirmedAt() != null){
-            log.error("Token {} already confirmed", confirmationToken.getToken());
+            log.warn("Token already confirmed: {}", confirmationToken.getToken());
             throw new IllegalStateException("Token already confirmed");
         }
         LocalDateTime expiresAt = confirmationToken.getExpiresAt();
         if (expiresAt.isBefore(LocalDateTime.now())){
-            log.error("Token {} expired", confirmationToken.getToken());
+            log.error("Token expired: {}, expiry date: {}", confirmationToken.getToken(), expiresAt);
             throw new IllegalStateException("Token expired");
         }
         tokenService.setConfirmed(token);
-        log.info("Token {} confirmed", confirmationToken.getToken());
+        log.info("Token confirmed successfully: {}", confirmationToken.getToken());
         userService.enableUser(confirmationToken.getUser().getUsername());
-        log.info("User {} is now enabled", confirmationToken.getUser().getUsername());
+        log.info("User enabled: {}", confirmationToken.getUser().getUsername());
     }
 }
